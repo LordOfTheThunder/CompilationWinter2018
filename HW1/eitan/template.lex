@@ -2,11 +2,18 @@
 /* Declarations section */
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 void showToken(char *);
 void stringToken(int);
+void assignIndentToken(char *);
+void eofToken();
+void comment();
+void intToken(int, int);
 
 %}
+
+%s expect
 %option yylineno
 %option noyywrap
 digit		([0-9])
@@ -14,40 +21,70 @@ hex_digit	([0-7])
 bi_digit	(0|1)
 letter		([a-zA-Z])
 indent_char	([ \t])
-newline		([\n\r])
+newline		([\r\n])
 key_letter	({digit}|{letter}|[\~\_\-\'\?\$\.\ ])
 dir_letter	([\-\+\\\.\_\~]|{letter}|{digit})
 key 		({letter}{key_letter}*)
-any_but_newline	([^\n\r])
 true		("true"|"yes")
 false		("false"|"no")
 real		([+-]?{digit}*\.{digit}*)
-to_ignore	([ \t\n])
+to_ignore	([ \t])
+escape_seq	([\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 
 %%
-{key}									showToken("KEY");
-\[{key}\]								showToken("SECTION");
-^{indent_char}*								showToken("INDENT");
-(:|=)									showToken("ASSIGN");
-([#;]{any_but_newline}*)						showToken("COMMENT");
-{true}									showToken("TRUE");
-{false}									showToken("FALSE");
-([+-]?[1-9]{digit}*)							showToken("INTEGER");
-(0x{hex_digit}+)							showToken("INTEGER");
-(0{hex_digit}*)								showToken("INTEGER");
-(0b{bi_digit}+)								showToken("INTEGER");
-{real}(e[+-]{digit}+)?							showToken("REAL");
-(("/"{dir_letter}*)+)							showToken("DIRECTORY");
-($\{({key}|({key}#{key}))\})						showToken("LINK");
-(\"[^\"]*\")								stringToken(1);
-(^[\,"\n"])*								stringToken(0);
-(\,)									showToken("SEP");
-{to_ignore}*								;
-.									printf("ERROR!!!!!!!!!");
+{newline}							BEGIN(0);
+^({key})							showToken("KEY");
+\[{key}\]							showToken("SECTION");
+^({indent_char}*)						assignIndentToken("INDENT");
+{to_ignore}*							;
+(:|=)								assignIndentToken("ASSIGN");
+(({indent_char}*)[#;].*)					comment();
+<<EOF>>								eofToken();
+<expect>{true}							showToken("TRUE");
+<expect>{false}							showToken("FALSE");
+<expect>([+-]?[1-9]{digit}*)					intToken(10, 0);
+<expect>(0x{hex_digit}+)					intToken(8, 2);
+<expect>(0{hex_digit}*)						intToken(8, 1);
+<expect>(0b{bi_digit}+)						intToken(2, 2);
+<expect>{real}(e[+-]{digit}+)?					showToken("REAL");
+<expect>(("/"{dir_letter}*)+)					showToken("PATH");
+<expect>($\{({key}|({key}#{key}))\})				showToken("LINK");
+<expect>(\"[^\"]*\")						stringToken(1);
+<expect>([^\,\n\r])+						stringToken(0);
+<expect>(\,)							showToken("SEP");
+.								printf("ERROR!!!!!!!!!\n");
 %%
+
+void intToken(int base, int offset){
+	printf("%d %s %ld\n", yylineno, "INTEGER", strtol(yytext + offset, NULL, base));
+}
+
+char *  noIndent(char * str){
+	if (*str != '\t' && *str != ' '){
+		return str;
+	}
+	while (*str == '\t' || *str == ' '){
+		str++;
+	}
+	return str;
+} 
+
+void comment(){
+	printf("%d %s %s\n", yylineno, "COMMENT", noIndent(yytext));
+}
 
 void showToken(char * name){
 	printf("%d %s %s\n", yylineno, name, yytext);	
+}
+
+void assignIndentToken(char * name){
+	printf("%d %s %s\n", yylineno, name, yytext);
+	BEGIN(expect);
+}
+
+void eofToken(){
+	printf("%d %s %s\n", yylineno, "EOF", yytext);
+	exit(0);
 }
 
 void slice_str(const char * str, char * buffer, size_t start, size_t end){

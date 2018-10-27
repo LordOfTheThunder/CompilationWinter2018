@@ -1,0 +1,6 @@
+[section]
+key = value
+	-3
+ 4.5
+  ; comment
+another key : true
