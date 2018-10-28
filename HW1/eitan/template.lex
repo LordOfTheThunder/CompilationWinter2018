@@ -10,6 +10,13 @@ void assignIndentToken(char *);
 void eofToken();
 void comment();
 void intToken(int, int);
+void error(int);
+
+enum{
+	ILLEGAL_CHAR,
+	UNCLOSED_STRING,
+	UNDEFINED_ESCAPING
+};
 
 %}
 
@@ -29,7 +36,7 @@ true		("true"|"yes")
 false		("false"|"no")
 real		([+-]?{digit}*\.{digit}*)
 to_ignore	([ \t])
-escape_seq	([\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
+no_escape_seq	([^\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 
 %%
 {newline}							BEGIN(0);
@@ -50,10 +57,27 @@ escape_seq	([\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 <expect>(("/"{dir_letter}*)+)					showToken("PATH");
 <expect>($\{({key}|({key}#{key}))\})				showToken("LINK");
 <expect>(\"[^\"]*\")						stringToken(1);
-<expect>([^\,\n\r])+						stringToken(0);
+<expect>([^\"\,\#\;\n\r\ ][^\,\#\;\n\r]*)			stringToken(0);
 <expect>(\,)							showToken("SEP");
-.								printf("ERROR!!!!!!!!!\n");
+.								error(ILLEGAL_CHAR);
 %%
+
+void error(int code){
+	switch (code){
+		case ILLEGAL_CHAR:{
+			printf("Error %s\n", yytext);
+			exit(0);
+		}
+		case UNCLOSED_STRING:{
+			printf("Error unclosed string\n");
+			exit(0);
+		}
+		case UNDEFINED_ESCAPING:{
+			printf("Error undefined escape sequence %s\n", yytext);
+			exit(0);
+		}
+	}
+}
 
 void intToken(int base, int offset){
 	printf("%d %s %ld\n", yylineno, "INTEGER", strtol(yytext + offset, NULL, base));
@@ -99,6 +123,7 @@ void slice_str(const char * str, char * buffer, size_t start, size_t end){
 void stringToken(int cap){
 	int len = strlen(yytext);
 	char name[] = "STRING";
+	
 	if (cap){
 		char buffer[len + 1];
 		slice_str(yytext, buffer, 1, len - 2);
