@@ -646,7 +646,7 @@ void assignIndentToken(char *);
 void eofToken();
 void comment();
 void intToken(int, int);
-void error(int);
+void error(int, char *);
 
 enum{
 	ILLEGAL_CHAR,
@@ -1047,7 +1047,7 @@ showToken("SEP");
 case 20:
 YY_RULE_SETUP
 #line 62 "template.lex"
-error(ILLEGAL_CHAR);
+error(ILLEGAL_CHAR, NULL);
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
@@ -2068,7 +2068,7 @@ void yyfree (void * ptr )
 
 
 
-void error(int code){
+void error(int code, char * message){
 	switch (code){
 		case ILLEGAL_CHAR:{
 			printf("Error %s\n", yytext);
@@ -2079,7 +2079,7 @@ void error(int code){
 			exit(0);
 		}
 		case UNDEFINED_ESCAPING:{
-			printf("Error undefined escape sequence %s\n", yytext);
+			printf("Error undefined escape sequence %s\n", message);
 			exit(0);
 		}
 	}
@@ -2126,13 +2126,66 @@ void slice_str(const char * str, char * buffer, size_t start, size_t end){
 	buffer[j] = 0;
 }
 
+
+/*
+	This function checks if the input character
+	resembles a hex digit
+	Input: c - the character to validate
+	Output: 1 - if c is a hex digit
+		0 - otherwise
+*/
+int is_hex(char c){
+	return ((c >= '0' && c <= '9') ||
+		(c >= 'a' && c <= 'f') ||
+		(c >= 'A' && c <= 'F'));
+}
+
+
+/*
+	This function validates the format of the string.
+	It checks if all the escaping sequences are valid.
+	If the string is invalid, an error occurs
+	Input: str - the input string
+	Output: None
+*/
+void validate_string(char * str){
+	char seq[2];
+	seq[1] = '\0';
+	while (*str){
+		if (*(str++) == '\\'){
+			seq[0] = *str; 
+			switch (*(str++)){
+				case '\\':
+				case '"':
+				case 'a':
+				case 'b':
+				case 'n':
+				case 'r':
+				case 't':
+				case ';':
+				case ':':
+				case '=':
+				case '#':
+				case '0': break;
+				case 'x':{
+						if (!(is_hex(*(str++)) && is_hex(*(str++))))
+							error(UNDEFINED_ESCAPING, seq);
+						break;
+					}
+				default: error(UNDEFINED_ESCAPING, seq);
+			}
+		}
+	}
+}
+
 void stringToken(int cap){
 	int len = strlen(yytext);
 	char name[] = "STRING";
-	printf("%d\n", cap);
+	
 	if (cap){
 		char buffer[len + 1];
 		slice_str(yytext, buffer, 1, len - 2);
+		validate_string(buffer);
 		printf("%d %s %s\n", yylineno, name, buffer);
 	} else{
 		printf("%d %s %s\n", yylineno, name, yytext);
