@@ -25,14 +25,16 @@ enum {
 %option yylineno
 %option noyywrap
 digit		([0-9])
-hex_digit	([0-7])
+hex_digit	([0-9A-Fa-f])
+oct_digit	([0-7])
 bi_digit	(0|1)
 letter		([a-zA-Z])
 indent_char	([ \t])
 newline		([\r\n])
 key_letter	({digit}|{letter}|[\~\_\-\'\?\$\.\ ])
+key_letter_no_space	({digit}|{letter}|[\~\_\-\'\?\$\.])
 dir_letter	([\-\+\\\.\_\~]|{letter}|{digit})
-key 		({letter}{key_letter}*)
+key 		({letter}{key_letter}*{key_letter_no_space})
 true		("true"|"yes")
 false		("false"|"no")
 real		([+-]?{digit}*\.{digit}*)
@@ -50,8 +52,8 @@ no_escape_seq	([^\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 <expect>{true}							showToken("TRUE");
 <expect>{false}							showToken("FALSE");
 <expect>([+-]?[1-9]{digit}*)					intToken(10, 0);
-<expect>(0x{hex_digit}+)					intToken(8, 2);
-<expect>(0{hex_digit}*)						intToken(8, 1);
+<expect>(0x{hex_digit}+)					intToken(16, 2);
+<expect>(0{oct_digit}+)						intToken(8, 1);
 <expect>(0b{bi_digit}+)						intToken(2, 2);
 <expect>{real}(e[+-]{digit}+)?					showToken("REAL");
 <expect>(("/"{dir_letter}*)+)					showToken("PATH");
@@ -145,7 +147,7 @@ int is_hex(char c){
 	Input: str - the input string
 	Output: None
 */
-void validate_string(char * str){
+void validate_string(char * str) {
 	char seq[2];
 	seq[1] = '\0';
 	while (*str){
@@ -175,15 +177,79 @@ void validate_string(char * str){
 	}
 }
 
+void reformat_string(char * str, char * result) {
+	while (*str != 0) {
+		if (*str == '\\') {
+			switch(*(++str)) {
+				case '\\':
+				*(result++) = '\\';
+				break;
+				case 'a':
+				*(result++) = '\a';
+				break;
+				case 'b':
+				*(result++) = '\b';
+				break;
+				case 'n':
+				*(result++) = '\n';
+				break;
+				case 'r':
+				*(result++) = '\r';
+				break;
+				case 't':
+				*(result++) = '\t';
+				break;
+				case '0':
+				*(result++) = '\0';
+				break;
+				case ';':
+				*(result++) = ';';
+				break;
+				case ':':
+				*(result++) = ':';
+				break;
+				case '=':
+				*(result++) = '=';
+				break;
+				case '#':
+				*(result++) = '#';
+				break;
+				case 'x':
+				*(result++) = 'x';
+				char tmp[3];
+				tmp[0] = *(++str);
+				tmp[1] = *(++str);
+				tmp[2] = 0;
+				long int x = strtol(tmp, NULL, 16);
+				*(result++) = x;
+				break;
+				default:
+				*(result++) = *(++str);
+				break;
+			}
+		}
+		else if (*str == '\n') {
+			*(result++) = ' ';
+		}
+		else if (*str != '\r') {
+			*(result++) = *str;
+		}
+		++str;
+	}
+	*result = 0;
+}
+
 void stringToken(int cap){
 	int len = strlen(yytext);
 	char name[] = "STRING";
 
 	if (cap == CLOSED_STRING){
 		char buffer[len + 1];
+		char result[len + 1];
 		slice_str(yytext, buffer, 1, len - 2);
 		validate_string(buffer);
-		printf("%d %s %s\n", yylineno, name, buffer);
+		reformat_string(buffer, result);
+		printf("%d %s %s\n", yylineno, name, result);
 	} else if (cap == UNCLOSED_STRING) {
 		if (*yytext == '\"' && getchar() == EOF) {
 			error(UNCLOSED_STRING, NULL);
