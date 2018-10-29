@@ -215,7 +215,6 @@ void reformat_string(char * str, char * result) {
 				*(result++) = '#';
 				break;
 				case 'x':
-				*(result++) = 'x';
 				char tmp[3];
 				tmp[0] = *(++str);
 				tmp[1] = *(++str);
