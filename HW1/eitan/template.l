@@ -178,6 +178,7 @@ void validate_string(char * str) {
 }
 
 void reformat_string(char * str, char * result) {
+	char tmp[3];
 	while (*str != 0) {
 		if (*str == '\\') {
 			switch(*(++str)) {
@@ -215,7 +216,6 @@ void reformat_string(char * str, char * result) {
 				*(result++) = '#';
 				break;
 				case 'x':
-				char tmp[3];
 				tmp[0] = *(++str);
 				tmp[1] = *(++str);
 				tmp[2] = 0;
