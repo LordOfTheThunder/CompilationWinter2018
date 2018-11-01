@@ -59,7 +59,7 @@ no_escape_seq	([^\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 <expect>(("/"{dir_letter}*)+)					showToken("PATH");
 <expect>($\{({key}|({key}#{key}))\})				showToken("LINK");
 <expect>(\"[^\"]*\")						stringToken(CLOSED_STRING);
-<expect>([^\,\#\;\n\r\t\ :=][^\,\#\;\n\r]*)			stringToken(UNCLOSED_STRING);
+<expect>(([^\,\#\;\n\r\t\ :=][^\,\#\;\n\r]*[^\,\#\;\n\r\t\ ])|[^\,\#\;\n\r\t\ :=])			stringToken(UNCLOSED_STRING);
 <expect>(\,)							showToken("SEP");
 
 <<EOF>>								eofToken();
