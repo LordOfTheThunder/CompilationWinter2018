@@ -53,7 +53,7 @@ no_escape_seq	([^\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 <expect>{false}							showToken("FALSE");
 <expect>([+-]?[1-9]{digit}*)					intToken(10, 0);
 <expect>(0x{hex_digit}+)					intToken(16, 2);
-<expect>(0{oct_digit}+)						intToken(8, 1);
+<expect>(0{oct_digit}*)						intToken(8, 1);
 <expect>(0b{bi_digit}+)						intToken(2, 2);
 <expect>{real}(e[+-]{digit}+)?					showToken("REAL");
 <expect>(("/"{dir_letter}*)+)					showToken("PATH");
