@@ -21,7 +21,8 @@ enum {
 
 %}
 
-%s expect
+%s after_key
+%s after_indent_assign
 %option yylineno
 %option noyywrap
 digit		([0-9])
@@ -47,20 +48,20 @@ no_escape_seq	([^\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 \[{key}\]							showToken("SECTION");
 ^({indent_char}*)						assignIndentToken("INDENT");
 {to_ignore}+							;
-(:|=)								assignIndentToken("ASSIGN");
+<after_key>(:|=)								assignIndentToken("ASSIGN");
 (({indent_char}*)[#;].*)					comment();
-<expect>{true}							showToken("TRUE");
-<expect>{false}							showToken("FALSE");
-<expect>([+-]?[1-9]{digit}*)					intToken(10, 0);
-<expect>(0x{hex_digit}+)					intToken(16, 2);
-<expect>(0{oct_digit}*)						intToken(8, 1);
-<expect>(0b{bi_digit}+)						intToken(2, 2);
-<expect>{real}(e[+-]{digit}+)?					showToken("REAL");
-<expect>(("/"{dir_letter}*)+)					showToken("PATH");
-<expect>($\{({key}|({key}#{key}))\})				showToken("LINK");
-<expect>(\"[^\"]*\")						stringToken(CLOSED_STRING);
-<expect>(([^\,\#\;\n\r\t\ :=][^\,\#\;\n\r]*[^\,\#\;\n\r\t\ ])|[^\,\#\;\n\r\t\ :=])			stringToken(UNCLOSED_STRING);
-<expect>(\,)							showToken("SEP");
+<after_indent_assign>{true}							showToken("TRUE");
+<after_indent_assign>{false}							showToken("FALSE");
+<after_indent_assign>([+-]?[1-9]{digit}*)					intToken(10, 0);
+<after_indent_assign>(0x{hex_digit}+)					intToken(16, 2);
+<after_indent_assign>(0{oct_digit}*)						intToken(8, 1);
+<after_indent_assign>(0b{bi_digit}+)						intToken(2, 2);
+<after_indent_assign>{real}(e[+-]{digit}+)?					showToken("REAL");
+<after_indent_assign>(("/"{dir_letter}*)+)					showToken("PATH");
+<after_indent_assign>($\{({key}|({key}#{key}))\})				showToken("LINK");
+<after_indent_assign>(\"[^\"]*\")						stringToken(CLOSED_STRING);
+<after_indent_assign>(([^\,\#\;\n\r\t\ :=][^\,\#\;\n\r]*[^\,\#\;\n\r\t\ ])|[^\,\#\;\n\r\t\ :=])			stringToken(UNCLOSED_STRING);
+<after_indent_assign>(\,)							showToken("SEP");
 
 <<EOF>>								eofToken();
 
@@ -104,11 +105,14 @@ void comment(){
 
 void showToken(char * name){
 	printf("%d %s %s\n", yylineno, name, yytext);
+	if (strcmp(name, "KEY") == 0){
+		BEGIN(after_key);
+	}
 }
 
 void assignIndentToken(char * name){
 	printf("%d %s %s\n", yylineno, name, yytext);
-	BEGIN(expect);
+	BEGIN(after_indent_assign);
 }
 
 void eofToken(){
