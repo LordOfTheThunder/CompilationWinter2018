@@ -34,7 +34,7 @@ newline		([\r\n])
 key_letter	({digit}|{letter}|[\~\_\-\'\?\$\.\ ])
 key_letter_no_space	({digit}|{letter}|[\~\_\-\'\?\$\.])
 dir_letter	([\-\+\\\.\_\~]|{letter}|{digit})
-key 		({letter}{key_letter}*{key_letter_no_space})
+key 		({letter}{key_letter}*{key_letter_no_space})|({letter})
 true		("true"|"yes")
 false		("false"|"no")
 real		([+-]?{digit}*\.{digit}*)
@@ -59,7 +59,7 @@ no_escape_seq	([^\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 <expect>(("/"{dir_letter}*)+)					showToken("PATH");
 <expect>($\{({key}|({key}#{key}))\})				showToken("LINK");
 <expect>(\"[^\"]*\")						stringToken(CLOSED_STRING);
-<expect>([^\,\#\;\n\r\t\ ][^\,\#\;\n\r]*)			stringToken(UNCLOSED_STRING);
+<expect>([^\,\#\;\n\r\t\ :=][^\,\#\;\n\r]*)			stringToken(UNCLOSED_STRING);
 <expect>(\,)							showToken("SEP");
 
 <<EOF>>								eofToken();
