@@ -12,6 +12,8 @@ void comment();
 void intToken(int, int);
 void error(int, char *);
 
+int key_appeared = 0;
+
 enum {
 	ILLEGAL_CHAR,
 	UNCLOSED_STRING,
@@ -43,12 +45,13 @@ to_ignore	([ \t])
 no_escape_seq	([^\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 
 %%
-{newline}							BEGIN(0);
+{newline}							BEGIN(0); key_appeared = 0;
 ^({key})							showToken("KEY");
 \[{key}\]							showToken("SECTION");
 ^({indent_char}*)						assignIndentToken("INDENT");
 {to_ignore}+							;
 <after_key>(:|=)								assignIndentToken("ASSIGN");
+<after_indent_assign>(:|=)								assignIndentToken("ASSIGN");
 (({indent_char}*)[#;].*)					comment();
 <after_indent_assign>{true}							showToken("TRUE");
 <after_indent_assign>{false}							showToken("FALSE");
@@ -60,7 +63,7 @@ no_escape_seq	([^\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 <after_indent_assign>(("/"{dir_letter}*)+)					showToken("PATH");
 <after_indent_assign>($\{({key}|({key}#{key}))\})				showToken("LINK");
 <after_indent_assign>(\"[^\"]*\")						stringToken(CLOSED_STRING);
-<after_indent_assign>(([^\,\#\;\n\r\t\ :=][^\,\#\;\n\r]*[^\,\#\;\n\r\t\ ])|[^\,\#\;\n\r\t\ :=])			stringToken(UNCLOSED_STRING);
+<after_indent_assign>(({letter}[^\,\#\;\n\r]*[^\,\#\;\n\r\t\ ])|{letter})			stringToken(UNCLOSED_STRING);
 <after_indent_assign>(\,)							showToken("SEP");
 
 <<EOF>>								eofToken();
@@ -107,10 +110,14 @@ void showToken(char * name){
 	printf("%d %s %s\n", yylineno, name, yytext);
 	if (strcmp(name, "KEY") == 0){
 		BEGIN(after_key);
+		key_appeared = 1;
 	}
 }
 
 void assignIndentToken(char * name){
+	if (!key_appeared && strcmp(name, "ASSIGN") == 0) {
+		error(ILLEGAL_CHAR, NULL);
+	}
 	printf("%d %s %s\n", yylineno, name, yytext);
 	BEGIN(after_indent_assign);
 }
