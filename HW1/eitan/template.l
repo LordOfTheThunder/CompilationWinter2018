@@ -45,30 +45,28 @@ to_ignore	([ \t])
 no_escape_seq	([^\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 
 %%
-{newline}							BEGIN(0); key_appeared = 0;
-^({key})							showToken("KEY");
-\[{key}\]							showToken("SECTION");
-^({indent_char}*)						assignIndentToken("INDENT");
-{to_ignore}+							;
+{newline}									BEGIN(0); key_appeared = 0;
+^({key})									showToken("KEY");
+\[{key}\]									showToken("SECTION");
+^({indent_char}*)								assignIndentToken("INDENT");
+{to_ignore}+									;
 <after_key>(:|=)								assignIndentToken("ASSIGN");
-<after_indent_assign>(:|=)								assignIndentToken("ASSIGN");
-(({indent_char}*)[#;].*)					comment();
+<after_indent_assign>(:|=)							assignIndentToken("ASSIGN");
+(({indent_char}*)[#;].*)							comment();
 <after_indent_assign>{true}							showToken("TRUE");
 <after_indent_assign>{false}							showToken("FALSE");
 <after_indent_assign>([+-]?[1-9]{digit}*)					intToken(10, 0);
-<after_indent_assign>(0x{hex_digit}+)					intToken(16, 2);
+<after_indent_assign>(0x{hex_digit}+)						intToken(16, 2);
 <after_indent_assign>(0{oct_digit}*)						intToken(8, 1);
 <after_indent_assign>(0b{bi_digit}+)						intToken(2, 2);
 <after_indent_assign>{real}(e[+-]{digit}+)?					showToken("REAL");
 <after_indent_assign>(("/"{letter}{dir_letter}*)+"/"?)					showToken("PATH");
 <after_indent_assign>($\{({key}|({key}#{key}))\})				showToken("LINK");
 <after_indent_assign>(\"[^\"]*\")						stringToken(CLOSED_STRING);
-<after_indent_assign>(({letter}[^\,\#\;\n\r]*[^\,\#\;\n\r\t\ ])|{letter})			stringToken(UNCLOSED_STRING);
+<after_indent_assign>(({letter}[^\,\#\;\n\r]*[^\,\#\;\n\r\t\ ])|{letter})	stringToken(UNCLOSED_STRING);
 <after_indent_assign>(\,)							showToken("SEP");
-
-<<EOF>>								eofToken();
-
-.								error(ILLEGAL_CHAR, NULL);
+<<EOF>>										eofToken();
+.										error(ILLEGAL_CHAR, NULL);
 %%
 
 void error(int code, char * message){
