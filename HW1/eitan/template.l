@@ -60,7 +60,7 @@ no_escape_seq	([^\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 <after_indent_assign>(0{oct_digit}*)						intToken(8, 1);
 <after_indent_assign>(0b{bi_digit}+)						intToken(2, 2);
 <after_indent_assign>{real}(e[+-]{digit}+)?					showToken("REAL");
-<after_indent_assign>(("/"{dir_letter}*)+)					showToken("PATH");
+<after_indent_assign>(("/"{letter}{dir_letter}*)+"/"?)					showToken("PATH");
 <after_indent_assign>($\{({key}|({key}#{key}))\})				showToken("LINK");
 <after_indent_assign>(\"[^\"]*\")						stringToken(CLOSED_STRING);
 <after_indent_assign>(({letter}[^\,\#\;\n\r]*[^\,\#\;\n\r\t\ ])|{letter})			stringToken(UNCLOSED_STRING);
