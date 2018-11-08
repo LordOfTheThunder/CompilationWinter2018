@@ -45,7 +45,7 @@ real		([+-]?{digit}*\.{digit}*)
 to_ignore	([ \t])
 no_escape_seq	([^\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 folder_name	(({letter}{dir_letter}*))
-printable_letter [ !#-~]
+printable_letter [ !#-~\t\n]
 
 %%
 {newline}									BEGIN(0); key_appeared = 0;
@@ -66,7 +66,7 @@ printable_letter [ !#-~]
 <after_indent_assign>(("/"{folder_name}?)+)					showToken("PATH");
 <after_indent_assign>($\{({key}|({key}#{key}))\})				showToken("LINK");
 <after_indent_assign>(\"{printable_letter}*\")						stringToken(CLOSED_STRING);
-<after_indent_assign>(({letter}[^\,\#\;\n\r]*[^\,\#\;\n\r\t\ ])|{letter})	stringToken(UNCLOSED_STRING);
+<after_indent_assign>((({letter}|\")[^\,\#\;\n\r]*[^\,\#\;\n\r\t\ ])|({letter}|\"))	stringToken(UNCLOSED_STRING);
 <after_indent_assign>(\,)							showToken("SEP");
 <<EOF>>										eofToken();
 .										error(ILLEGAL_CHAR, NULL);
