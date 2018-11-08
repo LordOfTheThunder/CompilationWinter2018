@@ -38,7 +38,7 @@ newline		(\r?\n)
 key_letter	({digit}|{letter}|[\~\_\-\'\?\$\.\ ])
 key_letter_no_space	({digit}|{letter}|[\~\_\-\'\?\$\.])
 dir_letter	([\-\+\\\.\_\~]|{letter}|{digit})
-key 		({letter}{key_letter}*{key_letter_no_space})|({letter})
+key 		({letter}({key_letter}*{key_letter_no_space})?)
 true		("true"|"yes")
 false		("false"|"no")
 real		([+-]?{digit}*\.{digit}*)
@@ -66,9 +66,10 @@ printable_letter ([ !#-~\t\n]|\r\n)
 <after_indent_assign>(("/"{folder_name}?)+)					showToken("PATH");
 <after_indent_assign>($\{({key}|({key}#{key}))\})				showToken("LINK");
 <after_indent_assign>(\"{printable_letter}*\")						stringToken(CLOSED_STRING);
-<after_indent_assign>((({letter}|\")[^\,\#\;\n\r]*[^\,\#\;\n\r\t\ ])|({letter}|\"))	stringToken(UNCLOSED_STRING);
+<after_indent_assign>({letter}([^\,\#\;\n\r]*[^\,\#\;\n\r\t\ ])?)	stringToken(UNCLOSED_STRING);
 <after_indent_assign>(\,)							showToken("SEP");
 <<EOF>>										eofToken();
+<after_indent_assign>(\"[^"]*)			error(UNCLOSED_STRING, NULL);
 .										error(ILLEGAL_CHAR, NULL);
 %%
 
