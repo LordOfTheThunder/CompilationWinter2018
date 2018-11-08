@@ -31,7 +31,7 @@ enum {
 digit		([0-9])
 hex_digit	([0-9A-Fa-f])
 oct_digit	([0-7])
-bi_digit	(0|1)
+bi_digit	([01])
 letter		([a-zA-Z])
 indent_char	([ \t])
 newline		(\r?\n)
