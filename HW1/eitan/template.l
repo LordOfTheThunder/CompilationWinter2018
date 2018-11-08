@@ -34,7 +34,7 @@ oct_digit	([0-7])
 bi_digit	(0|1)
 letter		([a-zA-Z])
 indent_char	([ \t])
-newline		([\r\n])
+newline		(\r?\n)
 key_letter	({digit}|{letter}|[\~\_\-\'\?\$\.\ ])
 key_letter_no_space	({digit}|{letter}|[\~\_\-\'\?\$\.])
 dir_letter	([\-\+\\\.\_\~]|{letter}|{digit})
@@ -45,7 +45,7 @@ real		([+-]?{digit}*\.{digit}*)
 to_ignore	([ \t])
 no_escape_seq	([^\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 folder_name	(({letter}{dir_letter}*))
-printable_letter [ !#-~\t\n]
+printable_letter ([ !#-~\t\n]|\r\n)
 
 %%
 {newline}									BEGIN(0); key_appeared = 0;
