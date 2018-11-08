@@ -55,7 +55,7 @@ printable_letter [ !#-~]
 {to_ignore}+									;
 <after_key>(:|=)								assignIndentToken("ASSIGN");
 <after_indent_assign>(:|=)							assignIndentToken("ASSIGN");
-(({indent_char}*)[#;].*)							comment();
+(({indent_char}*)[#;][^\r\n]*)							comment();
 <after_indent_assign>{true}							showToken("TRUE");
 <after_indent_assign>{false}							showToken("FALSE");
 <after_indent_assign>([+-]?[1-9]{digit}*)					intToken(10, 0);
