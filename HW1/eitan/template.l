@@ -274,6 +274,7 @@ void stringToken(int cap){
 		printf("%d %s %s\n", yylineno, name, result);
 	} else if (cap == UNCLOSED_STRING) {
 		if (*yytext == '\"' && getchar() == EOF) {
+			validate_string(yytext + 1);
 			error(UNCLOSED_STRING, NULL);
 		}
 		printf("%d %s %s\n", yylineno, name, yytext);
