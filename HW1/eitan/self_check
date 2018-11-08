@@ -12,15 +12,6 @@ hostname="csl2"
 hostname2="csl2b"
 tmpdir="selfcheck_tmp"
 
-if [ $( hostname ) != "$hostname" ]
-	then
-		if [ $( hostname ) != "$hostname2" ]
-			then
-				echo "This script is only intended to run on "$hostname" or "$hostname2"!"
-				exit
-		fi
-fi
-
 if [ -z "$1" ]
 	then
 		echo "Usage: ./"$( basename "$0" )" <your submission zip file>"

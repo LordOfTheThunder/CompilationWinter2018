@@ -1,0 +1,5 @@
+1 KEY Max is
+1 SECTION [cool]
+2 INDENT
+2 STRING [cool] [very cool]
+1 EOF

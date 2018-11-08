@@ -1,0 +1,13 @@
+1 SECTION [section]
+2 KEY key
+2 ASSIGN =
+2 STRING value
+3 INDENT 	
+3 INTEGER -3
+4 INDENT  
+4 REAL 4.5
+5 COMMENT ; comment
+6 KEY another key
+6 ASSIGN :
+6 TRUE true
+6 EOF 
