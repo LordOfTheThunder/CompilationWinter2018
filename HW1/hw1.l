@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 void showToken(char *);
-void integer();
-void showTokenNoHeader(char *);
 int getHeaderOffset();
 
 int assign_happened = 0;
