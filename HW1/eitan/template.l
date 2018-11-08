@@ -11,6 +11,7 @@ void eofToken();
 void comment();
 void intToken(int, int);
 void error(int, char *);
+void unclosed_error();
 
 int key_appeared = 0;
 
@@ -69,7 +70,7 @@ printable_letter ([ !#-~\t\n]|\r\n)
 <after_indent_assign>({letter}([^\,\#\;\n\r]*[^\,\#\;\n\r\t\ ])?)	stringToken(UNCLOSED_STRING);
 <after_indent_assign>(\,)							showToken("SEP");
 <<EOF>>										eofToken();
-<after_indent_assign>(\"[^"]*)			error(UNCLOSED_STRING, NULL);
+<after_indent_assign>(\"[^"]*)			unclosed_error();
 .										error(ILLEGAL_CHAR, NULL);
 %%
 
@@ -274,10 +275,13 @@ void stringToken(int cap){
 		reformat_string(buffer, result);
 		printf("%d %s %s\n", yylineno, name, result);
 	} else if (cap == UNCLOSED_STRING) {
-		if (*yytext == '\"' && getchar() == EOF) {
-			validate_string(yytext + 1);
-			error(UNCLOSED_STRING, NULL);
-		}
 		printf("%d %s %s\n", yylineno, name, yytext);
+	}
+}
+
+void unclosed_error() {
+	if (*yytext == '\"' && getchar() == EOF) {
+		validate_string(yytext + 1);
+		error(UNCLOSED_STRING, NULL);
 	}
 }
