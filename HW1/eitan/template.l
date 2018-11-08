@@ -25,6 +25,7 @@ enum {
 
 %s after_key
 %s after_indent_assign
+%option caseless
 %option yylineno
 %option noyywrap
 digit		([0-9])
@@ -167,20 +168,25 @@ void validate_string(char * str) {
 				case '\\':
 				case '"':
 				case 'a':
+				case 'A':
 				case 'b':
+				case 'B':
 				case 'n':
+				case 'N':
 				case 'r':
+				case 'R':
 				case 't':
+				case 'T':
 				case ';':
 				case ':':
 				case '=':
 				case '#':
 				case '0': break;
-				case 'x':{
+				case 'x':
+				case 'X':
 						if (!(is_hex(*(str++)) && is_hex(*(str++))))
 							error(UNDEFINED_ESCAPING, seq);
 						break;
-					}
 				default: error(UNDEFINED_ESCAPING, seq);
 			}
 		}
@@ -196,18 +202,23 @@ void reformat_string(char * str, char * result) {
 				*(result++) = '\\';
 				break;
 				case 'a':
+				case 'A':
 				*(result++) = '\a';
 				break;
 				case 'b':
+				case 'B':
 				*(result++) = '\b';
 				break;
 				case 'n':
+				case 'N':
 				*(result++) = '\n';
 				break;
 				case 'r':
+				case 'R':
 				*(result++) = '\r';
 				break;
 				case 't':
+				case 'T':
 				*(result++) = '\t';
 				break;
 				case '0':
@@ -226,6 +237,7 @@ void reformat_string(char * str, char * result) {
 				*(result++) = '#';
 				break;
 				case 'x':
+				case 'X':
 				tmp[0] = *(++str);
 				tmp[1] = *(++str);
 				tmp[2] = 0;
