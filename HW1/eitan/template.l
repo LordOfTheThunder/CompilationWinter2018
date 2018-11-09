@@ -169,10 +169,6 @@ void validate_string(char * str) {
 	while (*str){
 		if (*(str++) == '\\'){
 			seq[0] = *str;
-			if (*str == '\n' || (*str == '\r' && *(str + 1) == '\n') || *str == 0) {
-				 printf("Error \\\n");
-				 exit(0);
-			}
 			switch (*(str++)){
 				case '\\':
 				case '"':
@@ -196,7 +192,12 @@ void validate_string(char * str) {
 						if (!(is_hex(*(str++)) && is_hex(*(str++))))
 							error(UNDEFINED_ESCAPING, seq);
 						break;
-				default: error(UNDEFINED_ESCAPING, seq);
+				default:
+				if (*(str - 1) == '\n' || (*(str - 1) == '\r' && *(str) == '\n') || *(str - 1) == 0) {
+					printf("Error \\\n");
+					exit(0);
+				}
+				error(UNDEFINED_ESCAPING, seq);
 			}
 		}
 	}
