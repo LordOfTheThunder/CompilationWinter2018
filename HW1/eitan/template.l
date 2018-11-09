@@ -48,6 +48,7 @@ no_escape_seq	([^\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 folder_name	(({letter}{dir_letter}*))
 printable_letter ([ !#-~\t\n]|\r\n|(\\\"))
 string			(([^\,\#\;\n\r]*[^\,\#\;\n\r\t\ ])?)
+comment			(({indent_char}*)[#;]([^\r\n]*[^ \t\r\n])?)
 
 %%
 {newline}									BEGIN(0); key_appeared = 0;
@@ -57,7 +58,7 @@ string			(([^\,\#\;\n\r]*[^\,\#\;\n\r\t\ ])?)
 {to_ignore}+									;
 <after_key>(:|=)								assignIndentToken("ASSIGN");
 <after_indent_assign>(:|=)							assignIndentToken("ASSIGN");
-(({indent_char}*)[#;][^\r\n]*)							comment();
+{comment}							comment();
 <after_indent_assign>{true}/{string}							showToken("TRUE");
 <after_indent_assign>{false}/{string}							showToken("FALSE");
 <after_indent_assign>(0x{hex_digit}+)						intToken(16, 2);
