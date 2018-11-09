@@ -59,9 +59,9 @@ printable_letter ([ !#-~\t\n]|\r\n)
 (({indent_char}*)[#;][^\r\n]*)							comment();
 <after_indent_assign>{true}							showToken("TRUE");
 <after_indent_assign>{false}							showToken("FALSE");
-<after_indent_assign>([+-]?[1-9]{digit}*)					intToken(10, 0);
 <after_indent_assign>(0x{hex_digit}+)						intToken(16, 2);
 <after_indent_assign>(0{oct_digit}*)						intToken(8, 1);
+<after_indent_assign>([+-]?{digit}+)					intToken(10, 0);
 <after_indent_assign>(0b{bi_digit}+)						intToken(2, 2);
 <after_indent_assign>{real}(e[+-]{digit}+)?					showToken("REAL");
 <after_indent_assign>(("/"{folder_name}?)+)					showToken("PATH");
