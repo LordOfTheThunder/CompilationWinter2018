@@ -167,6 +167,11 @@ void validate_string(char * str) {
 	while (*str){
 		if (*(str++) == '\\'){
 			seq[0] = *str;
+			if (*(str + 1) == '\n' || (*(str + 1) == '\r' && *(str + 2) == '\n')
+			 || getchar() == EOF) {
+				 printf("Error \\\n");
+				 exit(0);
+			}
 			switch (*(str++)){
 				case '\\':
 				case '"':
