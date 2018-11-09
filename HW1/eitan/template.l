@@ -47,6 +47,7 @@ to_ignore	([ \t])
 no_escape_seq	([^\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 folder_name	(({letter}{dir_letter}*))
 printable_letter ([ !#-~\t\n]|\r\n|(\\\"))
+string			(([^\,\#\;\n\r]*[^\,\#\;\n\r\t\ ])?)
 
 %%
 {newline}									BEGIN(0); key_appeared = 0;
@@ -57,8 +58,8 @@ printable_letter ([ !#-~\t\n]|\r\n|(\\\"))
 <after_key>(:|=)								assignIndentToken("ASSIGN");
 <after_indent_assign>(:|=)							assignIndentToken("ASSIGN");
 (({indent_char}*)[#;][^\r\n]*)							comment();
-<after_indent_assign>{true}							showToken("TRUE");
-<after_indent_assign>{false}							showToken("FALSE");
+<after_indent_assign>{true}/{string}							showToken("TRUE");
+<after_indent_assign>{false}/{string}							showToken("FALSE");
 <after_indent_assign>(0x{hex_digit}+)						intToken(16, 2);
 <after_indent_assign>(0{oct_digit}*)						intToken(8, 1);
 <after_indent_assign>([+-]?{digit}+)					intToken(10, 0);
@@ -66,8 +67,9 @@ printable_letter ([ !#-~\t\n]|\r\n|(\\\"))
 <after_indent_assign>{real}(e[+-]{digit}+)?					showToken("REAL");
 <after_indent_assign>(("/"{folder_name}?)+)					showToken("PATH");
 <after_indent_assign>($\{({key}|({key}#{key}))\})				showToken("LINK");
+<after_indent_assign>(\"[^"]*\\\")			unclosed_error();
 <after_indent_assign>(\"{printable_letter}*\")						stringToken(CLOSED_STRING);
-<after_indent_assign>({letter}([^\,\#\;\n\r]*[^\,\#\;\n\r\t\ ])?)	stringToken(UNCLOSED_STRING);
+<after_indent_assign>({letter}{string})	stringToken(UNCLOSED_STRING);
 <after_indent_assign>(\,)							showToken("SEP");
 <<EOF>>										eofToken();
 <after_indent_assign>(\"[^"]*)			unclosed_error();
