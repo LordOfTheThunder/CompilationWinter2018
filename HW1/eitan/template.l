@@ -46,7 +46,7 @@ real		([+-]?{digit}*\.{digit}*)
 to_ignore	([ \t])
 no_escape_seq	([^\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 folder_name	(({letter}{dir_letter}*))
-printable_letter ([ !#-~\t\n]|\r\n)
+printable_letter ([ !#-~\t\n]|\r\n|(\\\"))
 
 %%
 {newline}									BEGIN(0); key_appeared = 0;
@@ -242,6 +242,8 @@ void reformat_string(char * str, char * result) {
 				break;
 				case '#':
 				*(result++) = '#';
+				case '\"':
+				*(result++) = '\"';
 				break;
 				case 'x':
 				case 'X':
