@@ -42,7 +42,7 @@ dir_letter	([\-\+\\\.\_\~]|{letter}|{digit})
 key 		({letter}({key_letter}*{key_letter_no_space})?)
 true		("true"|"yes")
 false		("false"|"no")
-real		([+-]?{digit}*\.{digit}*)
+real		([+-]?(({digit}+\.{digit}*)|({digit}*\.{digit}+)))
 to_ignore	([ \t])
 no_escape_seq	([^\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 folder_name	(({letter}{dir_letter}*))
@@ -61,10 +61,10 @@ comment			(({indent_char}*)[#;]([^\r\n]*[^ \t\r\n])?)
 {comment}							comment();
 <after_indent_assign>{true}/{string}							showToken("TRUE");
 <after_indent_assign>{false}/{string}							showToken("FALSE");
-<after_indent_assign>(0x{hex_digit}+)						intToken(16, 2);
+<after_indent_assign>(0x{hex_digit}*)						intToken(16, 2);
 <after_indent_assign>(0{oct_digit}*)						intToken(8, 1);
 <after_indent_assign>([+-]?{digit}+)					intToken(10, 0);
-<after_indent_assign>(0b{bi_digit}+)						intToken(2, 2);
+<after_indent_assign>(0b{bi_digit}*)						intToken(2, 2);
 <after_indent_assign>{real}(e[+-]{digit}+)?					showToken("REAL");
 <after_indent_assign>(("/"{folder_name}?)+)					showToken("PATH");
 <after_indent_assign>($\{({key}|({key}#{key}))\})				showToken("LINK");

@@ -1,0 +1,65 @@
+1 KEY key
+1 ASSIGN =
+1 ASSIGN =
+1 TRUE yES
+2 KEY key
+2 ASSIGN :
+2 STRING abc
+2 STRING cdf
+3 KEY t
+3 ASSIGN =
+3 STRING abc
+3 SEP ,
+3 STRING abc
+4 KEY vered
+4 ASSIGN :
+5 STRING sdf
+sda dsfdsa
+5 SEP ,
+5 INTEGER 123
+6 KEY l
+6 ASSIGN =
+6 STRING abc
+6 STRING sdfdsfgs
+7 KEY key
+7 ASSIGN =
+7 STRING abc
+7 ASSIGN =
+8 KEY D~
+8 ASSIGN =
+8 SEP ,
+8 INTEGER 3
+9 KEY Key
+9 ASSIGN =
+9 SEP ,
+10 INDENT 	
+10 FALSE nO
+10 SEP ,
+11 INDENT 		
+11 STRING abcs#sdf;
+12 INDENT 	
+12 STRING hello world
+12 COMMENT # comment 
+13 KEY key
+13 ASSIGN =
+14 STRING sdfsdf	sdfsdf sdfsdfsd dsfsd	dsfsd
+15 INDENT 	
+15 STRING escape sec \n \t \a bye
+16 KEY key
+16 ASSIGN =
+17 STRING string still string
+17 TRUE trUE
+18 KEY values
+18 ASSIGN :
+18 REAL 1.0
+18 SEP ,
+18 STRING hello
+19 KEY key
+19 SECTION [sec]
+19 ASSIGN =
+19 FALSE faLse
+20 INDENT 	
+20 INTEGER 1223749
+21 KEY k
+21 ASSIGN =
+Error undefined escape sequence q
