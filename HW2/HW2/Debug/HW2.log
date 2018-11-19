@@ -1,0 +1,4 @@
+﻿  hw2.cpp
+c:\users\mkolchin\documents\max_sbox\compilationwinter2018\hw2\hw2.cpp(21): warning C4018: '<': signed/unsigned mismatch
+c:\users\mkolchin\documents\max_sbox\compilationwinter2018\hw2\hw2.cpp(23): warning C4018: '<': signed/unsigned mismatch
+  HW2.vcxproj -> C:\Users\mkolchin\Documents\max_sbox\CompilationWinter2018\HW2\Debug\HW2.exe
