@@ -3,14 +3,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "tokens.h"
 
 int showToken(char *);
-int stringToken(int);
+int stringToken();
 int assignIndentToken(char *);
 int eofToken();
-int intToken(int, int);
+int intToken();
 void error(int, char *);
+void unclosed_error();
 int getTokenFromName(char * name);
 
 int key_appeared = 0;
@@ -32,44 +32,48 @@ enum {
 digit		([0-9])
 hex_digit	([0-9A-Fa-f])
 oct_digit	([0-7])
-bi_digit	(0|1)
+bi_digit	([01])
 letter		([a-zA-Z])
 indent_char	([ \t])
-newline		([\r\n])
+newline		(\r?\n)
 key_letter	({digit}|{letter}|[\~\_\-\'\?\$\.\ ])
 key_letter_no_space	({digit}|{letter}|[\~\_\-\'\?\$\.])
 dir_letter	([\-\+\\\.\_\~]|{letter}|{digit})
-key 		({letter}{key_letter}*{key_letter_no_space})|({letter})
+key 		({letter}({key_letter}*{key_letter_no_space})?)
 true		("true"|"yes")
 false		("false"|"no")
-real		([+-]?{digit}*\.{digit}*)
+real		([+-]?(({digit}+\.{digit}*)|({digit}*\.{digit}+)))
 to_ignore	([ \t])
 no_escape_seq	([^\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 folder_name	(({letter}{dir_letter}*))
-printable_letter [ !#-~]
+printable_letter ([ !#-~\t\n]|\r\n|(\\\"))
+string			(([^\,\#\;\n\r\x00-\x08\xA-\x1F]*[^\,\#\;\n\r\t\ \x00-\x08\xA-\x1F])?)
+comment			(({indent_char}*)[#;]([^\r\n]*[^ \t\r\n])?)
 
 %%
 {newline}									BEGIN(0); key_appeared = 0;
-^({key})									showToken("KEY");
-\[{key}\]									showToken("SECTION");
-^({indent_char}*)								assignIndentToken("INDENT");
+^({key})									return showToken("KEY");
+\[{key}\]									return showToken("SECTION");
+^({indent_char}*)								return assignIndentToken("INDENT");
 {to_ignore}+									;
-<after_key>(:|=)								assignIndentToken("ASSIGN");
-<after_indent_assign>(:|=)							assignIndentToken("ASSIGN");
-(({indent_char}*)[#;].*)							;
-<after_indent_assign>{true}							showToken("TRUE");
-<after_indent_assign>{false}							showToken("FALSE");
-<after_indent_assign>([+-]?[1-9]{digit}*)					intToken(10, 0);
-<after_indent_assign>(0x{hex_digit}+)						intToken(16, 2);
-<after_indent_assign>(0{oct_digit}*)						intToken(8, 1);
-<after_indent_assign>(0b{bi_digit}+)						intToken(2, 2);
-<after_indent_assign>{real}(e[+-]{digit}+)?					showToken("REAL");
-<after_indent_assign>(("/"{folder_name}?)+)					showToken("PATH");
-<after_indent_assign>($\{({key}|({key}#{key}))\})				showToken("LINK");
-<after_indent_assign>(\"{printable_letter}*\")						stringToken(CLOSED_STRING);
-<after_indent_assign>(({letter}[^\,\#\;\n\r]*[^\,\#\;\n\r\t\ ])|{letter})	stringToken(UNCLOSED_STRING);
-<after_indent_assign>(\,)							showToken("SEP");
-<<EOF>>										eofToken();
+<after_key>(:|=)								return assignIndentToken("ASSIGN");
+<after_indent_assign>(:|=)							return assignIndentToken("ASSIGN");
+{comment}							;
+<after_indent_assign>{true}/{string}							return showToken("TRUE");
+<after_indent_assign>{false}/{string}							return showToken("FALSE");
+<after_indent_assign>(0x{hex_digit}*)						return INTEGER;
+<after_indent_assign>(0{oct_digit}*)						return INTEGER;
+<after_indent_assign>([+-]?{digit}+)					return INTEGER;
+<after_indent_assign>(0b{bi_digit}*)						return INTEGER;
+<after_indent_assign>{real}(e[+-]{digit}+)?					return showToken("REAL");
+<after_indent_assign>(("/"{folder_name}?)+)					return showToken("PATH");
+<after_indent_assign>($\{({key}|({key}#{key}))\})				return LINK;
+<after_indent_assign>(\"[^"]*\\\")			return STRING;
+<after_indent_assign>(\"{printable_letter}*\")						return STRING;
+<after_indent_assign>({letter}{string})	stringToken();
+<after_indent_assign>(\,)							return showToken("SEP");
+<<EOF>>										return EOF;
+<after_indent_assign>(\"[^"]*)			unclosed_error();
 .										error(ILLEGAL_CHAR, NULL);
 %%
 
@@ -90,11 +94,7 @@ void error(int code, char * message){
 	}
 }
 
-int intToken(int base, int offset) {
-	return INTEGER;
-}
-
-char *  noIndent(char * str) {
+char *  noIndent(char * str){
 	if (*str != '\t' && *str != ' '){
 		return str;
 	}
@@ -149,10 +149,6 @@ int assignIndentToken(char * name){
 	return getTokenFromName(name);
 }
 
-int eofToken(){
-	return EOF;
-}
-
 void slice_str(const char * str, char * buffer, size_t start, size_t end){
 	size_t j = 0;
 	size_t i;
@@ -170,7 +166,7 @@ void slice_str(const char * str, char * buffer, size_t start, size_t end){
 	Output: 1 - if c is a hex digit
 		0 - otherwise
 */
-int is_hex(char c) {
+int is_hex(char c){
 	return ((c >= '0' && c <= '9') ||
 		(c >= 'a' && c <= 'f') ||
 		(c >= 'A' && c <= 'F'));
@@ -213,7 +209,12 @@ void validate_string(char * str) {
 						if (!(is_hex(*(str++)) && is_hex(*(str++))))
 							error(UNDEFINED_ESCAPING, seq);
 						break;
-				default: error(UNDEFINED_ESCAPING, seq);
+				default:
+				if (*(str - 1) == '\n' || (*(str - 1) == '\r' && *(str) == '\n') || *(str - 1) == 0) {
+					printf("Error \\\n");
+					exit(0);
+				}
+				error(UNDEFINED_ESCAPING, seq);
 			}
 		}
 	}
@@ -262,6 +263,9 @@ void reformat_string(char * str, char * result) {
 				case '#':
 				*(result++) = '#';
 				break;
+				case '\"':
+				*(result++) = '\"';
+				break;
 				case 'x':
 				case 'X':
 				tmp[0] = *(++str);
@@ -286,20 +290,9 @@ void reformat_string(char * str, char * result) {
 	*result = 0;
 }
 
-int stringToken(int cap){
-	int len = strlen(yytext);
-
-	if (cap == CLOSED_STRING){
-		char buffer[len + 1];
-		char result[len + 1];
-		slice_str(yytext, buffer, 1, len - 2);
-		validate_string(buffer);
-		reformat_string(buffer, result);
-		return STRING;
-	} else if (cap == UNCLOSED_STRING) {
-		if (*yytext == '\"' && getchar() == EOF) {
-			error(UNCLOSED_STRING, NULL);
-		}
-		return STRING;
+void unclosed_error() {
+	if (*yytext == '\"' && getchar() == EOF) {
+		validate_string(yytext + 1);
+		error(UNCLOSED_STRING, NULL);
 	}
 }
