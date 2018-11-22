@@ -47,7 +47,7 @@ to_ignore	([ \t])
 no_escape_seq	([^\\\"\a\b\n\r\t\0\;\:\=\#\xdd])
 folder_name	(({letter}{dir_letter}*))
 printable_letter ([ !#-~\t\n]|\r\n|(\\\"))
-string			(([^\,\#\;\n\r]*[^\,\#\;\n\r\t\ ])?)
+string			(([^\,\#\;\n\r\x00-\x08\xA-\x1F]*[^\,\#\;\n\r\t\ \x00-\x08\xA-\x1F])?)
 comment			(({indent_char}*)[#;]([^\r\n]*[^ \t\r\n])?)
 
 %%
@@ -246,6 +246,7 @@ void reformat_string(char * str, char * result) {
 				break;
 				case '#':
 				*(result++) = '#';
+				break;
 				case '\"':
 				*(result++) = '\"';
 				break;
