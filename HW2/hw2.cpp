@@ -4,12 +4,14 @@
 #include <iostream>
 #include <cstdlib>
 
+
 using std::vector;
 using std::set;
 using std::map;
 typedef map<nonterminal , map<tokens, int> > MType;
 
-#define ERROR -1
+#define IS_NONE_TERMINAL(term) (((term) >= S) && ((term) < NONTERMINAL_ENUM_SIZE))
+#define ERROR (-1)
 
 vector<bool> get_nullable() {
 	vector<bool> v(NONTERMINAL_ENUM_SIZE, false);
@@ -85,8 +87,45 @@ void compute_first() {
 	print_first(first_step());
 }
 
-void compute_follow() {
+static vector<set<tokens>> get_the_fellows(){
+//  Init follow set
+	vector<set<tokens>> fellows(NONTERMINAL_ENUM_SIZE);
+	fellows[S].insert(EF);
 
+	while (true) {
+		bool changed = false;
+		for (std::vector<grammar_rule>::iterator it = grammar.begin(); it != grammar.end(); ++it){
+			grammar_rule& rule = *it; // rule
+			std::vector<int>& rhs = rule.rhs; // right hand
+
+			// Check for changes
+			for (std::vector<int>::iterator rhs_it = rhs.begin(); rhs_it != rhs.end(); ++rhs_it){ // iterate over rule
+				// *rhs_it is the current terminal/variable
+				if (IS_NONE_TERMINAL(*rhs_it)){
+					std::vector<int>::iterator rhs_next = rhs_it;
+					++rhs_next;
+					set<tokens> rhs_first = rangeFirst(rhs_next, rhs.end());
+					if (!rhs_first.empty()){
+						changed = true;
+						// merge the first set into the current follow set
+						fellows[*rhs_it].insert(rhs_next, rhs.end());
+						if (rangeNullable(rhs_next, rhs.end())){
+							fellows[*rhs_it].insert(fellows[rule.lhs].begin(), fellows[rule.lhs].end())
+						}
+					}
+
+				}
+			}
+		}
+
+		if (!changed)
+			break;
+	}
+
+}
+
+void compute_follow() {
+    print_follow(get_the_fellows());
 }
 
 void compute_select() {
@@ -101,7 +140,8 @@ void parser() {
 // Created by bachr on 21-Apr-18.
 //
 
-/* Nir's shit
+/*
+// Nir's shit
 #include "hw2.h"
 #include <map>
 #include <iostream>
