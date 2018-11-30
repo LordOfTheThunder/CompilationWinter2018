@@ -162,8 +162,28 @@ void compute_follow() {
     print_follow(get_the_fellows());
 }
 
-void compute_select() {
+static vector<set<tokens>> bitch(){
+	vector<set<tokens>> fellows = get_the_fellows();
+	vector<set<tokens>> selects;
+	auto selects_it = selects.begin();
+	for (std::vector<grammar_rule>::iterator it = grammar.begin(); it != grammar.end(); ++it){
+		set<tokens> res;
+		grammar_rule& rule = *it; // rule
+		vector<int>& right_hand = rule.rhs;
+		set<tokens> rhs_first = rangeFirst(right_hand.begin(), right_hand.end());
+		res.insert(rhs_first.begin(), rhs_first.end());
 
+		if (rangeNullable(right_hand.begin(), right_hand.end())){
+			res.insert(fellows[rule.lhs].begin(), fellows[rule.lhs].end());
+		}
+		selects.insert(selects.end(), res);
+	}
+
+	return selects;
+}
+
+void compute_select() {
+	print_select(bitch());
 }
 
 void parser() {
