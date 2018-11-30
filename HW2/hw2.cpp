@@ -3,7 +3,8 @@
 #include <vector>
 #include <iostream>
 #include <cstdlib>
-
+#include <algorithm>
+#include <typeinfo>
 
 using std::vector;
 using std::set;
@@ -87,41 +88,74 @@ void compute_first() {
 	print_first(first_step());
 }
 
+template <class Iterator>
+static set<tokens> rangeFirst(Iterator start, Iterator end){
+	vector<bool> nulls = get_nullable();
+	vector<set<tokens>> firsts = first_step();
+	set<tokens> my_first;
+
+	for (; start != end; ++start){
+		my_first.insert(firsts[*start].begin(), firsts[*start].end());
+
+		if (!nulls[*start]){
+			break;
+		}
+	}
+	return my_first;
+}
+
+bool rangeNullable(std::vector<int>::iterator start, std::vector<int>::iterator end){
+	vector<bool> nulls = get_nullable();
+
+	for (std::vector<int>::iterator it = start; it != end; ++it){
+		if (!IS_NONE_TERMINAL(*it) || !nulls[*it]){
+			return false;
+		}
+	}
+	return true;
+}
+
 static vector<set<tokens>> get_the_fellows(){
-//  Init follow set
+	//  Init follow set
 	vector<set<tokens>> fellows(NONTERMINAL_ENUM_SIZE);
 	fellows[S].insert(EF);
 
 	while (true) {
 		bool changed = false;
-		for (std::vector<grammar_rule>::iterator it = grammar.begin(); it != grammar.end(); ++it){
-			grammar_rule& rule = *it; // rule
-			std::vector<int>& rhs = rule.rhs; // right hand
 
-			// Check for changes
-			for (std::vector<int>::iterator rhs_it = rhs.begin(); rhs_it != rhs.end(); ++rhs_it){ // iterate over rule
-				// *rhs_it is the current terminal/variable
-				if (IS_NONE_TERMINAL(*rhs_it)){
-					std::vector<int>::iterator rhs_next = rhs_it;
-					++rhs_next;
-					set<tokens> rhs_first = rangeFirst(rhs_next, rhs.end());
-					if (!rhs_first.empty()){
-						changed = true;
-						// merge the first set into the current follow set
-						fellows[*rhs_it].insert(rhs_next, rhs.end());
-						if (rangeNullable(rhs_next, rhs.end())){
-							fellows[*rhs_it].insert(fellows[rule.lhs].begin(), fellows[rule.lhs].end())
-						}
-					}
+            for (std::vector<grammar_rule>::iterator it = grammar.begin(); it != grammar.end(); ++it){
+                grammar_rule& rule = *it; // rule
+                std::vector<int>& rhs = rule.rhs; // right hand
 
-				}
-			}
-		}
+                    // Check for changes
+                    for (std::vector<int>::iterator rhs_it = rhs.begin(); rhs_it != rhs.end(); ++rhs_it){ // iterate over rule
+                        // *rhs_it is the current terminal/variable
 
-		if (!changed)
-			break;
-	}
+                        if (IS_NONE_TERMINAL(*rhs_it)){
+                            std::vector<int>::iterator rhs_next = rhs_it;
+                            ++rhs_next;
+                            set<tokens> rhs_first = rangeFirst(rhs_next, rhs.end());
+                            int len_before = fellows[*rhs_it].size();
 
+							// merge the first set into the current follow set
+							fellows[*rhs_it].insert(rhs_first.begin(), rhs_first.end());
+
+							if (rangeNullable(rhs_next, rhs.end())){
+								fellows[*rhs_it].insert(fellows[rule.lhs].begin(), fellows[rule.lhs].end());
+							}
+
+							changed = len_before != fellows[*rhs_it].size();
+                        }
+
+                    }
+
+                }
+
+            if (!changed)
+                break;
+        }
+
+	return fellows;
 }
 
 void compute_follow() {

@@ -150,4 +150,4 @@ std::vector <grammar_rule> make_grammar() {
     return res;
 }
 
-std::vector <grammar_rule> grammar = make_grammar();
+std::vector<grammar_rule> grammar = make_grammar();
