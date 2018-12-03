@@ -2,9 +2,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "parse.tab.hpp"
+#include "parser.tab.hpp"
+#include "output.hpp"
+#include "StackStructs.hpp"
 
-void debug(int token);
+void debug(yytokentype token);
+
+/* Don't forget to remove the debug before handing in */
+#define FLEX_MACRO(token)		yylval = StackType(); yylval.lineno = yylineno; debug(token); return token;
 
 %}
 
@@ -12,41 +17,43 @@ void debug(int token);
 %option noyywrap
 
 %%
-void						debug(VOID); 	return VOID;
-int							debug(INT);  	return INT;
-byte						debug(BYTE); 	return BYTE;
-b							debug(B);		return B;
-bool						debug(BOOL);	return BOOL;
-struct						debug(STRUCT);	return STRUCT;
-and							debug(AND);		return AND;
-or							debug(OR);		return OR;
-not							debug(NOT);		return NOT;
-true						debug(TRUE);	return TRUE;
-false						debug(FALSE);	return FALSE;
-return						debug(RETURN);	return RETURN;
-if							debug(IF);		return IF;
-else						debug(ELSE);	return ELSE;
-while						debug(WHILE);	return WHILE;
-break						debug(BREAK);	return BREAK;
-continue					debug(CONTINUE);return CONTINUE;
-;							debug(SC);		return SC;
-,							debug(COMMA);	return COMMA;
-\.							debug(PERIOD);	return PERIOD;
-\(							debug(LPAREN);	return LPAREN;
-\)							debug(RPAREN);	return RPAREN;
-\{							debug(LBRACE);	return LBRACE;
-\}							debug(RBRACE);	return RBRACE;
-=							debug(ASSIGN);	return ASSIGN;
-==|!=|<|>|<=|>=				debug(RELOP);	return RELOP;
-\+|\-|\*|\/					debug(BINOP);	return BINOP;
-[a-zA-Z][a-zA-Z0-9]*		debug(ID);		return ID;
-0|[1-9][0-9]*				debug(NUM);		return NUM;
-\"([^\n\r\"\\]|[rnt\"\\])+\"	debug(STRING);	return STRING;
+void						FLEX_MACRO(VOID)
+int							FLEX_MACRO(INT)
+byte						FLEX_MACRO(BYTE)
+b							FLEX_MACRO(B)
+bool						FLEX_MACRO(BOOL)
+struct						FLEX_MACRO(STRUCT)
+and							FLEX_MACRO(AND)
+or							FLEX_MACRO(OR)
+not							FLEX_MACRO(NOT)
+true						FLEX_MACRO(TRUE)
+false						FLEX_MACRO(FALSE)
+return						FLEX_MACRO(RETURN)
+if							FLEX_MACRO(IF)
+else						FLEX_MACRO(ELSE)
+while						FLEX_MACRO(WHILE)
+break						FLEX_MACRO(BREAK)
+continue					FLEX_MACRO(CONTINUE)
+;							FLEX_MACRO(SC)
+,							FLEX_MACRO(COMMA)
+\.							FLEX_MACRO(PERIOD)
+\(							FLEX_MACRO(LPAREN)
+\)							FLEX_MACRO(RPAREN)
+\{							FLEX_MACRO(LBRACE)
+\}							FLEX_MACRO(RBRACE)
+=							FLEX_MACRO(ASSIGN)
+==|!=|<|>|<=|>=				FLEX_MACRO(RELOP)
+\+|\-						FLEX_MACRO(BINOPAS)
+\*|\/						FLEX_MACRO(BINOPMD)
+[a-zA-Z][a-zA-Z0-9]*		FLEX_MACRO(ID)
+0|[1-9][0-9]*				FLEX_MACRO(NUM)
+\"([^\n\r\"\\]|[rnt\"\\])+\"	FLEX_MACRO(STRING)
 [\ \t\r\n]+					;
 \/\/[^\r\n]*[\r|\n|\r\n]?	;
+.							output::errorLex(yylineno); exit(0);
 %%
 
-void debug(tokens token) {
+void debug(yytokentype token) {
 	switch(token) {
 		case VOID: printf("VOID\n");   	break;
 		case INT: printf("INT\n");    	break;
