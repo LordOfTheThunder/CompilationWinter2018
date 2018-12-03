@@ -2,14 +2,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "StackStructs.h"
 #include "parser.tab.hpp"
 #include "output.hpp"
-#include "StackStructs.hpp"
 
 void debug(yytokentype token);
 
 /* Don't forget to remove the debug before handing in */
-#define FLEX_MACRO(token)		yylval = StackType(); yylval.lineno = yylineno; debug(token); return token;
+#define FLEX_MACRO(token)		{ yylval = StackType(); yylval.lineno = yylineno; debug(token); return token; }
 
 %}
 
@@ -81,7 +81,8 @@ void debug(yytokentype token) {
 		case RBRACE:printf("RBRACE\n");		break;
 		case ASSIGN:printf("ASSIGN\n");		break;
 		case RELOP:printf("RELOP\n");		break;
-		case BINOP:printf("BINOP\n");		break;
+		case BINOPAS:printf("BINOP\n");		break;
+		case BINOPMD:printf("BINOP\n");		break;
 		case ID:printf("ID\n");			break;
 		case NUM:printf("NUM\n");		break;
 		case STRING:printf("STRING\n");		break;

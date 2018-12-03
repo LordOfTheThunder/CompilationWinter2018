@@ -3,9 +3,12 @@
 #include <iostream>
 using namespace std;
 
-#include "StackStructs.hpp"
-int yylex();
+#include "StackStructs.h"
+#include "output.hpp"
+using namespace output;
 
+int yylex();
+void yyerror(const char *);
 %}
 
 %token VOID
@@ -147,14 +150,6 @@ Statement: Type ID SC {
 	
 	}
 
-	| IF LPAREN Exp RPAREN Statement {
-	
-	}
-	
-	| IF LPAREN Exp RPAREN Statement ELSE Statement {
-	
-	}
-
 	| WHILE LPAREN Exp RPAREN Statement {
 	
 	}
@@ -166,6 +161,7 @@ Statement: Type ID SC {
 	| CONTINUE SC {
 	
 	}
+	
 
 Call: ID LPAREN ExpList RPAREN {
 
@@ -218,11 +214,18 @@ Exp: Exp BINOPAS Exp {
 	}
 
 	| NUM {
-	
+		$$ = $1;
+		$$.type = types_Int;
 	}
 
 	| NUM B {
-	
+		$$ = $1;
+		$$.type = types_Byte;
+		int num = atoi($$.str.c_str());
+		if (num < 0 || num > 255) {
+			errorByteTooLarge($$.lineno, $$.str);
+			exit(0);
+		}
 	}
 
 	| STRING {
@@ -253,3 +256,9 @@ Exp: Exp BINOPAS Exp {
 	
 	}
 %%
+
+void yyerror(const char *) {
+	// Enable it later...
+	//output::errorSyn(tables->lineno);
+	exit(0);
+}
