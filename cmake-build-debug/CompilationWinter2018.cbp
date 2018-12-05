@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="CompilationWinter2018"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CompilationWinter2018">
+				<Option output="C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/CompilationWinter2018.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++/mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++/backward"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/../../../../include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/../../../../mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 CompilationWinter2018"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CompilationWinter2018/fast">
+				<Option output="C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/CompilationWinter2018.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++/mingw32"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++/backward"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/../../../../include"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include-fixed"/>
+					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/../../../../mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 CompilationWinter2018/fast"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/eitan/TechnionProjects/CompilationWinter2018/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/.gitignore">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/Gal_Nir_Wet_Sol/HW1-Flex-12947001522264903.zip">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/Gal_Nir_Wet_Sol/HW2-Top-downparsing-13226001524233616 (1).zip">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/Gal_Nir_Wet_Sol/HW3-Bisonandsemanticchecks-29637001525876136 (1).zip">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/Gal_Nir_Wet_Sol/HW5-codegeneration-5011001528373022.zip">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/a.out">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/better_tests/t1.in">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/better_tests/t1.out">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/better_tests/t1.res">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/eitan/lex.yy.c">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/hw1.l">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/hw11.l">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/lex.yy.c">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/maxtests/t1.in">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/maxtests/t1.out">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/maxtests/t1.res">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/maxtests/t2.in">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/maxtests/t2.out">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/selfcheck-hw1">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/tests/t1.in">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/tests/t1.out">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/tests/t1.res">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/tests/t2.in">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/tests/t2.out">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW1/tests/t2.res">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/HW2.sln">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/HW2/Debug/HW2.log">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/HW2/Debug/HW2.tlog/CL.command.1.tlog">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/HW2/Debug/HW2.tlog/CL.read.1.tlog">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/HW2/Debug/HW2.tlog/CL.write.1.tlog">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/HW2/Debug/HW2.tlog/HW2.lastbuildstate">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/HW2/Debug/HW2.tlog/link.command.1.tlog">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/HW2/Debug/HW2.tlog/link.read.1.tlog">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/HW2/Debug/HW2.tlog/link.write.1.tlog">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/HW2/HW2.vcxproj">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/HW2/HW2.vcxproj.filters">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/HW2/HW2.vcxproj.user">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/Makefile">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/grammar.cpp">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/grammar.h">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/hw2-tests.zip">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/hw2.cpp">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/hw2.h">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/lexer.lex">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/main.cpp">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/selfcheck-hw2">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/HW2/tokens.h">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/README.md">
+			<Option target="CompilationWinter2018"/>
+		</Unit>
+		<Unit filename="C:/Users/eitan/TechnionProjects/CompilationWinter2018/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

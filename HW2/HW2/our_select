@@ -1,0 +1,23 @@
+Select:
+( S -> Sections ) = { SECTION , EOF }
+( Sections -> Section Sections ) = { SECTION }
+( Sections ->  ) = { EOF }
+( Section -> SECTION Keys ) = { SECTION }
+( Keys -> Key Keys ) = { KEY }
+( Keys ->  ) = { SECTION , EOF }
+( Key -> KEY Assign ) = { KEY }
+( Assign -> ASSIGN Values ) = { ASSIGN }
+( Assign ->  ) = { KEY , SECTION , EOF }
+( Values -> IndentedValues MoreValues ) = { INDENT , TRUE , FALSE , INTEGER , REAL , STRING , PATH , LINK }
+( MoreValues -> SEP IndentedValues MoreValues ) = { SEP }
+( MoreValues -> INDENT SEP IndentedValues MoreValues ) = { INDENT }
+( MoreValues ->  ) = { KEY , SECTION , EOF }
+( IndentedValues -> Value ) = { TRUE , FALSE , INTEGER , REAL , STRING , PATH , LINK }
+( IndentedValues -> INDENT Value ) = { INDENT }
+( Value -> STRING ) = { STRING }
+( Value -> INTEGER ) = { INTEGER }
+( Value -> REAL ) = { REAL }
+( Value -> PATH ) = { PATH }
+( Value -> TRUE ) = { TRUE }
+( Value -> FALSE ) = { FALSE }
+( Value -> LINK ) = { LINK }

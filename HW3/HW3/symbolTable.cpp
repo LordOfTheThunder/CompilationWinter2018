@@ -12,7 +12,7 @@ symbolTable::symbolTable() : line(1), mainExists(false) {
 }
 
 void symbolTable::addFunction(types retval, string& id, vector<types> formals, bool addScope) {
-    validateId(id);
+    existsId(id);
 
     if ((id.compare("main") == 0) &&
             (formals.size() == 0) &&
@@ -43,4 +43,26 @@ void symbolTable::addElse(){
 void symbolTable::addScope(){
     this->line = line;
     newScope(false);
+}
+
+bool symbolTable::existsId(string& id){
+    for (vector<Scope>::iterator it = scopes.begin(); it != scopes.end(); ++it){
+        if ((*it).existsId(id)){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool symbolTable::existsVariable(string& id){
+    for (vector<Scope>::iterator it = scopes.begin(); it != scopes.end(); ++it){
+        if ((*it).existsVariable(id)){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool symbolTable::existsFunction(string& id){
+
 }

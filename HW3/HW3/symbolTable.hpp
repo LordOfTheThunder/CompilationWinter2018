@@ -57,14 +57,29 @@ public:
 
 class FunctionEntry : public TableEntry{
 private:
-    vector<Formal> formals;
+    vector<types> formals;
     string id;
     types ret;
 
 public:
-    FunctionEntry(vector<Formal> formals, string id, types ret);
+    FunctionEntry(vector<Formal> types, string id, types ret);
     types getType(){return this->ret;}
     string getId(return this->id;)
+
+    bool operator==(const FunctionEntry& rhs) const {
+        if (rhs.id.compare(this->id) != 0){
+            return false;
+        }
+        if (rhs.formals.size() != this->formals.size()){
+            return false;
+        }
+        for (int i = 0; i < rhs.formals.size(); i++){
+            if (rhs.formals[i] != this->formals[i])
+                return false;
+        }
+
+        return true;
+    }
 };
 
 class Scope{
@@ -74,13 +89,14 @@ private:
     bool isWhile;
 
 public:
-    Scope(int offset_, bool isWhile_) : offset(offset_), isWhile(isWhile_){};
-    void addEntry(TableEntry * ent);
-    void removeEntry();
-    bool containsId(string id);
-    TableEntry& getEntry(string id);
-    int getOffset();
-    bool isWhile(){return this->isWhile;}
+    Scope(int offset_, bool isWhile_) : offset(offset_), isWhile(isWhile_){}; // TODO
+    void addEntry(TableEntry * ent); // TODO
+    void removeEntry(); // TODO
+    bool existsId(string& id); // TODO
+    bool existsVariable(string& id); // TODO
+    TableEntry& getEntry(string& id); // TODO
+    int getOffset(); // TODO
+    bool isWhile(){return this->isWhile;} // TODO
 };
 
 class symbolTable{
@@ -107,9 +123,8 @@ public:
     void addVariable(types type, string id); // TODO
 
 //    Existence checkers and validation
-    bool validateId(string& id); // TODO
-    bool existsVariable(string& id) // TODO
-    bool existsFunction(string& id); // TODO
+    bool existsId(string& id);
+    bool existsVariable(string& id);
     bool existsFunction(string& id); // TODO
     bool existsStruct(string& id); // TODO
     bool existsMain(); // TODO
