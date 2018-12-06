@@ -14,7 +14,7 @@ void debug(yytokentype token);
 							 debug(token);\
 							 return token;
 #define FLEX_MACRO(token)		yylval = StackType(); REST_OF_MACRO(token)
-#define TYPE_FLEX_MACRO(token, type, type_str)		yylval = StackType(type,type_str); REST_OF_MACRO(token)
+#define TYPE_FLEX_MACRO(token, type)		yylval = StackType(type); REST_OF_MACRO(token)
 
 %}
 
@@ -24,16 +24,16 @@ void debug(yytokentype token);
 
 %%
 void						FLEX_MACRO(VOID)
-int							TYPE_FLEX_MACRO(INT, types_Int, "ID")
-byte						TYPE_FLEX_MACRO(BYTE, types_Byte, "ID")
-<after_num>b				TYPE_FLEX_MACRO(B, types_Byte, "VALUE")
-bool						TYPE_FLEX_MACRO(BOOL, types_Bool, "ID")
+int							TYPE_FLEX_MACRO(INT, types_Int)
+byte						TYPE_FLEX_MACRO(BYTE, types_Byte)
+<after_num>b				TYPE_FLEX_MACRO(B, types_Byte)
+bool						TYPE_FLEX_MACRO(BOOL, types_Bool)
 struct						FLEX_MACRO(STRUCT)
 and							FLEX_MACRO(AND)
 or							FLEX_MACRO(OR)
 not							FLEX_MACRO(NOT)
-true						TYPE_FLEX_MACRO(TRUE, types_Bool, "VALUE")
-false						TYPE_FLEX_MACRO(FALSE, types_Bool, "VALUE")
+true						TYPE_FLEX_MACRO(TRUE, types_Bool)
+false						TYPE_FLEX_MACRO(FALSE, types_Bool)
 return						FLEX_MACRO(RETURN)
 if							FLEX_MACRO(IF)
 else						FLEX_MACRO(ELSE)
@@ -52,8 +52,8 @@ continue					FLEX_MACRO(CONTINUE)
 \+|\-						FLEX_MACRO(BINOPAS)
 \*|\/						FLEX_MACRO(BINOPMD)
 [a-zA-Z][a-zA-Z0-9]*		FLEX_MACRO(ID)
-0|[1-9][0-9]*				BEGIN(after_num); TYPE_FLEX_MACRO(NUM, types_Int, "VALUE")
-\"([^\n\r\"\\]|[rnt\"\\])+\"	TYPE_FLEX_MACRO(STRING, types_String, "VALUE")
+0|[1-9][0-9]*				BEGIN(after_num); TYPE_FLEX_MACRO(NUM, types_Int)
+\"([^\n\r\"\\]|[rnt\"\\])+\"	TYPE_FLEX_MACRO(STRING, types_String)
 [\ \t\r\n]+					BEGIN(INITIAL);
 \/\/[^\r\n]*[\r|\n|\r\n]?	;
 .							output::errorLex(yylineno); exit(0);

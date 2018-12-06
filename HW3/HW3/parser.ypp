@@ -129,6 +129,7 @@ Statement: Type ID SC {
 	}
 
 	| Type ID ASSIGN Exp SC {
+		tables->addVariable($1.type, $2.str);
 		if ($1.type != $4.type) {
 			errorMismatch(tables->getLine());
 		}
