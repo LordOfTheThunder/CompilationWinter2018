@@ -102,9 +102,10 @@ private:
     vector<TableEntry *> entries;
     int offset
     bool isWhile;
+    bool isGlobal;
 
 public:
-    Scope(int offset_, bool isWhile_) : offset(offset_), isWhile(isWhile_){}; // TODO
+    Scope(int offset, bool isWhile, bool isGlobal = false) : offset(offset), isWhile(isWhile), isGlobal(isGlobal){}; // TODO
     void addEntry(TableEntry * ent); // TODO
     void removeEntry(); // TODO
     bool existsId(string& id); // TODO
@@ -113,6 +114,7 @@ public:
     TableEntry * getEntry(string& id); // TODO
     int getOffset(); // TODO
     bool isWhile(){return this->isWhile;} // TODO
+    bool isGlobal(){return this->isGlobal;}
 };
 
 class symbolTable{
@@ -136,7 +138,7 @@ public:
     void addScope();
 
 //    The following functions aren't scope-related (i.e. doesn't create a new scope)
-    void addStruct(string id, vector<StructMember> members); // TODO
+    void addStruct(string& id, vector<types>& members);
     void addVariable(types type, string id); // TODO
 
 //    Existence checkers and validation

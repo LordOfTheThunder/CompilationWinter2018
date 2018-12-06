@@ -29,11 +29,9 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+            <state relative-caret-position="277">
+              <caret line="135" column="41" lean-forward="true" selection-start-line="135" selection-start-column="41" selection-end-line="135" selection-end-column="41" />
               <folding>
-                <element signature="e#54#392#0" />
-                <element signature="e#28#115#0" />
                 <element signature="e#272#308#0" />
                 <element signature="e#312#345#0" />
                 <element signature="e#386#457#0" />
@@ -46,6 +44,8 @@
                 <element signature="e#2024#2084#0" />
                 <element signature="e#2312#2518#0" />
                 <element signature="e#2024#2060#0" />
+                <element signature="e#2857#2899#0" />
+                <element signature="e#2975#3013#0" />
               </folding>
             </state>
           </provider>
@@ -54,8 +54,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1939">
-              <caret line="54" column="48" selection-start-line="54" selection-start-column="48" selection-end-line="54" selection-end-column="48" />
+            <state relative-caret-position="2444">
+              <caret line="137" column="20" lean-forward="true" selection-start-line="137" selection-start-column="20" selection-end-line="137" selection-end-column="20" />
               <folding>
                 <element signature="e#13#30#0" expanded="true" />
                 <element signature="e#76#102#1" />
@@ -115,11 +115,17 @@
       <find>getSelect</find>
       <find>bitch</find>
       <find>type</find>
-      <find>addf</find>
       <find>exists</find>
       <find>existsVariable</find>
-      <find>func</find>
       <find>existsf</find>
+      <find>func</find>
+      <find>assert</find>
+      <find>existsStruct</find>
+      <find>existsMain</find>
+      <find>existsFunction</find>
+      <find>addStruct</find>
+      <find>addf</find>
+      <find>addst</find>
     </findStrings>
     <replaceStrings>
       <replace>original</replace>
@@ -236,7 +242,7 @@
       <workItem from="1543521086997" duration="6000" />
       <workItem from="1543521126686" duration="39000" />
       <workItem from="1543523486220" duration="24373000" />
-      <workItem from="1544028917959" duration="19967000" />
+      <workItem from="1544028917959" duration="22583000" />
     </task>
     <task id="LOCAL-00001" summary="added implementation of follow set">
       <created>1543534503591</created>
@@ -273,16 +279,31 @@
       <option name="project" value="LOCAL" />
       <updated>1544050570783</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="added more implementations to symbolTable">
+      <created>1544089517904</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1544089517904</updated>
+    </task>
+    <task id="LOCAL-00007" summary="added more implementations to symbolTable:&#10;- existsMain">
+      <created>1544090085288</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1544090085288</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="48247000" />
+    <option name="totallyTimeSpent" value="50863000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.09541578" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.09541578" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -293,7 +314,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="8" visible="true" weight="0.28710726" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.47995666" />
@@ -335,18 +356,9 @@
     <MESSAGE value="select works" />
     <MESSAGE value="initial commit for symbolTable" />
     <MESSAGE value="added a few implementations" />
-    <option name="LAST_COMMIT_MESSAGE" value="added a few implementations" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/HW3/HW3/symbolTable.cpp</url>
-          <line>1</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="added more implementations to symbolTable" />
+    <MESSAGE value="added more implementations to symbolTable:&#10;- existsMain" />
+    <option name="LAST_COMMIT_MESSAGE" value="added more implementations to symbolTable:&#10;- existsMain" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
@@ -482,10 +494,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/HW3/makefile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1939">
-          <caret line="54" column="48" selection-start-line="54" selection-start-column="48" selection-end-line="54" selection-end-column="48" />
+        <state relative-caret-position="2444">
+          <caret line="137" column="20" lean-forward="true" selection-start-line="137" selection-start-column="20" selection-end-line="137" selection-end-column="20" />
           <folding>
             <element signature="e#13#30#0" expanded="true" />
             <element signature="e#76#102#1" />
@@ -496,20 +515,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/HW3/makefile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+        <state relative-caret-position="277">
+          <caret line="135" column="41" lean-forward="true" selection-start-line="135" selection-start-column="41" selection-end-line="135" selection-end-column="41" />
           <folding>
-            <element signature="e#54#392#0" />
-            <element signature="e#28#115#0" />
             <element signature="e#272#308#0" />
             <element signature="e#312#345#0" />
             <element signature="e#386#457#0" />
@@ -522,6 +532,8 @@
             <element signature="e#2024#2084#0" />
             <element signature="e#2312#2518#0" />
             <element signature="e#2024#2060#0" />
+            <element signature="e#2857#2899#0" />
+            <element signature="e#2975#3013#0" />
           </folding>
         </state>
       </provider>

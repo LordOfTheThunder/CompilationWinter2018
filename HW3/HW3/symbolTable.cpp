@@ -2,7 +2,7 @@
 #include "StackStructs.h"
 
 symbolTable::symbolTable() : line(1), mainExists(false) {
-    this->global = new Scope(false);
+    this->global = new Scope(this->line, false, true); // The last parameter indicates a global scope
     this->scopes.push_back(global);
     vector<types> print_args;
     print_args.push_back(types_String);
@@ -13,12 +13,18 @@ symbolTable::symbolTable() : line(1), mainExists(false) {
 }
 
 void symbolTable::addFunction(types retval, string& id, vector<types> formals) {
-    existsId(id);
+    if (this->existsId(id)){
+        // TODO: handle this
+    }
 
     if ((id.compare("main") == 0) &&
             (formals.size() == 0) &&
             (retval == types_Void)){
         this->mainExists = true;
+    }
+
+    if (!this->scopes.back().isGlobal()){
+        // TODO: handle declaration not in global scope
     }
 
     this->scopes.back().addEntry(new FunctionEntry(formals, id, retval))
@@ -121,4 +127,15 @@ bool symbolTable::isBreakAllowed(){
 
 bool symbolTable::existsMain(){
     return this->mainExists;
+}
+
+void symbolTable::addStruct(string& id, vector<types>& members){
+    if (this->existsId(id)){
+        // TODO: handle existing identifier
+    }
+    if (!this->scopes.back().isGlobal()){
+        // TODO: handle declaration not in global scope
+    }
+
+    this->scopes.back().addEntry(new StructEntry(members, id))
 }
