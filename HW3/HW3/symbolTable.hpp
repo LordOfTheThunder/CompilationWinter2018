@@ -1,11 +1,7 @@
-
-#ifndef __SYMBOLTABLE__
-#define __SYMBOLTABLE__
-
+#pragma once
 #include <string>
 #include <vector>
 #include "StackStructs.h"
-using namespace std;
 
 class StructMember{
 private:
@@ -13,15 +9,9 @@ private:
     string id;
 
 public:
-    StructMember(types type_, string id_) : type(type_), id(id_) {}
-    types getType() const {
-        return this->type;
-    }
-    string getId() const {
-        return this->id;
-    }
-
-
+    StructMember(types type, string& id) : type(type), id(id) {}
+    types getType(){return this->type;}
+    string getId(){return this->id;}
 };
 
 class Formal{
@@ -30,7 +20,7 @@ private:
     string id;
 
 public:
-    Formal(types type_, string id_) : type(type_), id(id_) {}
+    Formal(types type, string& id) : type(type), id(id) {}
 };
 
 class TableEntry{
@@ -39,10 +29,10 @@ private:
     int offset;
 
 public:
-    TableEntry(string id, int offset) : id(id), offset(offset){}
-    string getId() const {
-        return this->id;
-    }
+    TableEntry(string& id, int offset) : id(id), offset(offset){}
+    string& getId(){return this->id;}
+    virtual ~TableEntry() {}
+
 };
 
 class VariableEntry : public TableEntry{
@@ -51,7 +41,8 @@ private:
     string id;
 
 public:
-    VariableEntry(types type, string& id) : type(type), id(id){}
+    VariableEntry(types type, string& id, int offset) : TableEntry(id, offset), type(type){}
+
 };
 
 class StructEntry : public TableEntry{
@@ -59,21 +50,19 @@ private:
     int size;
     string id;
     vector<types> members;
-    vector<types> formals;
 
 public:
-    StructEntry(vector<types> members, string id);
+    StructEntry(vector<types> members, string id, int offset) : TableEntry(id, offset), members(members) {}
 
     bool operator==(const StructEntry& rhs) const {
-        if (rhs.getId().compare(this->id) != 0){
+        if (rhs.id.compare(this->id) != 0){
             return false;
         }
         if (rhs.members.size() != this->members.size()){
             return false;
         }
-
-        for (int i = 0; i < rhs.formals.size(); ++i) {
-            if (rhs.formals[i] != this->formals[i])
+        for (int i = 0; i < rhs.members.size(); i++){
+            if (rhs.members[i] != this->members[i])
                 return false;
         }
 
@@ -88,14 +77,9 @@ private:
     types ret;
 
 public:
-    FunctionEntry(vector<Formal> formals, string id, types ret);
-    types getType() const  {
-        return this->ret;
-    }
-    string getId() const {
-        return this->id;
-    }
->>>>>>> Stashed changes
+    FunctionEntry(vector<types> formals, string id, types ret, int offset) : TableEntry(id, offset), formals(formals), ret(ret) {}
+    types getType(){return this->ret;}
+    string& getId(){return this->id;}
 
     bool operator==(const FunctionEntry& rhs) const {
         if (rhs.id.compare(this->id) != 0){
@@ -116,32 +100,29 @@ public:
 class Scope{
 private:
     vector<TableEntry *> entries;
-
     int offset;
-    bool is_while;
-    bool is_global;
+    bool isWhile_;
+    bool isGlobal_;
 
 public:
-    Scope(bool isWhile_, int offset_ = 0) : offset(offset_), is_while(isWhile_){}; // TODO
-    void addEntry(TableEntry * ent); // TODO
-    void removeEntry(); // TODO
-    bool existsId(string& id) const; // TODO
-    VariableEntry& getVariable(string& id); // TODO
-    bool existsVariable(string& id); // TODO
-    TableEntry * getEntry(string& id); // TODO
-    int getOffset() const; // TODO
-    bool isWhile() const {
-        return this->is_while;
-    } // TODO
-    bool isGlobal() const {
-        return this->is_global;
-    }
+    Scope(){}
+    Scope(int offset, bool isWhile_, bool isGlobal_ = false) : offset(offset), isWhile_(isWhile_), isGlobal_(isGlobal_){}
+    void addEntry(TableEntry * ent);
+    void removeEntry(){} // TODO
+    bool existsId(string& id);
+    VariableEntry * getVariable(string& id){} // TODO
+    bool existsVariable(string& id){} // TODO
+    TableEntry * getEntry(string& id){} // TODO
+    int getOffset() {return this->offset;}
+    bool isWhile(){return this->isWhile_;}
+    bool isGlobal(){return this->isGlobal_;}
 };
 
 class symbolTable{
 private:
-    vector<Scope> scopes;
+    vector<Scope *> scopes;
     Scope * global;
+    int line;
     bool mainExists;
 
     void newScope(bool isWhile){
@@ -149,18 +130,18 @@ private:
     }
 
 public:
-    int line;
     symbolTable();
 //    The following functions are scope-related functions (i.e. create a new scope)
     void addFunction(types retval, string id, vector<types> formals);
-    void addWhile();
+    void addWhile(int line);
     void addIf();
     void addElse();
     void addScope();
 
 //    The following functions aren't scope-related (i.e. doesn't create a new scope)
     void addStruct(string& id, vector<types>& members);
-    void addVariable(types type, string& id);
+    void addVariable(types type, string id);
+
 //    Existence checkers and validation
     bool existsId(string& id);
     bool existsVariable(string& id);
@@ -174,7 +155,4 @@ public:
     FunctionEntry * getFunction(string& id);
     VariableEntry * getVariable(string& id);
     StructEntry * getStruct(string& id);
-
 };
-
-#endif

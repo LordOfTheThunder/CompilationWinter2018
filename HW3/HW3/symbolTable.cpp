@@ -1,5 +1,6 @@
 #include "symbolTable.hpp"
 #include "StackStructs.h"
+#include <assert.h>
 
 symbolTable::symbolTable() : line(1), mainExists(false) {
     this->global = new Scope(this->line, false, true); // The last parameter indicates a global scope
@@ -8,11 +9,11 @@ symbolTable::symbolTable() : line(1), mainExists(false) {
     print_args.push_back(types_String);
     vector<types> printi_args;
     printi_args.push_back(types_Int);
-    this->addFunction(types.types_Void, "print", print_args);
-    this->addFunction(types.types_Void, "printi", printi_args);
+    this->addFunction(types_Void, string("print"), print_args);
+    this->addFunction(types_Void, string("printi"), printi_args);
 }
 
-void symbolTable::addFunction(types retval, string& id, vector<types> formals) {
+void symbolTable::addFunction(types retval, string id, vector<types> formals) {
     if (this->existsId(id)){
         // TODO: handle this
     }
@@ -23,10 +24,11 @@ void symbolTable::addFunction(types retval, string& id, vector<types> formals) {
         this->mainExists = true;
     }
 
-    if (!this->scopes.back().isGlobal()){
+    if (!this->scopes.back()->isGlobal()){
         // TODO: handle declaration not in global scope
     }
-    this->scopes.back().addEntry(new FunctionEntry(formals, id, retval))
+
+    this->scopes.back()->addEntry(new FunctionEntry(formals, id, retval, this->getOffset()));
     newScope(false);
 }
 
@@ -51,8 +53,8 @@ void symbolTable::addScope(){
 }
 
 bool symbolTable::existsId(string& id){
-    for (vector<Scope>::iterator it = scopes.begin(); it != scopes.end(); ++it){
-        if ((*it).existsId(id)){
+    for (vector<Scope*>::iterator it = scopes.begin(); it != scopes.end(); ++it){
+        if ((*it)->existsId(id)){
             return true;
         }
     }
@@ -60,8 +62,8 @@ bool symbolTable::existsId(string& id){
 }
 
 bool symbolTable::existsVariable(string& id){
-    for (vector<Scope>::iterator it = scopes.begin(); it != scopes.end(); ++it){
-        if ((*it).existsVariable(id)){
+    for (vector<Scope*>::iterator it = scopes.begin(); it != scopes.end(); ++it){
+        if ((*it)->existsVariable(id)){
             return true;
         }
     }
@@ -69,7 +71,7 @@ bool symbolTable::existsVariable(string& id){
 }
 
 bool symbolTable::existsFunction(string& id, vector<types> formals, types retval){
-    FunctionEntry comp(formals, id, retval);
+    FunctionEntry comp(formals, id, retval, 0);
     FunctionEntry * current = this->getFunction(id);
 
     if (current){
@@ -79,8 +81,8 @@ bool symbolTable::existsFunction(string& id, vector<types> formals, types retval
 }
 
 bool symbolTable::existsStruct(string& id, vector<types>& members){
-    StructEntry comp(members, id);
-    FunctionEntry * current = this->getStruct(id);
+    StructEntry comp(members, id, 0);
+    StructEntry * current = this->getStruct(id);
 
     if (current){
         return (comp == *current);
@@ -98,9 +100,9 @@ FunctionEntry * symbolTable::getFunction(string& id){
 
 VariableEntry * symbolTable::getVariable(string& id){
     assert(!this->scopes.empty());
-    for (vector<Scope>::iterator it = scopes.begin(); it != scopes.end(); ++it){
-        if ((*it).existsVariable(id)){
-            return ((*it).getVariable(id));
+    for (vector<Scope*>::iterator it = scopes.begin(); it != scopes.end(); ++it){
+        if ((*it)->existsVariable(id)){
+            return ((*it)->getVariable(id));
         }
     }
     return NULL;
@@ -116,12 +118,12 @@ StructEntry * symbolTable::getStruct(string& id){
 
 int symbolTable::getOffset(){
     assert(!this->scopes.empty());
-    return this->scopes.back().getOffset();
+    return this->scopes.back()->getOffset();
 }
 
 bool symbolTable::isBreakAllowed(){
     assert(!this->scopes.empty());
-    return this->scopes.back().isWhile();
+    return this->scopes.back()->isWhile();
 }
 
 bool symbolTable::existsMain(){
@@ -132,18 +134,31 @@ void symbolTable::addStruct(string& id, vector<types>& members){
     if (this->existsId(id)){
         // TODO: handle existing identifier
     }
-    if (!this->scopes.back().isGlobal()){
+    if (!this->scopes.back()->isGlobal()){
         // TODO: handle declaration not in global scope
     }
 
-    this->scopes.back().addEntry(new StructEntry(members, id))
+    this->scopes.back()->addEntry(new StructEntry(members, id, this->getOffset()));
 }
 
-void symbolTable::addVariable(types type, string& id){
+void symbolTable::addVariable(types type, string id){
     if (this->existsId(id)){
         // TODO: handle existing identifier
     }
 
-    VariableEntry * res = new VariableEntry(type, id);
-    this->scopes.back().addEntry(res);
+    VariableEntry * res = new VariableEntry(type, id, this->getOffset());
+    this->scopes.back()->addEntry(res);
+}
+
+void Scope::addEntry(TableEntry * ent){
+    this->entries.push_back(ent);
+}
+
+bool Scope::existsId(string& id){
+    for (vector<TableEntry*>::iterator it = this->entries.begin(); it != this->entries.end(); ++it){
+        if ((*it)->getId().compare(id) == 0){
+            return true;
+        }
+    }
+    return false;
 }
