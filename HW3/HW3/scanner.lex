@@ -25,7 +25,6 @@ void debug(yytokentype token);
 void						FLEX_MACRO(VOID)
 int							FLEX_MACRO(INT)
 byte						FLEX_MACRO(BYTE)
-b							FLEX_MACRO(B)
 bool						FLEX_MACRO(BOOL)
 struct						FLEX_MACRO(STRUCT)
 and							FLEX_MACRO(AND)
@@ -52,6 +51,7 @@ continue					FLEX_MACRO(CONTINUE)
 \*|\/						FLEX_MACRO(BINOPMD)
 [a-zA-Z][a-zA-Z0-9]*		FLEX_MACRO(ID)
 0|[1-9][0-9]*				TYPE_FLEX_MACRO(NUM, types_Int)
+0|[1-9][0-9]*b				TYPE_FLEX_MACRO(NUM, types_Int)
 \"([^\n\r\"\\]|[rnt\"\\])+\"	TYPE_FLEX_MACRO(STRING, types_String)
 [\ \t\r\n]+					;
 \/\/[^\r\n]*[\r|\n|\r\n]?	;
@@ -64,7 +64,6 @@ void debug(yytokentype token) {
 		case VOID: printf("VOID\n");   	break;
 		case INT: printf("INT\n");    	break;
 		case BYTE:	printf("BYTE\n");   	break;
-		case B:	printf("B\n"); 	    	break;
 		case BOOL:	printf("BOOL\n");   	break;
 		case STRUCT:	printf("STRUCT\n");		break;
 		case AND:	printf("AND\n");		break;
@@ -89,8 +88,8 @@ void debug(yytokentype token) {
 		case RELOP:printf("RELOP\n");		break;
 		case BINOPAS:printf("BINOP\n");		break;
 		case BINOPMD:printf("BINOP\n");		break;
-		case ID:printf("ID\n");			break;
-		case NUM:printf("NUM\n");		break;
-		case STRING:printf("STRING\n");		break;
+		case ID:printf("ID %s\n", yytext);			break;
+		case NUM:printf("NUM %s\n", yytext);		break;
+		case STRING:printf("STRING %s\n", yytext);		break;
 	}
 }

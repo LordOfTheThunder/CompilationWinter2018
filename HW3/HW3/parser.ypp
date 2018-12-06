@@ -50,13 +50,14 @@ symbolTable* tables = NULL;
 
 
 %%
-Program: Structs Funcs ;
+Program: Structs Funcs  {
+}
 
-Funcs: FuncDecl Funcs
+Funcs: FuncDecl Funcs {
+}
 	|	/*epsilon*/ ;
 
 FuncDecl: RetType ID LPAREN Formals RPAREN LBRACE Statements RBRACE {
-
 }
 
 Structs: StructsDecl Structs {
@@ -208,7 +209,7 @@ StructType: STRUCT ID {
 
 Exp: Exp BINOPAS Exp {
 
-}	| Exp BINOPMD {
+}	| Exp BINOPMD Exp {
 
 	}
 
@@ -280,7 +281,6 @@ int main() {
 
 
 void yyerror(const char *) {
-	// Enable it later...
-	//output::errorSyn(tables->lineno);
+	output::errorSyn(tables->getLine());
 	exit(0);
 }
