@@ -1,14 +1,19 @@
 %{
 
 #include <iostream>
+#include <cstdlib>
+#include <cassert>
 using namespace std;
 
 #include "StackStructs.h"
 #include "output.hpp"
+#include "symbolTable.hpp"
 using namespace output;
 
 int yylex();
 void yyerror(const char *);
+symbolTable* tables = NULL;
+
 %}
 
 %token VOID
@@ -222,6 +227,7 @@ Exp: Exp BINOPAS Exp {
 	| NUM {
 		$$ = $1;
 		$$.type = types_Int;
+		tables->setLine($$.lineno);
 	}
 
 	| NUM B {
@@ -232,6 +238,7 @@ Exp: Exp BINOPAS Exp {
 			errorByteTooLarge($$.lineno, $$.str);
 			exit(0);
 		}
+		tables->setLine($$.lineno);
 	}
 
 	| STRING {
@@ -265,7 +272,9 @@ Exp: Exp BINOPAS Exp {
 %%
 
 int main() {
+	tables = new symbolTable();
 	yyparse();
+	delete tables;
 	return 0;
 }
 

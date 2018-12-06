@@ -5,11 +5,16 @@
 #include "StackStructs.h"
 #include "parser.tab.hpp"
 #include "output.hpp"
+#include "symbolTable.hpp"
 
 void debug(yytokentype token);
-
 /* Don't forget to remove the debug before handing in */
-#define FLEX_MACRO(token)		{ yylval = StackType(); yylval.lineno = yylineno; debug(token); return token; }
+#define REST_OF_MACRO(token) yylval.str = yytext;\
+							 yylval.lineno = yylineno;\
+							 debug(token);\
+							 return token;
+#define FLEX_MACRO(token)		yylval = StackType(); REST_OF_MACRO(token)
+#define TYPE_FLEX_MACRO(token, type)		yylval = StackType(type); REST_OF_MACRO(token)
 
 %}
 
@@ -46,14 +51,15 @@ continue					FLEX_MACRO(CONTINUE)
 \+|\-						FLEX_MACRO(BINOPAS)
 \*|\/						FLEX_MACRO(BINOPMD)
 [a-zA-Z][a-zA-Z0-9]*		FLEX_MACRO(ID)
-0|[1-9][0-9]*				FLEX_MACRO(NUM)
-\"([^\n\r\"\\]|[rnt\"\\])+\"	FLEX_MACRO(STRING)
+0|[1-9][0-9]*				TYPE_FLEX_MACRO(NUM, types_Int)
+\"([^\n\r\"\\]|[rnt\"\\])+\"	TYPE_FLEX_MACRO(STRING, types_String)
 [\ \t\r\n]+					;
 \/\/[^\r\n]*[\r|\n|\r\n]?	;
 .							output::errorLex(yylineno); exit(0);
 %%
 
 void debug(yytokentype token) {
+	return;
 	switch(token) {
 		case VOID: printf("VOID\n");   	break;
 		case INT: printf("INT\n");    	break;

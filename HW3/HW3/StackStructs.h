@@ -21,7 +21,7 @@ struct StackType {
 	// Information in the stack
 	string str;
 	types type;
-	StackType(string str = "", types type = types_Void) : type(type), str(str), lineno(1) {
+	StackType(types type = types_Void, string str = "") : type(type), str(str), lineno(1) {
 
 	}
 };
