@@ -235,6 +235,7 @@ Exp: Exp BINOPAS Exp {
 		$$ = $1;
 		$$.type = types_Byte;
 		int num = atoi($$.str.c_str());
+		cout << "Binary number is " << num << endl;
 		if (num < 0 || num > 255) {
 			errorByteTooLarge($$.lineno, $$.str);
 			exit(0);

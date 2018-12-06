@@ -20,11 +20,13 @@ void debug(yytokentype token);
 
 %option yylineno
 %option noyywrap
+%s after_num
 
 %%
 void						FLEX_MACRO(VOID)
 int							FLEX_MACRO(INT)
 byte						FLEX_MACRO(BYTE)
+<after_num>b				FLEX_MACRO(B)
 bool						FLEX_MACRO(BOOL)
 struct						FLEX_MACRO(STRUCT)
 and							FLEX_MACRO(AND)
@@ -50,10 +52,9 @@ continue					FLEX_MACRO(CONTINUE)
 \+|\-						FLEX_MACRO(BINOPAS)
 \*|\/						FLEX_MACRO(BINOPMD)
 [a-zA-Z][a-zA-Z0-9]*		FLEX_MACRO(ID)
-0|[1-9][0-9]*				TYPE_FLEX_MACRO(NUM, types_Int)
-0|[1-9][0-9]*b				TYPE_FLEX_MACRO(NUM, types_Int)
+0|[1-9][0-9]*				BEGIN(after_num); TYPE_FLEX_MACRO(NUM, types_Int)
 \"([^\n\r\"\\]|[rnt\"\\])+\"	TYPE_FLEX_MACRO(STRING, types_String)
-[\ \t\r\n]+					;
+[\ \t\r\n]+					BEGIN(INITIAL);
 \/\/[^\r\n]*[\r|\n|\r\n]?	;
 .							output::errorLex(yylineno); exit(0);
 %%
@@ -63,6 +64,7 @@ void debug(yytokentype token) {
 	switch(token) {
 		case VOID: printf("VOID\n");   	break;
 		case INT: printf("INT\n");    	break;
+		case B: printf("B\n");    	break;
 		case BYTE:	printf("BYTE\n");   	break;
 		case BOOL:	printf("BOOL\n");   	break;
 		case STRUCT:	printf("STRUCT\n");		break;
