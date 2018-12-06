@@ -111,9 +111,9 @@ public:
     void addEntry(TableEntry * ent);
     void removeEntry(){} // TODO
     bool existsId(string& id);
-    VariableEntry * getVariable(string& id){} // TODO
-    bool existsVariable(string& id){} // TODO
-    TableEntry * getEntry(string& id){} // TODO
+    VariableEntry * getVariable(string& id);
+    bool existsVariable(string& id);
+    TableEntry * getEntry(string& id);
     int getOffset() {return this->offset;}
     bool isWhile(){return this->isWhile_;}
     bool isGlobal(){return this->isGlobal_;}
@@ -136,9 +136,9 @@ public:
 //    The following functions are scope-related functions (i.e. create a new scope)
     void addFunction(types retval, string id, vector<types> formals);
     void addWhile(int lineno);
-    void addIf();
-    void addElse();
-    void addScope();
+    void addIf(int lineno);
+    void addElse(int lineno);
+    void addScope(int lineno);
 
 //    The following functions aren't scope-related (i.e. doesn't create a new scope)
     void addStruct(string& id, vector<types>& members);
@@ -152,6 +152,7 @@ public:
     bool existsMain();
     void isBreakAllowed();
     void isContinueAllowed();
+    void validateByte(string& value);
 
 //    Getters
     int getOffset();
@@ -163,6 +164,5 @@ public:
 //    Setters
     void setLine(int lineno){this->lineno = lineno;}
 
-//    Statics
-    static void validateByte(int value);
+
 };

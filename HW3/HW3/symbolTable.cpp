@@ -2,26 +2,27 @@
 #include "StackStructs.h"
 #include <assert.h>
 #include "output.hpp"
+#include <stdlib.h>
 
-template <typename T>
+template <class T>
 void clearVectorOfPointers(vector<T>& v){
-    for (vector<T>::iterator it = v.begin(); it != v.end(); ++it){
+    for (typename vector<T>::iterator it = v.begin(); it != v.end(); ++it){
         delete (*it);
     }
 
     v.clear();
 }
 
-~symbolTable::symbolTable() {
+symbolTable::~symbolTable() {
     clearVectorOfPointers(this->scopes);
 }
 
-~Scope::Scope(){
+Scope::~Scope(){
     clearVectorOfPointers(this->entries);
 }
 
-symbolTable::symbolTable() : line(1), mainExists(false) {
-    this->global = new Scope(this->line, false, true); // The last parameter indicates a global scope
+symbolTable::symbolTable() : lineno(1), mainExists(false) {
+    this->global = new Scope(this->lineno, false, true); // The last parameter indicates a global scope
     this->scopes.push_back(global);
     vector<types> print_args;
     print_args.push_back(types_String);
@@ -35,7 +36,7 @@ void symbolTable::addFunction(types retval, string id, vector<types> formals) {
     if (this->existsId(id)){
         // TODOBOM: handle this
         output::errorDef(this->lineno, id);
-        exit(0)
+        exit(0);
     }
 
     if ((id.compare("main") == 0) &&
@@ -52,23 +53,23 @@ void symbolTable::addFunction(types retval, string id, vector<types> formals) {
     newScope(false);
 }
 
-void symbolTable::addWhile(int line){
-    this->line = line;
+void symbolTable::addWhile(int lineno){
+    this->lineno = lineno;
     newScope(true);
 }
 
-void symbolTable::addIf(){
-    this->line = line;
+void symbolTable::addIf(int lineno){
+    this->lineno = lineno;
     newScope(false);
 }
 
-void symbolTable::addElse(){
-    this->line = line;
+void symbolTable::addElse(int lineno){
+    this->lineno = lineno;
     newScope(false);
 }
 
-void symbolTable::addScope(){
-    this->line = line;
+void symbolTable::addScope(int lineno){
+    this->lineno = lineno;
     newScope(false);
 }
 
@@ -163,7 +164,7 @@ void symbolTable::addStruct(string& id, vector<types>& members){
     if (this->existsId(id)){
         // TODOBOM: handle existing identifier
         output::errorDef(this->lineno, id);
-        exit(0)
+        exit(0);
     }
     if (!this->scopes.back()->isGlobal()){
         // TODO: handle declaration not in global scope
@@ -176,7 +177,7 @@ void symbolTable::addVariable(types type, string id){
     if (this->existsId(id)){
         // TODOBOM: handle existing identifier
         output::errorDef(this->lineno, id);
-        exit(0)
+        exit(0);
     }
 
     VariableEntry * res = new VariableEntry(type, id, this->getOffset());
@@ -196,8 +197,30 @@ bool Scope::existsId(string& id){
     return false;
 }
 
-static void symbolTable::validateByte(int value){
-    if (value > 255 || value < 0){
-        output::errorByteTooLarge(this->lineno, value);
+VariableEntry * Scope::getVariable(string& id){
+    VariableEntry * res = dynamic_cast<VariableEntry*>(this->getEntry(id));
+    return res;
+}
+
+bool Scope::existsVariable(string& id){
+    VariableEntry * res = this->getVariable(id);
+    return (res != NULL);
+
+}
+
+TableEntry * Scope::getEntry(string& id){
+    for (vector<TableEntry*>::iterator it = this->entries.begin(); it != this->entries.end(); ++it){
+        if ((*it)->getId().compare(id) == 0){
+            return (*it);
+        }
+    }
+
+    return NULL;
+}
+
+void symbolTable::validateByte(string& value){
+    int value_int = atoi(value.c_str());
+    if (value_int > 255 || value_int < 0){
+        output::errorByteTooLarge(this->lineno, string(value));
     }
 }
