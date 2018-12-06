@@ -148,7 +148,7 @@ void symbolTable::popScope(){
     }
 
     delete this->scopes.back();
-    this->scopes.pop_back;
+    this->scopes.pop_back();
 }
 
 void symbolTable::isBreakAllowed(){
