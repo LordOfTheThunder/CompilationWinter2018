@@ -156,4 +156,7 @@ public:
     VariableEntry * getVariable(string& id);
     StructEntry * getStruct(string& id);
     int getLine(){return this->line;}
+
+//    Setters
+    void setLine(int line){this->line = line;}
 };
