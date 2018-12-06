@@ -1,7 +1,11 @@
-#pragma once
+
+#ifndef __SYMBOLTABLE__
+#define __SYMBOLTABLE__
+
 #include <string>
 #include <vector>
 #include "StackStructs.h"
+using namespace std;
 
 class StructMember{
 private:
@@ -9,11 +13,11 @@ private:
     string id;
 
 public:
-    StructMember(type_, id_) : type(type_), id(id_) {}
-    types getType(){
-        return this->type
+    StructMember(types type_, string id_) : type(type_), id(id_) {}
+    types getType() const {
+        return this->type;
     }
-    string getId(){
+    string getId() const {
         return this->id;
     }
 
@@ -26,7 +30,7 @@ private:
     string id;
 
 public:
-    Formal(type_, id_) : type(type_), id(id_) {}
+    Formal(types type_, string id_) : type(type_), id(id_) {}
 };
 
 class TableEntry{
@@ -36,7 +40,9 @@ private:
 
 public:
     TableEntry(string id, int offset) : id(id), offset(offset){}
-    string getId(return this->id;)
+    string getId() const {
+        return this->id;
+    }
 };
 
 class VariableEntry : public TableEntry{
@@ -51,20 +57,22 @@ public:
 class StructEntry : public TableEntry{
 private:
     int size;
-    string id
+    string id;
     vector<types> members;
+    vector<types> formals;
 
 public:
     StructEntry(vector<types> members, string id);
 
     bool operator==(const StructEntry& rhs) const {
-        if (rhs.id.compare(this->id) != 0){
+        if (rhs.getId().compare(this->id) != 0){
             return false;
         }
         if (rhs.members.size() != this->members.size()){
             return false;
         }
-        for (int i = 0; i < rhs.formals.size(); i++){
+
+        for (int i = 0; i < rhs.formals.size(); ++i) {
             if (rhs.formals[i] != this->formals[i])
                 return false;
         }
@@ -80,9 +88,14 @@ private:
     types ret;
 
 public:
-    FunctionEntry(vector<Formal> types, string id, types ret);
-    types getType(){return this->ret;}
-    string getId(return this->id;)
+    FunctionEntry(vector<Formal> formals, string id, types ret);
+    types getType() const  {
+        return this->ret;
+    }
+    string getId() const {
+        return this->id;
+    }
+>>>>>>> Stashed changes
 
     bool operator==(const FunctionEntry& rhs) const {
         if (rhs.id.compare(this->id) != 0){
@@ -103,28 +116,32 @@ public:
 class Scope{
 private:
     vector<TableEntry *> entries;
-    int offset
-    bool isWhile;
-    bool isGlobal;
+
+    int offset;
+    bool is_while;
+    bool is_global;
 
 public:
-    Scope(int offset, bool isWhile, bool isGlobal = false) : offset(offset), isWhile(isWhile), isGlobal(isGlobal){}; // TODO
+    Scope(bool isWhile_, int offset_ = 0) : offset(offset_), is_while(isWhile_){}; // TODO
     void addEntry(TableEntry * ent); // TODO
     void removeEntry(); // TODO
-    bool existsId(string& id); // TODO
-    VariableEntry& getVariable(string& id) // TODO
+    bool existsId(string& id) const; // TODO
+    VariableEntry& getVariable(string& id); // TODO
     bool existsVariable(string& id); // TODO
     TableEntry * getEntry(string& id); // TODO
-    int getOffset(); // TODO
-    bool isWhile(){return this->isWhile;} // TODO
-    bool isGlobal(){return this->isGlobal;}
+    int getOffset() const; // TODO
+    bool isWhile() const {
+        return this->is_while;
+    } // TODO
+    bool isGlobal() const {
+        return this->is_global;
+    }
 };
 
 class symbolTable{
 private:
     vector<Scope> scopes;
     Scope * global;
-    int line;
     bool mainExists;
 
     void newScope(bool isWhile){
@@ -132,6 +149,7 @@ private:
     }
 
 public:
+    int line;
     symbolTable();
 //    The following functions are scope-related functions (i.e. create a new scope)
     void addFunction(types retval, string id, vector<types> formals);
@@ -143,7 +161,6 @@ public:
 //    The following functions aren't scope-related (i.e. doesn't create a new scope)
     void addStruct(string& id, vector<types>& members);
     void addVariable(types type, string& id);
-
 //    Existence checkers and validation
     bool existsId(string& id);
     bool existsVariable(string& id);
@@ -157,4 +174,7 @@ public:
     FunctionEntry * getFunction(string& id);
     VariableEntry * getVariable(string& id);
     StructEntry * getStruct(string& id);
+
 };
+
+#endif

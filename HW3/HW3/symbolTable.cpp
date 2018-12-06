@@ -8,8 +8,8 @@ symbolTable::symbolTable() : line(1), mainExists(false) {
     print_args.push_back(types_String);
     vector<types> printi_args;
     printi_args.push_back(types_Int);
-    this->addFunction(types.types_Void, "print", print_args)
-    this->addFunction(types.types_Void, "printi", printi_args)
+    this->addFunction(types.types_Void, "print", print_args);
+    this->addFunction(types.types_Void, "printi", printi_args);
 }
 
 void symbolTable::addFunction(types retval, string& id, vector<types> formals) {
@@ -26,7 +26,6 @@ void symbolTable::addFunction(types retval, string& id, vector<types> formals) {
     if (!this->scopes.back().isGlobal()){
         // TODO: handle declaration not in global scope
     }
-
     this->scopes.back().addEntry(new FunctionEntry(formals, id, retval))
     newScope(false);
 }
