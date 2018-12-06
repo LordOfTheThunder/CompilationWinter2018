@@ -13,7 +13,6 @@
   <component name="ChangeListManager">
     <list default="true" id="2b6a5383-20c6-47f8-99cd-7269f0f9f4ae" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HW3/HW3/symbolTable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/HW3/HW3/symbolTable.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HW3/HW3/symbolTable.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/HW3/HW3/symbolTable.hpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -26,42 +25,25 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="277">
-              <caret line="135" column="41" lean-forward="true" selection-start-line="135" selection-start-column="41" selection-end-line="135" selection-end-column="41" />
+            <state relative-caret-position="334">
+              <caret line="146" column="5" lean-forward="true" selection-start-line="146" selection-start-column="5" selection-end-line="146" selection-end-column="5" />
               <folding>
-                <element signature="e#272#308#0" />
-                <element signature="e#312#345#0" />
-                <element signature="e#386#457#0" />
-                <element signature="e#462#536#0" />
-                <element signature="e#1097#1145#0" />
-                <element signature="e#1311#1363#0" />
-                <element signature="e#1591#1711#0" />
-                <element signature="e#1816#2076#0" />
-                <element signature="e#1816#1875#0" />
-                <element signature="e#2024#2084#0" />
-                <element signature="e#2312#2518#0" />
-                <element signature="e#2024#2060#0" />
-                <element signature="e#2857#2899#0" />
-                <element signature="e#2975#3013#0" />
+                <element signature="e#0#26#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2444">
-              <caret line="137" column="20" lean-forward="true" selection-start-line="137" selection-start-column="20" selection-end-line="137" selection-end-column="20" />
+            <state relative-caret-position="370">
+              <caret line="156" column="40" lean-forward="true" selection-start-line="156" selection-start-column="40" selection-end-line="156" selection-end-column="40" />
               <folding>
                 <element signature="e#13#30#0" expanded="true" />
-                <element signature="e#76#102#1" />
-                <element signature="e#204#224#1" />
-                <element signature="e#50#74#1" />
-                <element signature="e#597#644#1" />
               </folding>
             </state>
           </provider>
@@ -98,11 +80,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>compute_nu</find>
-      <find>get_nullable</find>
-      <find>print_first</find>
-      <find>getFollorw</find>
-      <find>init_follow</find>
       <find>EF</find>
       <find>isVariable</find>
       <find>compute_follow</find>
@@ -115,7 +92,6 @@
       <find>getSelect</find>
       <find>bitch</find>
       <find>type</find>
-      <find>exists</find>
       <find>existsVariable</find>
       <find>existsf</find>
       <find>func</find>
@@ -125,11 +101,20 @@
       <find>existsFunction</find>
       <find>addStruct</find>
       <find>addf</find>
+      <find>existsId</find>
+      <find>addVariable</find>
+      <find>FunctionEntry</find>
+      <find>this-&gt;scopes</find>
+      <find>newscope</find>
       <find>addst</find>
+      <find>functione</find>
+      <find>exists</find>
+      <find>StructEntry</find>
     </findStrings>
     <replaceStrings>
       <replace>original</replace>
       <replace>sub</replace>
+      <replace>this-&gt;scopes-&gt;</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -144,8 +129,8 @@
         <option value="$PROJECT_DIR$/HW2/hw2.cpp" />
         <option value="$PROJECT_DIR$/HW2/HW2/our_select" />
         <option value="$PROJECT_DIR$/HW3/HW3/StackStructs.h" />
-        <option value="$PROJECT_DIR$/HW3/HW3/symbolTable.hpp" />
         <option value="$PROJECT_DIR$/HW3/HW3/symbolTable.cpp" />
+        <option value="$PROJECT_DIR$/HW3/HW3/symbolTable.hpp" />
       </list>
     </option>
   </component>
@@ -242,7 +227,7 @@
       <workItem from="1543521086997" duration="6000" />
       <workItem from="1543521126686" duration="39000" />
       <workItem from="1543523486220" duration="24373000" />
-      <workItem from="1544028917959" duration="22583000" />
+      <workItem from="1544028917959" duration="28719000" />
     </task>
     <task id="LOCAL-00001" summary="added implementation of follow set">
       <created>1543534503591</created>
@@ -293,17 +278,38 @@
       <option name="project" value="LOCAL" />
       <updated>1544090085288</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="added more implementations to symbolTable:&#10;- addStruct (with condition to global scope)">
+      <created>1544092444491</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1544092444491</updated>
+    </task>
+    <task id="LOCAL-00009" summary="added more implementations to symbolTable:&#10;- addVariable">
+      <created>1544092781332</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1544092781332</updated>
+    </task>
+    <task id="LOCAL-00010" summary="fixed compilation errors">
+      <created>1544098967342</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1544098967342</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="50863000" />
+    <option name="totallyTimeSpent" value="56999000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.09541578" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.09541578" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -314,7 +320,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="8" visible="true" weight="0.28710726" />
+      <window_info anchor="bottom" id="Version Control" order="8" visible="true" weight="0.28710726" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.47995666" />
@@ -358,7 +364,10 @@
     <MESSAGE value="added a few implementations" />
     <MESSAGE value="added more implementations to symbolTable" />
     <MESSAGE value="added more implementations to symbolTable:&#10;- existsMain" />
-    <option name="LAST_COMMIT_MESSAGE" value="added more implementations to symbolTable:&#10;- existsMain" />
+    <MESSAGE value="added more implementations to symbolTable:&#10;- addStruct (with condition to global scope)" />
+    <MESSAGE value="added more implementations to symbolTable:&#10;- addVariable" />
+    <MESSAGE value="fixed compilation errors" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed compilation errors" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
@@ -501,39 +510,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.hpp">
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2444">
-          <caret line="137" column="20" lean-forward="true" selection-start-line="137" selection-start-column="20" selection-end-line="137" selection-end-column="20" />
+        <state relative-caret-position="334">
+          <caret line="146" column="5" lean-forward="true" selection-start-line="146" selection-start-column="5" selection-end-line="146" selection-end-column="5" />
           <folding>
-            <element signature="e#13#30#0" expanded="true" />
-            <element signature="e#76#102#1" />
-            <element signature="e#204#224#1" />
-            <element signature="e#50#74#1" />
-            <element signature="e#597#644#1" />
+            <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.cpp">
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="135" column="41" lean-forward="true" selection-start-line="135" selection-start-column="41" selection-end-line="135" selection-end-column="41" />
+        <state relative-caret-position="370">
+          <caret line="156" column="40" lean-forward="true" selection-start-line="156" selection-start-column="40" selection-end-line="156" selection-end-column="40" />
           <folding>
-            <element signature="e#272#308#0" />
-            <element signature="e#312#345#0" />
-            <element signature="e#386#457#0" />
-            <element signature="e#462#536#0" />
-            <element signature="e#1097#1145#0" />
-            <element signature="e#1311#1363#0" />
-            <element signature="e#1591#1711#0" />
-            <element signature="e#1816#2076#0" />
-            <element signature="e#1816#1875#0" />
-            <element signature="e#2024#2084#0" />
-            <element signature="e#2312#2518#0" />
-            <element signature="e#2024#2060#0" />
-            <element signature="e#2857#2899#0" />
-            <element signature="e#2975#3013#0" />
+            <element signature="e#13#30#0" expanded="true" />
           </folding>
         </state>
       </provider>

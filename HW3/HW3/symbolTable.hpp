@@ -155,4 +155,5 @@ public:
     FunctionEntry * getFunction(string& id);
     VariableEntry * getVariable(string& id);
     StructEntry * getStruct(string& id);
+    int getLine(){return this->line;}
 };
