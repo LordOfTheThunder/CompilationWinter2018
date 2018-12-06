@@ -49,10 +49,25 @@ class StructEntry : public TableEntry{
 private:
     int size;
     string id
-    vector<StructMember> members;
+    vector<types> members;
 
 public:
-    StructEntry(vector<StructMember> members, string id, int offset);
+    StructEntry(vector<types> members, string id);
+
+    bool operator==(const StructEntry& rhs) const {
+        if (rhs.id.compare(this->id) != 0){
+            return false;
+        }
+        if (rhs.members.size() != this->members.size()){
+            return false;
+        }
+        for (int i = 0; i < rhs.formals.size(); i++){
+            if (rhs.formals[i] != this->formals[i])
+                return false;
+        }
+
+        return true;
+    }
 };
 
 class FunctionEntry : public TableEntry{
@@ -93,8 +108,9 @@ public:
     void addEntry(TableEntry * ent); // TODO
     void removeEntry(); // TODO
     bool existsId(string& id); // TODO
+    VariableEntry& getVariable(string& id) // TODO
     bool existsVariable(string& id); // TODO
-    TableEntry& getEntry(string& id); // TODO
+    TableEntry * getEntry(string& id); // TODO
     int getOffset(); // TODO
     bool isWhile(){return this->isWhile;} // TODO
 };
@@ -102,6 +118,7 @@ public:
 class symbolTable{
 private:
     vector<Scope> scopes;
+    Scope * global;
     int line;
     bool mainExists;
 
@@ -112,7 +129,7 @@ private:
 public:
     symbolTable();
 //    The following functions are scope-related functions (i.e. create a new scope)
-    void addFunction(types retval, string id, vector<types> formals, bool addScope);
+    void addFunction(types retval, string id, vector<types> formals);
     void addWhile();
     void addIf();
     void addElse();
@@ -125,14 +142,14 @@ public:
 //    Existence checkers and validation
     bool existsId(string& id);
     bool existsVariable(string& id);
-    bool existsFunction(string& id); // TODO
+    bool existsFunction(string& id);
     bool existsStruct(string& id); // TODO
     bool existsMain(); // TODO
     bool isBreakAllowed(); // TODO
 
 //    Getters
-    int getOffset(); // TODO
-    FunctionEntry& getFunction(string& id); // TODO
-    VariableEntry& getVariable(string& id); // TODO
-    StructEntry& getStruct(string& id); // TODO
+    int getOffset();
+    FunctionEntry * getFunction(string& id);
+    VariableEntry * getVariable(string& id);
+    StructEntry * getStruct(string& id);
 };

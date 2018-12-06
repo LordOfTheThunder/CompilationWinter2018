@@ -2,7 +2,8 @@
 #include "StackStructs.h"
 
 symbolTable::symbolTable() : line(1), mainExists(false) {
-    newScope(false);
+    this->global = new Scope(false);
+    this->scopes.push_back(global);
     vector<types> print_args;
     print_args.push_back(types_String);
     vector<types> printi_args;
@@ -11,7 +12,7 @@ symbolTable::symbolTable() : line(1), mainExists(false) {
     this->addFunction(types.types_Void, "printi", printi_args)
 }
 
-void symbolTable::addFunction(types retval, string& id, vector<types> formals, bool addScope) {
+void symbolTable::addFunction(types retval, string& id, vector<types> formals) {
     existsId(id);
 
     if ((id.compare("main") == 0) &&
@@ -20,8 +21,7 @@ void symbolTable::addFunction(types retval, string& id, vector<types> formals, b
         this->mainExists = true;
     }
 
-    if (addScope)
-        this->scopes.back().addEntry(new FunctionEntry(formals, id, retval))
+    this->scopes.back().addEntry(new FunctionEntry(formals, id, retval))
     newScope(false);
 }
 
@@ -63,6 +63,54 @@ bool symbolTable::existsVariable(string& id){
     return false;
 }
 
-bool symbolTable::existsFunction(string& id){
+bool symbolTable::existsFunction(string& id, vector<types> formals, types retval){
+    FunctionEntry comp(formals, id, retval);
+    FunctionEntry * current = this->getFunction(id);
 
+    if (current){
+        return (comp == *current);
+    }
+    return false;
 }
+
+bool symbolTable::existsStruct(string& id, vector<types> members){
+    StructEntry comp(members, id);
+    FunctionEntry * current = this->getStruct(id);
+
+    if (current){
+        return (comp == *current);
+    }
+    return false;
+}
+
+FunctionEntry * symbolTable::getFunction(string& id){
+    if (!this->global){
+        return NULL;
+    }
+    FunctionEntry * res = dynamic_cast<FunctionEntry*>(this->global->getEntry(id));
+    return res;
+}
+
+VariableEntry * symbolTable::getVariable(string& id){
+    assert(!this->scopes.empty())
+    for (vector<Scope>::iterator it = scopes.begin(); it != scopes.end(); ++it){
+        if ((*it).existsVariable(id)){
+            return ((*it).getVariable(id));
+        }
+    }
+    return NULL;
+}
+
+StructEntry * symbolTable::getStruct(string& id){
+    if (!this->global){
+        return NULL;
+    }
+    StructEntry * res = dynamic_cast<StructEntry*>(this->global->getEntry(id));
+    return res;
+}
+
+int symbolTable::getOffset(){
+    assert(!this->scopes.empty())
+    return this->scopes.back().getOffset();
+}
+
