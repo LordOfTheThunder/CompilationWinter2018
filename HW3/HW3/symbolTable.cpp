@@ -73,7 +73,7 @@ bool symbolTable::existsFunction(string& id, vector<types> formals, types retval
     return false;
 }
 
-bool symbolTable::existsStruct(string& id, vector<types> members){
+bool symbolTable::existsStruct(string& id, vector<types>& members){
     StructEntry comp(members, id);
     FunctionEntry * current = this->getStruct(id);
 
@@ -92,7 +92,7 @@ FunctionEntry * symbolTable::getFunction(string& id){
 }
 
 VariableEntry * symbolTable::getVariable(string& id){
-    assert(!this->scopes.empty())
+    assert(!this->scopes.empty());
     for (vector<Scope>::iterator it = scopes.begin(); it != scopes.end(); ++it){
         if ((*it).existsVariable(id)){
             return ((*it).getVariable(id));
@@ -110,7 +110,15 @@ StructEntry * symbolTable::getStruct(string& id){
 }
 
 int symbolTable::getOffset(){
-    assert(!this->scopes.empty())
+    assert(!this->scopes.empty());
     return this->scopes.back().getOffset();
 }
 
+bool symbolTable::isBreakAllowed(){
+    assert(!this->scopes.empty());
+    return this->scopes.back().isWhile();
+}
+
+bool symbolTable::existsMain(){
+    return this->mainExists;
+}

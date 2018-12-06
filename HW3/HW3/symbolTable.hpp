@@ -142,10 +142,10 @@ public:
 //    Existence checkers and validation
     bool existsId(string& id);
     bool existsVariable(string& id);
-    bool existsFunction(string& id);
-    bool existsStruct(string& id); // TODO
-    bool existsMain(); // TODO
-    bool isBreakAllowed(); // TODO
+    bool existsFunction(string& id, vector<types> formals, types retval);
+    bool existsStruct(string& id, vector<types>& members);
+    bool existsMain();
+    bool isBreakAllowed();
 
 //    Getters
     int getOffset();
