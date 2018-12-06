@@ -3,6 +3,23 @@
 #include <assert.h>
 #include "output.hpp"
 
+template <typename T>
+void clearVectorOfPointers(vector<T>& v){
+    for (vector<T>::iterator it = v.begin(); it != v.end(); ++it){
+        delete (*it);
+    }
+
+    v.clear();
+}
+
+~symbolTable::symbolTable() {
+    clearVectorOfPointers(this->scopes);
+}
+
+~Scope::Scope(){
+    clearVectorOfPointers(this->entries);
+}
+
 symbolTable::symbolTable() : line(1), mainExists(false) {
     this->global = new Scope(this->line, false, true); // The last parameter indicates a global scope
     this->scopes.push_back(global);

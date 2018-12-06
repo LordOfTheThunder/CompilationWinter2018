@@ -106,6 +106,7 @@ private:
 
 public:
     Scope(){}
+    ~Scope();
     Scope(int offset, bool isWhile_, bool isGlobal_ = false) : offset(offset), isWhile_(isWhile_), isGlobal_(isGlobal_){}
     void addEntry(TableEntry * ent);
     void removeEntry(){} // TODO
@@ -131,6 +132,7 @@ private:
 
 public:
     symbolTable();
+    ~symbolTable();
 //    The following functions are scope-related functions (i.e. create a new scope)
     void addFunction(types retval, string id, vector<types> formals);
     void addWhile(int lineno);
