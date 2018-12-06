@@ -124,9 +124,18 @@ int symbolTable::getOffset(){
     return this->scopes.back()->getOffset();
 }
 
-bool symbolTable::isBreakAllowed(){
+void symbolTable::isBreakAllowed(){
     assert(!this->scopes.empty());
-    return this->scopes.back()->isWhile();
+    if (!(this->scopes.back()->isWhile())){
+        output::errorUnexpectedBreak(this->lineno);
+    }
+}
+
+void symbolTable::isContinueAllowed(){
+    assert(!this->scopes.empty());
+    if (!(this->scopes.back()->isWhile())){
+        output::errorUnexpectedContinue(this->lineno);
+    }
 }
 
 bool symbolTable::existsMain(){
@@ -168,4 +177,10 @@ bool Scope::existsId(string& id){
         }
     }
     return false;
+}
+
+static void symbolTable::validateByte(int value){
+    if (value > 255 || value < 0){
+        output::errorByteTooLarge(this->lineno, value);
+    }
 }

@@ -148,8 +148,8 @@ public:
     bool existsFunction(string& id, vector<types> formals, types retval);
     bool existsStruct(string& id, vector<types>& members);
     bool existsMain();
-    bool isBreakAllowed();
-    bool isContinueAllowed(){return this->isBreakAllowed();}
+    void isBreakAllowed();
+    void isContinueAllowed();
 
 //    Getters
     int getOffset();
@@ -160,4 +160,7 @@ public:
 
 //    Setters
     void setLine(int lineno){this->lineno = lineno;}
+
+//    Statics
+    static void validateByte(int value);
 };
