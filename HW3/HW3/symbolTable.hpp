@@ -139,6 +139,7 @@ public:
     void addIf(int lineno);
     void addElse(int lineno);
     void addScope(int lineno);
+    void popScope();
 
 //    The following functions aren't scope-related (i.e. doesn't create a new scope)
     void addStruct(string& id, vector<types>& members);

@@ -142,6 +142,15 @@ int symbolTable::getOffset(){
     return this->scopes.back()->getOffset();
 }
 
+void symbolTable::popScope(){
+    if (this->scopes.empty()){
+        return;
+    }
+
+    delete this->scopes.back();
+    this->scopes.pop_back;
+}
+
 void symbolTable::isBreakAllowed(){
     assert(!this->scopes.empty());
     if (!(this->scopes.back()->isWhile())){
