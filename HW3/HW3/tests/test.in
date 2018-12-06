@@ -1,0 +1,14 @@
+int TestLegalBinary(int a) {
+	int a = 13b; 
+	int b = 14b;
+	int xxx = 144b;
+}
+int TestLegalNum(int a) {
+	int a = 13;
+	int ss = 354543;
+	int r4r5 = 119;
+}
+void TestError() {
+	int b = 993b;
+}
+

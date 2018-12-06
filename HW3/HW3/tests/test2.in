@@ -1,0 +1,6 @@
+void TestBool (int x) {
+	bool k = false;
+}
+void TestBoolMismatch(bool a) {
+	int k = true;
+}

@@ -1,0 +1,3 @@
+void TestMismatchByteBool(bool a) {
+	byte k = false;
+}

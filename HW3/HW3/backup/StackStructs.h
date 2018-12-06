@@ -2,7 +2,6 @@
 #define __STACKVAL__
 
 #include <string>
-#include <iostream>
 #include <map>
 #include <cstdlib>
 
@@ -23,7 +22,9 @@ struct StackType {
 	// Information in the stack
 	string str;
 	types type;
-	StackType(types type = types_Undefined, string str = "") : type(type), str(str), lineno(1) {
+	map<string,types> all_types;
+	StackType(types type = types_Undefined, string id = "") : type(type), str(str), lineno(1) {
+		//all_types[id] = types_Undefined;
 	}
 };
 

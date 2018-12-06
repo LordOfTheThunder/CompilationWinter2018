@@ -129,9 +129,7 @@ Statement: Type ID SC {
 	}
 
 	| Type ID ASSIGN Exp SC {
-		if ($1.type != $4.type) {
-			errorMismatch(tables->getLine());
-		}
+
 	}
 
 	| StructType ID ASSIGN Exp SC {
@@ -194,15 +192,16 @@ ExpList: Exp {
 	}
 
 Type: INT {
-	$$.type = types_Int;
+	$$.all_types["ID"] = types_Int;
+	cout << "Set id type to :" << types_Int << endl;
 }
 
 	| BYTE {
-		$$.type = types_Byte;
+		$$.all_types["ID"] = types_Byte;
 	}
 
 	| BOOL {
-		$$.type = types_Bool;
+		$$.all_types["ID"] = types_Bool;
 	}
 
 StructType: STRUCT ID {
@@ -230,18 +229,24 @@ Exp: Exp BINOPAS Exp {
 	| NUM {
 		$$.str = $1.str;
 		tables->setLine($$.lineno);
-		$$.type = types_Int;
+
+		if ($$.all_types["ID"] != types_Undefined && $$.all_types["ID"] != types_Int) {
+			errorMismatch(tables->getLine());
+		}
 	}
 
 	| NUM B {
 		$$.str = $1.str;
 		int num = atoi($$.str.c_str());
-		tables->setLine($$.lineno);
 		if (num < 0 || num > 255) {
 			errorByteTooLarge($$.lineno, $$.str);
 			exit(0);
 		}
-		$$.type = types_Byte;
+		tables->setLine($$.lineno);
+
+		if ($$.all_types["ID"] != types_Undefined && $$.all_types["ID"] != types_Int) {
+			errorMismatch(tables->getLine());
+		}
 	}
 
 	| STRING {
@@ -250,12 +255,19 @@ Exp: Exp BINOPAS Exp {
 
 	| TRUE {
 		$$.str = $1.str;
-		$$.type = types_Bool;
+		cout << "ID type is: " << $$.all_types["ID"] << endl;
+
+		if ($$.all_types["ID"] != types_Undefined && $$.all_types["ID"] != types_Bool) {
+			errorMismatch(tables->getLine());
+		}
 	}
 
 	| FALSE {
 		$$.str = $1.str;
-		$$.type = types_Bool;
+
+		if ($$.all_types["ID"] != types_Undefined && $$.all_types["ID"] != types_Bool) {
+			errorMismatch(tables->getLine());
+		}
 	}
 
 	| NOT Exp {

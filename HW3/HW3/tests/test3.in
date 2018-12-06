@@ -1,0 +1,6 @@
+void TestInt(bool a) {
+	int k = 133;
+}
+void TestIntMismatchByte(bool a) {
+	int k = 133b;
+}
