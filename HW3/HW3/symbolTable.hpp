@@ -43,6 +43,9 @@ class VariableEntry : public TableEntry{
 private:
     types type;
     string id;
+
+public:
+    VariableEntry(types type, string& id) : type(type), id(id){}
 };
 
 class StructEntry : public TableEntry{
@@ -139,7 +142,7 @@ public:
 
 //    The following functions aren't scope-related (i.e. doesn't create a new scope)
     void addStruct(string& id, vector<types>& members);
-    void addVariable(types type, string id); // TODO
+    void addVariable(types type, string& id);
 
 //    Existence checkers and validation
     bool existsId(string& id);

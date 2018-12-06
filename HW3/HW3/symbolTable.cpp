@@ -139,3 +139,12 @@ void symbolTable::addStruct(string& id, vector<types>& members){
 
     this->scopes.back().addEntry(new StructEntry(members, id))
 }
+
+void symbolTable::addVariable(types type, string& id){
+    if (this->existsId(id)){
+        // TODO: handle existing identifier
+    }
+
+    VariableEntry * res = new VariableEntry(type, id);
+    this->scopes.back().addEntry(res);
+}
