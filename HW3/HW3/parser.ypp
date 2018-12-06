@@ -19,7 +19,7 @@ void yyerror(const char *);
 %token STRUCT
 %left AND
 %left OR
-%token NOT
+%right NOT
 %token TRUE
 %token FALSE
 %token RETURN
@@ -55,10 +55,10 @@ FuncDecl: RetType ID LPAREN Formals RPAREN LBRACE Statements RBRACE {
 }
 
 Structs: StructsDecl Structs {
-	
+
 }
 	| /*epsilon*/ {
-	
+
 	}
 
 StructsDecl: STRUCT ID LBRACE StructMemList RBRACE SC {
@@ -69,35 +69,36 @@ RetType: Type {
 
 }
 	| VOID {
-	
+
 	}
 
 Formals: FormalsList {
 
 }
 	| /*epsilon*/ {
-	
+
 	}
 
 FormalsList: FormalDecl {
 
 }
 	| FormalDecl COMMA FormalsList {
-	
+
 	}
 
 FormalDecl: Type ID {
 
 }
 	| StructType ID {
-	
+
 	}
+
 
 StructMemList: StructMem {
 
 }
 	| StructMem StructMemList {
-	
+
 	}
 
 StructMem: Type ID SC {
@@ -108,73 +109,80 @@ Statements: Statement {
 
 }
 	| Statements Statement {
-	
+
 	}
 
 Statement: Type ID SC {
 
-}
-	| StructType ID SC {
-	
+}	| StructType ID SC {
+
 	}
 
 	| STRUCT ID LBRACE StructMemList RBRACE SC {
-	
+
 	}
 
 	| Type ID ASSIGN Exp SC {
-	
+
 	}
 
 	| StructType ID ASSIGN Exp SC {
-	
+
 	}
 
 	| ID ASSIGN Exp SC {
-	
+
 	}
 
 	| ID PERIOD ID ASSIGN Exp SC {
-	
+
 	}
 
 	| Call SC {
-	
+
 	}
 
 	| RETURN SC {
-	
+
 	}
 
 	| RETURN Exp SC {
-	
+
+	}
+
+	| IF LPAREN Exp RPAREN Statement {
+
+	}
+
+	| ELSE Statement %prec IF LPAREN Exp RPAREN Statement {
+
 	}
 
 	| WHILE LPAREN Exp RPAREN Statement {
-	
+
 	}
 
 	| BREAK SC {
-	
+
 	}
 
 	| CONTINUE SC {
-	
+
 	}
-	
+
 
 Call: ID LPAREN ExpList RPAREN {
 
 }
 	| ID LPAREN RPAREN {
-	
+
 	}
 
 ExpList: Exp {
 
 }
 	| Exp COMMA ExpList {
-	
+
 	}
 
 Type: INT {
@@ -182,11 +190,11 @@ Type: INT {
 }
 
 	| BYTE {
-	
+
 	}
 
 	| BOOL {
-	
+
 	}
 
 StructType: STRUCT ID {
@@ -195,22 +203,20 @@ StructType: STRUCT ID {
 
 Exp: Exp BINOPAS Exp {
 
-}
+}	| Exp BINOPMD {
 
-	| Exp BINOPMD {
-	
 	}
 
 	| ID {
-	
+
 	}
 
 	| ID PERIOD ID {
-	
+
 	}
 
 	| Call {
-	
+
 	}
 
 	| NUM {
@@ -229,33 +235,40 @@ Exp: Exp BINOPAS Exp {
 	}
 
 	| STRING {
-	
+
 	}
 
 	| TRUE {
-	
+
 	}
 
 	| FALSE {
-	
+
 	}
 
 	| NOT Exp {
-	
+
 	}
 
 	| Exp AND Exp {
-	
+
 	}
 
 	| Exp OR Exp {
-	
+
 	}
 
 	| Exp RELOP Exp {
-	
+
 	}
+
 %%
+
+int main() {
+	yyparse();
+	return 0;
+}
+
 
 void yyerror(const char *) {
 	// Enable it later...
