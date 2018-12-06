@@ -42,7 +42,7 @@ private:
 
 public:
     VariableEntry(types type, string& id, int offset) : TableEntry(id, offset), type(type){}
-
+    types getType() const { return this->type; }
 };
 
 class StructEntry : public TableEntry{
