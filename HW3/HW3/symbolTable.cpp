@@ -1,6 +1,7 @@
 #include "symbolTable.hpp"
 #include "StackStructs.h"
 #include <assert.h>
+#include "output.hpp"
 
 symbolTable::symbolTable() : line(1), mainExists(false) {
     this->global = new Scope(this->line, false, true); // The last parameter indicates a global scope
@@ -15,7 +16,9 @@ symbolTable::symbolTable() : line(1), mainExists(false) {
 
 void symbolTable::addFunction(types retval, string id, vector<types> formals) {
     if (this->existsId(id)){
-        // TODO: handle this
+        // TODOBOM: handle this
+        output::errorDef(this->lineno, id);
+        exit(0)
     }
 
     if ((id.compare("main") == 0) &&
@@ -132,7 +135,9 @@ bool symbolTable::existsMain(){
 
 void symbolTable::addStruct(string& id, vector<types>& members){
     if (this->existsId(id)){
-        // TODO: handle existing identifier
+        // TODOBOM: handle existing identifier
+        output::errorDef(this->lineno, id);
+        exit(0)
     }
     if (!this->scopes.back()->isGlobal()){
         // TODO: handle declaration not in global scope
@@ -143,7 +148,9 @@ void symbolTable::addStruct(string& id, vector<types>& members){
 
 void symbolTable::addVariable(types type, string id){
     if (this->existsId(id)){
-        // TODO: handle existing identifier
+        // TODOBOM: handle existing identifier
+        output::errorDef(this->lineno, id);
+        exit(0)
     }
 
     VariableEntry * res = new VariableEntry(type, id, this->getOffset());

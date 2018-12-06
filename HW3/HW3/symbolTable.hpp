@@ -122,7 +122,7 @@ class symbolTable{
 private:
     vector<Scope *> scopes;
     Scope * global;
-    int line;
+    int lineno;
     bool mainExists;
 
     void newScope(bool isWhile){
@@ -133,7 +133,7 @@ public:
     symbolTable();
 //    The following functions are scope-related functions (i.e. create a new scope)
     void addFunction(types retval, string id, vector<types> formals);
-    void addWhile(int line);
+    void addWhile(int lineno);
     void addIf();
     void addElse();
     void addScope();
@@ -149,14 +149,15 @@ public:
     bool existsStruct(string& id, vector<types>& members);
     bool existsMain();
     bool isBreakAllowed();
+    bool isContinueAllowed(){return this->isBreakAllowed();}
 
 //    Getters
     int getOffset();
     FunctionEntry * getFunction(string& id);
     VariableEntry * getVariable(string& id);
     StructEntry * getStruct(string& id);
-    int getLine(){return this->line;}
+    int getLine(){return this->lineno;}
 
 //    Setters
-    void setLine(int line){this->line = line;}
+    void setLine(int lineno){this->lineno = lineno;}
 };
