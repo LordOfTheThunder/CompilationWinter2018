@@ -1,0 +1,6 @@
+void TestSameNameFunc() {
+	int x;
+}
+void TestSameNameFunc() {
+	int x;
+}

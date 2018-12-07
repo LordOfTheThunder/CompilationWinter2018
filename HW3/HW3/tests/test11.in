@@ -1,0 +1,4 @@
+void TestDefineThenWrongType(bool a) {
+	int x;
+	x = true;
+}

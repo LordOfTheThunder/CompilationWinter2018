@@ -1,0 +1,6 @@
+void TestBoolA() {
+	bool a = true;
+}
+void TestIntA() {
+	int a = 33;
+}

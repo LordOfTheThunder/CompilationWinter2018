@@ -1,0 +1,3 @@
+void TestIllegalAssignFromFuncInput(bool a) {
+	a = 33;
+}
