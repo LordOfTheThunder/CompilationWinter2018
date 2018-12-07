@@ -140,7 +140,7 @@ public:
     symbolTable();
     ~symbolTable();
 //    The following functions are scope-related functions (i.e. create a new scope)
-    void addFunction(string retval, string id, vector<varPair> formals);
+    void addFunction(string retval, string id, vector<varPair> formals, bool addScope = true);
     void addWhile(int lineno);
     void addIf(int lineno);
     void addElse(int lineno);

@@ -28,11 +28,11 @@ symbolTable::symbolTable() : lineno(1), mainExists(false) {
     print_args.push_back(varPair(typeToString(types_String), string("")));
     vector<varPair> printi_args;
     printi_args.push_back(varPair(typeToString(types_Int), string("")));
-    this->addFunction(typeToString(types_Void), string("print"), print_args);
-    this->addFunction(typeToString(types_Void), string("printi"), printi_args);
+    this->addFunction(typeToString(types_Void), string("print"), print_args, false);
+    this->addFunction(typeToString(types_Void), string("printi"), printi_args, false);
 }
 
-void symbolTable::addFunction(string retval, string id, vector<varPair> formals) {
+void symbolTable::addFunction(string retval, string id, vector<varPair> formals, bool addScope) {
     if (this->existsId(id)){
         // TODOBOM: handle this
         output::errorDef(this->lineno, id);
@@ -48,13 +48,13 @@ void symbolTable::addFunction(string retval, string id, vector<varPair> formals)
     if (!this->scopes.back()->isGlobal()){
         // TODO: handle declaration not in global scope
     }
-
     this->scopes.back()->addEntry(new FunctionEntry(formals, id, retval, this->getOffset()));
-    Scope * funcScope = newScope(false);
-
-//    Adding arguments to the function's scope
-    for (vector<varPair>::iterator it = formals.begin(); it != formals.end(); ++it){
-        this->addVariable(*it);
+    if (addScope){
+        Scope * funcScope = newScope(false);
+        //    Adding arguments to the function's scope
+        for (vector<varPair>::iterator it = formals.begin(); it != formals.end(); ++it) {
+            this->addVariable(*it);
+        }
     }
 }
 
