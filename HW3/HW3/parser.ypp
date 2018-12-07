@@ -181,7 +181,8 @@ Statement: StartScope LBRACE Statements RBRACE {
 	}
 
 	| STRUCT ID LBRACE StructMemList RBRACE SC {
-
+		$$.str = string($2.str);
+		tables->addStruct($$.str, $4.func_info, $1.lineno);
 	}
 
 	| Type ID ASSIGN Exp SC {
