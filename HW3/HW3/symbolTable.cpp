@@ -136,11 +136,6 @@ void symbolTable::callFunction(string& id, vector<varPair>& args, int lineno){
         output::errorUndefFunc(lineno, id);
         exit(0);
     }
-    cout << "size: " << args.size() << endl;
-    cout << "args:" << endl;
-    for (vector<varPair>::iterator it = args.begin(); it != args.end(); ++it){
-        cout << (*it).id << " " << (*it).type << endl;
-    }
     if (!res->matchArgs(args)){
         output::errorPrototypeMismatch(lineno, id, res->getArgs());
         exit(0);
