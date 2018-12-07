@@ -285,6 +285,20 @@ Exp: Exp BINOPAS Exp {
 	| ID {
 		$$.str = $1.str;
 		$$.lineno = $1.lineno;
+		// Check if function
+		if (tables->getFunction($1.str) != NULL) {
+			$$.func_info.push_back(varPair((tables->getFunction($1.str))->getType(), $1.str));
+		}
+		// Check if variable
+		else if (tables->getVariable($1.str) != NULL) {
+			$$.func_info.push_back(varPair((tables->getVariable($1.str))->getType(), $1.str));
+		}
+		else {
+			// Not defined ...
+			errorUndef($$.lineno, $$.str);
+			exit(0);
+		}
+
 	}
 
 	| ID PERIOD ID {
