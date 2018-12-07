@@ -144,6 +144,7 @@ public:
     bool existsVariable(string& id);
     TableEntry * getEntry(string& id);
     int getOffset() {return this->offset;}
+    void incrementOffset(int delta){offset += delta;}
     bool isWhile(){return this->isWhile_;}
     bool isGlobal(){return this->isGlobal_;}
 };
@@ -155,8 +156,12 @@ private:
     int lineno;
     bool mainExists;
 
-    Scope * newScope(bool isWhile){
-        this->scopes.push_back(new Scope(this->getOffset(), isWhile));
+    Scope * newScope(bool isWhile, int initOffset = 0, bool useInitOffset = false){
+        if (useInitOffset){
+            this->scopes.push_back(new Scope(initOffset, isWhile));
+        } else{
+            this->scopes.push_back(new Scope(this->getOffset(), isWhile));
+        }
         return this->scopes.back();
     }
 

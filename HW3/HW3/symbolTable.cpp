@@ -59,10 +59,13 @@ void symbolTable::addFunction(string retval, string id, vector<varPair> formals,
 
     this->scopes.back()->addEntry(new FunctionEntry(formals, id, retval, this->getOffset()));
     if (addScope){
-        Scope * funcScope = newScope(false);
+
+
+        Scope * funcScope = newScope(false, /*TODO: get offset*/0 , true);
         //    Adding arguments to the function's scope
         for (vector<varPair>::iterator it = formals.begin(); it != formals.end(); ++it) {
             this->addVariable(*it, lineno);
+            cout << "added variable " << (*it).type << " " << (*it).id << endl;
         }
     }
 }
@@ -200,18 +203,21 @@ void symbolTable::existsMain(){
 }
 
 void symbolTable::addStruct(string& id, vector<varPair>& members, int lineno){
+    for (vector<varPair>::iterator it = members.begin(); it != members.end(); ++it){
+        cout << (*it).type << " " << (*it).id << endl;
+    }
     if (this->existsId(id)){
         // TODOBOM: handle existing identifier
         output::errorDef(this->lineno, id);
         exit(0);
     }
-
+    cout << "1" << endl;
 //    TODO: check which error should be printed if a name is used twice in a struct
     vector<string> tmp;
 
     for (vector<varPair>::iterator it = members.begin(); it != members.end(); ++it){
         // Check if already defined
-        for (vector<string>::iterator in_it = tmp.begin(); in_it != tmp.end(); ++it) {
+        for (vector<string>::iterator in_it = tmp.begin(); in_it != tmp.end(); ++in_it) {
             if ((*in_it).compare((*it).id) == 0) {
                 output::errorDef(lineno, *in_it);
                 exit(0);
@@ -219,8 +225,10 @@ void symbolTable::addStruct(string& id, vector<varPair>& members, int lineno){
         }
         tmp.push_back((*it).id);
     }
+    cout << "2" << endl;
 
     this->scopes.back()->addEntry(new StructEntry(members, id, this->getOffset()));
+    cout << "3" << endl;
 }
 
 void symbolTable::addVariable(string type, string id, int lineno){
@@ -237,6 +245,20 @@ void symbolTable::addVariable(string type, string id, int lineno){
     }
     VariableEntry * res = new VariableEntry(type, id, this->getOffset());
     this->scopes.back()->addEntry(res);
+
+    // Increment offset
+    int size = 0;
+    if (isPrimitive(id)){
+        size = 1;
+    }
+    if (getFunction(id)){
+        size = 1;
+    }
+    if (getStruct(id)){
+        size = getStruct(id)->size();
+    }
+    this->scopes.back()->incrementOffset(size);
+
 }
 
 void symbolTable::addVariable(varPair v, int lineno){
