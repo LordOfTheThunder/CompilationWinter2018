@@ -145,8 +145,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 }
 
 	| Type ID SC {
-	tables->setLine($$.lineno);
-	tables->addVariable(typeToString($1.type), $2.str, $$.lineno);
+	tables->addVariable(typeToString($1.type), $2.str, $1.lineno);
 }
 
 	| StructType ID SC {
@@ -158,9 +157,8 @@ Statement: StartScope LBRACE Statements RBRACE {
 	}
 
 	| Type ID ASSIGN Exp SC {
-		tables->setLine($$.lineno);
 		CheckCorrectTypes($1.type, $4.str, $4.type);
-		tables->addVariable(typeToString($1.type), $2.str, $$.lineno);
+		tables->addVariable(typeToString($1.type), $2.str, $4.lineno);
 	}
 
 	| StructType ID ASSIGN Exp SC {
@@ -267,6 +265,7 @@ Exp: Exp BINOPAS Exp {
 		$$.str = $1.str;
 		tables->setLine($$.lineno);
 		$$.type = types_Int;
+		$$.lineno = $1.lineno;
 	}
 
 	| NUM B {
@@ -278,6 +277,7 @@ Exp: Exp BINOPAS Exp {
 			exit(0);
 		}
 		$$.type = types_Byte;
+		$$.lineno = $1.lineno;
 	}
 
 	| STRING {
@@ -328,7 +328,7 @@ void yyerror(const char *) {
 }
 
 void CheckCorrectTypes(types _type1, string id2, types _type2) {
-		if (tables->getFunction(id2) == NULL && tables->getVariable(id2) == NULL) {
+		if (tables->getFunction(id2) == NULL && tables->getVariable(id2) == NULL && _type2 == types_Undefined) {
 			// The parameter is neither a function or a variable. ERROR!
 			errorUndef(tables->getLine(), id2);
 			exit(0);
