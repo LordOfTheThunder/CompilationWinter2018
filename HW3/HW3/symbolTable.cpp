@@ -53,11 +53,13 @@ void symbolTable::addFunction(string retval, string id, vector<varPair> formals,
     }
 
     this->scopes.back()->addEntry(new FunctionEntry(formals, id, retval, this->getOffset()));
+
     this->scopes.back()->incrementOffset(1);
+
     if (addScope){
 
-
         Scope * funcScope = newScope(false, -countSize(formals), true);
+
         //    Adding arguments to the function's scope
         for (vector<varPair>::iterator it = formals.begin(); it != formals.end(); ++it) {
             this->addVariable(*it, lineno);
@@ -219,13 +221,14 @@ void symbolTable::addStruct(string& id, vector<varPair>& members, int lineno){
         output::errorDef(this->lineno, id);
         exit(0);
     }
-//    TODO: check which error should be printed if a name is used twice in a struct
+
     vector<string> tmp;
 
     for (vector<varPair>::iterator it = members.begin(); it != members.end(); ++it){
         // Check if already defined
         for (vector<string>::iterator in_it = tmp.begin(); in_it != tmp.end(); ++in_it) {
             if ((*in_it).compare((*it).id) == 0) {
+                //    TODO: check which error should be printed if a name is used twice in a struct
                 output::errorDef(lineno, *in_it);
                 exit(0);
             }
@@ -238,32 +241,38 @@ void symbolTable::addStruct(string& id, vector<varPair>& members, int lineno){
 
 void symbolTable::addVariable(string type, string id, int lineno){
     this->lineno = lineno;
+
     if (this->existsId(id)){
         // TODOBOM: handle existing identifier
         output::errorDef(this->lineno, id);
         exit(0);
     }
+
     if (!isPrimitive(type)){
         if (!this->getStruct(type)){
             output::errorUndefStruct(this->lineno, type);
             exit(0);
         }
     }
+
     VariableEntry * res = new VariableEntry(type, id, this->getOffset());
     this->scopes.back()->addEntry(res);
 
     // Increment offset
     int size = 0;
     if (isPrimitive(type)){
+
         size = 1;
     }
     else if (getStruct(type)){
-        size = getStruct(id)->size();
+
+        size = getStruct(type)->size();
     }
     else {
         // Unreachable code - type should be either primitive or struct id
         assert(false);
     }
+
     this->scopes.back()->incrementOffset(size);
 
 }
