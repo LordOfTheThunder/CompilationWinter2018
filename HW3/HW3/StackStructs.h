@@ -35,11 +35,11 @@ public:
 };
 
 static string typeToString(types type){
-	if (type == types_Int) return string("int");
-	if (type == types_Byte) return string("byte");
-	if (type == types_Bool) return string("bool");
-	if (type == types_Void) return string("void");
-	if (type == types_String) return string("string");
+	if (type == types_Int) return string("INT");
+	if (type == types_Byte) return string("BYTE");
+	if (type == types_Bool) return string("BOOL");
+	if (type == types_Void) return string("VOID");
+	if (type == types_String) return string("STRING");
 	if (type == types_Undefined) return string("undefined");
 	else return string("None");
 }
