@@ -3,7 +3,7 @@
 
 #include <string>
 #include <iostream>
-#include <map>
+#include <vector>
 #include <cstdlib>
 
 using namespace std;
@@ -23,7 +23,8 @@ struct StackType {
 	// Information in the stack
 	string str;
 	types type;
-	StackType(types type = types_Undefined, string str = "") : type(type), str(str), lineno(1) {
+	vector<types> func_types;
+	StackType(types type = types_Undefined, string str = "") : type(type), str(str), lineno(1), func_types() {
 	}
 };
 

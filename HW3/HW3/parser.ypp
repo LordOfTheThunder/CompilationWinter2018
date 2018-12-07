@@ -57,8 +57,16 @@ Funcs: FuncDecl Funcs {
 }
 	|	/*epsilon*/ ;
 
-FuncDecl: RetType ID LPAREN Formals RPAREN LBRACE Statements RBRACE {
-	tables->addScope(tables->getLine());
+FuncDecl: FuncDecl1 FuncDecl2 {
+	tables->popScope();
+}
+
+FuncDecl1: RetType ID LPAREN Formals RPAREN {
+	tables->addFunction($1.type, $2.str, $4.func_types);
+}
+
+FuncDecl2: LBRACE Statements RBRACE {
+
 }
 
 Structs: StructsDecl Structs {
@@ -94,7 +102,6 @@ FormalsList: FormalDecl {
 	}
 
 FormalDecl: Type ID {
-	tables->addVariable($1.type, $2.str);
 	tables->setLine($$.lineno);
 }
 	| StructType ID {
