@@ -179,6 +179,7 @@ public:
 //    The following functions aren't scope-related (i.e. doesn't create a new scope)
     void addStruct(string& id, vector<varPair>& members, int lineno);
     void addVariable(string type, string id, int lineno);
+    void addFunctionArgument(string& type, string& id, int lineno);
     void addVariable(varPair v, int lineno);
 
 //    Existence checkers and validation
@@ -198,6 +199,7 @@ public:
     VariableEntry * getVariable(string& id);
     StructEntry * getStruct(string& id);
     int getLine(){return this->lineno;}
+    int countSize(vector<varPair>& types);
 
 //    Strange API utils
     void callFunction(string& id, vector<varPair>& args, int lineno);

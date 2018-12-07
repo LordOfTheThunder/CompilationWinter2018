@@ -42,7 +42,6 @@ symbolTable::symbolTable() : lineno(1), mainExists(false) {
 void symbolTable::addFunction(string retval, string id, vector<varPair> formals, int lineno, bool addScope) {
     this->lineno = lineno;
     if (this->existsId(id)){
-        // TODOBOM: handle this
         output::errorDef(this->lineno, id);
         exit(0);
     }
@@ -53,21 +52,33 @@ void symbolTable::addFunction(string retval, string id, vector<varPair> formals,
         this->mainExists = true;
     }
 
-    if (!this->scopes.back()->isGlobal()){
-        // TODO: handle declaration not in global scope
-    }
-
     this->scopes.back()->addEntry(new FunctionEntry(formals, id, retval, this->getOffset()));
     this->scopes.back()->incrementOffset(1);
     if (addScope){
 
 
-        Scope * funcScope = newScope(false, /*TODO: get offset*/0 , true);
+        Scope * funcScope = newScope(false, -countSize(formals), true);
         //    Adding arguments to the function's scope
         for (vector<varPair>::iterator it = formals.begin(); it != formals.end(); ++it) {
             this->addVariable(*it, lineno);
         }
     }
+}
+
+int symbolTable::countSize(vector<varPair>& types){
+    int size = 0;
+    for (vector<varPair>::iterator it = types.begin(); it != types.end(); ++it){
+        if (isPrimitive((*it).type)){
+            size++;
+        }
+        else if (getStruct((*it).type)){
+            size += getStruct((*it).type)->size();
+        }
+        else {
+            return -1;
+        }
+    }
+    return size;
 }
 
 void symbolTable::addWhile(){
