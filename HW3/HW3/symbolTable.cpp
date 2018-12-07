@@ -112,7 +112,7 @@ bool symbolTable::existsFunction(string& id, vector<varPair>& formals, string& r
     return false;
 }
 
-void symbolTable::callFunction(string* ret_type, string& id, vector<string>& args, int lineno){
+void symbolTable::callFunction(string& id, vector<string>& args, int lineno){
     this->lineno = lineno;
     FunctionEntry * res = getFunction(id);
     bool exists = existsId(id);
@@ -204,6 +204,9 @@ void symbolTable::addStruct(string& id, vector<varPair>& members){
         output::errorDef(this->lineno, id);
         exit(0);
     }
+
+//    TODO: check which error should be printed if a name is used twice in a struct
+//    vector<string
 
     this->scopes.back()->addEntry(new StructEntry(members, id, this->getOffset()));
 }

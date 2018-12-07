@@ -196,7 +196,7 @@ public:
     int getLine(){return this->lineno;}
 
 //    Strange API utils
-    void callFunction(string* ret_type, string& id, vector<string>& args, int lineno);
+    void callFunction(string& id, vector<string>& args, int lineno);
 
 //    Setters
     void setLine(int lineno){this->lineno = lineno;}
