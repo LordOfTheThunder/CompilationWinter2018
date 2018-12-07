@@ -58,6 +58,7 @@ void symbolTable::addFunction(string retval, string id, vector<varPair> formals,
     }
 
     this->scopes.back()->addEntry(new FunctionEntry(formals, id, retval, this->getOffset()));
+    this->scopes.back()->incrementOffset(1);
     if (addScope){
 
 
@@ -241,14 +242,15 @@ void symbolTable::addVariable(string type, string id, int lineno){
 
     // Increment offset
     int size = 0;
-    if (isPrimitive(id)){
+    if (isPrimitive(type)){
         size = 1;
     }
-    if (getFunction(id)){
-        size = 1;
-    }
-    if (getStruct(id)){
+    else if (getStruct(type)){
         size = getStruct(id)->size();
+    }
+    else {
+        // Unreachable code - type should be either primitive or struct id
+        assert(false);
     }
     this->scopes.back()->incrementOffset(size);
 
