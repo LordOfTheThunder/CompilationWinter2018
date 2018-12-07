@@ -74,18 +74,19 @@ FuncDecl2: LBRACE Statements RBRACE {
 }
 
 Structs: StructsDecl Structs {
-
+	tables->addStruct($1.str, $1.func_info);
 }
 	| /*epsilon*/ {
 
 	}
 
 StructsDecl: STRUCT ID LBRACE StructMemList RBRACE SC {
-
+	$$.str = string("struct<" + $2.str + ">");
+	$$.func_info = $4.func_info;
 }
 
 RetType: Type {
-
+	$$.type = $1.type;
 }
 	| VOID {
 		$$.type = types_Void;
@@ -110,20 +111,25 @@ FormalDecl: Type ID {
 	$$.func_info.push_back(varPair(typeToString($1.type), $2.str));
 }
 	| StructType ID {
+		tables->setLine($$.lineno);
 		$$.func_info.push_back(varPair(typeToString($1.type), $2.str));
 	}
 
 
 StructMemList: StructMem {
-
+	tables->setLine($$.lineno);
+	$$.func_info.push_back(varPair(typeToString($1.type), $1.str));
 }
 	| StructMem StructMemList {
-
+		tables->setLine($$.lineno);
+		$$.func_info.push_back(varPair(typeToString($1.type), $1.str));
 	}
 
 StructMem: Type ID SC {
-
-	}
+	tables->setLine($$.lineno);
+	$$.type = $1.type;
+	$$.str = $2.str;
+}
 
 Statements: Statement {
 
