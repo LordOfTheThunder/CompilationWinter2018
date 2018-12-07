@@ -106,20 +106,20 @@ Formals: FormalsList {
 FormalsList: FormalDecl {
 	if ($1.struct_type != "") {
 		// we have a struct type
-		$$.func_info.push_back(varPair($1.struct_type, $1.str));
+		$$.func_info.insert($$.func_info.begin(),varPair($1.struct_type, $1.str));
 	}
 	else {
-		$$.func_info.push_back(varPair(typeToString($1.type), $1.str));
+		$$.func_info.insert($$.func_info.begin(),varPair(typeToString($1.type), $1.str));
 	}
 }
 	| FormalDecl COMMA FormalsList {
 		$$.func_info = $3.func_info;
 		if ($1.struct_type != "") {
 			// we have a struct type
-			$$.func_info.push_back(varPair($1.struct_type, $1.str));
+			$$.func_info.insert($$.func_info.begin(),varPair($1.struct_type, $1.str));
 		}
 		else {
-			$$.func_info.push_back(varPair(typeToString($1.type), $1.str));
+			$$.func_info.insert($$.func_info.begin(),varPair(typeToString($1.type), $1.str));
 		}
 	}
 
@@ -137,12 +137,12 @@ FormalDecl: Type ID {
 
 StructMemList: StructMem {
 	tables->setLine($$.lineno);
-	$$.func_info.push_back(varPair(typeToString($1.type), $1.str));
+	$$.func_info.insert($$.func_info.begin(),varPair(typeToString($1.type), $1.str));
 }
 	| StructMem StructMemList {
 		tables->setLine($$.lineno);
 		$$.func_info = $2.func_info;
-		$$.func_info.push_back(varPair(typeToString($1.type), $1.str));
+		$$.func_info.insert($$.func_info.begin(),varPair(typeToString($1.type), $1.str));
 	}
 
 StructMem: Type ID SC {
@@ -288,11 +288,11 @@ Exp: Exp BINOPAS Exp {
 		$$.lineno = $1.lineno;
 		// Check if function
 		if (tables->getFunction($1.str) != NULL) {
-			$$.func_info.push_back(varPair((tables->getFunction($1.str))->getType(), $1.str));
+			$$.func_info.insert($$.func_info.begin(),varPair((tables->getFunction($1.str))->getType(), $1.str));
 		}
 		// Check if variable
 		else if (tables->getVariable($1.str) != NULL) {
-			$$.func_info.push_back(varPair((tables->getVariable($1.str))->getType(), $1.str));
+			$$.func_info.insert($$.func_info.begin(),varPair((tables->getVariable($1.str))->getType(), $1.str));
 		}
 		else {
 			// Not defined ...
@@ -316,7 +316,7 @@ Exp: Exp BINOPAS Exp {
 		tables->setLine($$.lineno);
 		$$.type = types_Int;
 		$$.lineno = $1.lineno;
-		$$.func_info.push_back(varPair(typeToString(types_Int), $1.str));
+		$$.func_info.insert($$.func_info.begin(),varPair(typeToString(types_Int), $1.str));
 	}
 
 	| NUM B {
@@ -329,7 +329,7 @@ Exp: Exp BINOPAS Exp {
 		}
 		$$.type = types_Byte;
 		$$.lineno = $1.lineno;
-		$$.func_info.push_back(varPair(typeToString(types_Byte), $1.str));
+		$$.func_info.insert($$.func_info.begin(),varPair(typeToString(types_Byte), $1.str));
 	}
 
 	| STRING {
@@ -337,21 +337,21 @@ Exp: Exp BINOPAS Exp {
 		$$.type = types_String;
 		$$.lineno = $1.lineno;
 		tables->setLine($$.lineno);
-		$$.func_info.push_back(varPair(typeToString(types_String), $1.str));
+		$$.func_info.insert($$.func_info.begin(),varPair(typeToString(types_String), $1.str));
 	}
 
 	| TRUE {
 		$$.str = $1.str;
 		$$.type = types_Bool;
 		$$.lineno = $1.lineno;
-		$$.func_info.push_back(varPair(typeToString(types_Bool), $1.str));
+		$$.func_info.insert($$.func_info.begin(),varPair(typeToString(types_Bool), $1.str));
 	}
 
 	| FALSE {
 		$$.str = $1.str;
 		$$.type = types_Bool;
 		$$.lineno = $1.lineno;
-		$$.func_info.push_back(varPair(typeToString(types_Bool), $1.str));
+		$$.func_info.insert($$.func_info.begin(),varPair(typeToString(types_Bool), $1.str));
 	}
 
 	| NOT Exp {
