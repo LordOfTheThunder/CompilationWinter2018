@@ -165,17 +165,17 @@ public:
     symbolTable();
     ~symbolTable();
 //    The following functions are scope-related functions (i.e. create a new scope)
-    void addFunction(string retval, string id, vector<varPair> formals, bool addScope = true);
-    void addWhile(int lineno);
-    void addIf(int lineno);
-    void addElse(int lineno);
-    void addScope(int lineno);
+    void addFunction(string retval, string id, vector<varPair> formals, int lineno = 0, bool addScope = true);
+    void addWhile();
+    void addIf();
+    void addElse();
+    void addScope();
     void popScope();
 
 //    The following functions aren't scope-related (i.e. doesn't create a new scope)
     void addStruct(string& id, vector<varPair>& members, int lineno);
-    void addVariable(string type, string id);
-    void addVariable(varPair v);
+    void addVariable(string type, string id, int lineno);
+    void addVariable(varPair v, int lineno);
 
 //    Existence checkers and validation
     bool existsId(string& id);
@@ -183,8 +183,8 @@ public:
     bool existsFunction(string& id, vector<varPair>& formals, string& retval);
     bool existsStruct(string& id, vector<varPair>& members);
     void existsMain();
-    void isBreakAllowed();
-    void isContinueAllowed();
+    void isBreakAllowed(int lineno);
+    void isContinueAllowed(int lineno);
     void validateByte(string& value);
 
 //    Getters

@@ -38,7 +38,8 @@ symbolTable::symbolTable() : lineno(1), mainExists(false) {
     this->addFunction(typeToString(types_Void), string("printi"), printi_args, false);
 }
 
-void symbolTable::addFunction(string retval, string id, vector<varPair> formals, bool addScope) {
+void symbolTable::addFunction(string retval, string id, vector<varPair> formals, int lineno, bool addScope) {
+    this->lineno = lineno;
     if (this->existsId(id)){
         // TODOBOM: handle this
         output::errorDef(this->lineno, id);
@@ -59,28 +60,24 @@ void symbolTable::addFunction(string retval, string id, vector<varPair> formals,
         Scope * funcScope = newScope(false);
         //    Adding arguments to the function's scope
         for (vector<varPair>::iterator it = formals.begin(); it != formals.end(); ++it) {
-            this->addVariable(*it);
+            this->addVariable(*it, lineno);
         }
     }
 }
 
-void symbolTable::addWhile(int lineno){
-    this->lineno = lineno;
+void symbolTable::addWhile(){
     newScope(true);
 }
 
-void symbolTable::addIf(int lineno){
-    this->lineno = lineno;
+void symbolTable::addIf(){
     newScope(false);
 }
 
-void symbolTable::addElse(int lineno){
-    this->lineno = lineno;
+void symbolTable::addElse(){
     newScope(false);
 }
 
-void symbolTable::addScope(int lineno){
-    this->lineno = lineno;
+void symbolTable::addScope(){
     newScope(false);
 }
 
@@ -178,15 +175,17 @@ void symbolTable::popScope(){
     this->scopes.pop_back();
 }
 
-void symbolTable::isBreakAllowed(){
+void symbolTable::isBreakAllowed(int lineno){
     assert(!this->scopes.empty());
+    this->lineno = lineno;
     if (!(this->scopes.back()->isWhile())){
         output::errorUnexpectedBreak(this->lineno);
     }
 }
 
-void symbolTable::isContinueAllowed(){
+void symbolTable::isContinueAllowed(int lineno){
     assert(!this->scopes.empty());
+    this->lineno = lineno;
     if (!(this->scopes.back()->isWhile())){
         output::errorUnexpectedContinue(this->lineno);
     }
@@ -222,7 +221,8 @@ void symbolTable::addStruct(string& id, vector<varPair>& members, int lineno){
     this->scopes.back()->addEntry(new StructEntry(members, id, this->getOffset()));
 }
 
-void symbolTable::addVariable(string type, string id){
+void symbolTable::addVariable(string type, string id, int lineno){
+    this->lineno = lineno;
     if (this->existsId(id)){
         // TODOBOM: handle existing identifier
         output::errorDef(this->lineno, id);
@@ -233,8 +233,8 @@ void symbolTable::addVariable(string type, string id){
     this->scopes.back()->addEntry(res);
 }
 
-void symbolTable::addVariable(varPair v){
-    this->addVariable(v.type, v.id);
+void symbolTable::addVariable(varPair v, int lineno){
+    this->addVariable(v.type, v.id, lineno);
 }
 
 void Scope::addEntry(TableEntry * ent){
