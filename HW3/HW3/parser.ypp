@@ -86,7 +86,7 @@ Structs: StructsDecl Structs {
 	}
 
 StructsDecl: STRUCT ID LBRACE StructMemList RBRACE SC {
-	$$.str = string("struct<" + $2.str + ">");
+	$$.str = string("struct " + $2.str);
 	$$.func_info = $4.func_info;
 	tables->addStruct($$.str, $$.func_info, $1.lineno);
 }
