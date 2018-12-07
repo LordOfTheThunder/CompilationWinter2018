@@ -128,6 +128,7 @@ StructMemList: StructMem {
 }
 	| StructMem StructMemList {
 		tables->setLine($$.lineno);
+		$$.func_info = $2.func_info;
 		$$.func_info.push_back(varPair(typeToString($1.type), $1.str));
 	}
 
