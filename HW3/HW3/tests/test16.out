@@ -3,5 +3,5 @@ p INT 0
 ---end scope---
 print (STRING)->VOID 1
 printi (INT)->VOID 2
-struct t {INT t,INT x,BOOL s,INT p}
+struct t {INT p,BOOL s,INT x,INT t}
 func ()->VOID 3

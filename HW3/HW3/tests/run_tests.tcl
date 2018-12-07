@@ -10,7 +10,7 @@ proc comp_file {file1 file2} {
     }
     return $equal
 }
-set test_files [glob *.in]
+set test_files [glob test*.in]
 exec make
 foreach file $test_files {
 	puts "-I- sourcing $file"
