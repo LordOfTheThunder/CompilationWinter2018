@@ -159,9 +159,15 @@ Statement: StartScope LBRACE Statements RBRACE {
 	| Type ID ASSIGN Exp SC {
 		tables->setLine($$.lineno);
 
+		if (tables->getFunction($4.str) == NULL && tables->getVariable($4.str) == NULL) {
+			// The parameter is neither a function or a variable. ERROR!
+			errorUndef(tables->getLine(), $4.str);
+			exit(0);
+		}
+
 		string type1 = typeToString($1.type);
 		string type2 = typeToString($4.type);
-		if (type2 == "undefined") {
+		if (tables->getVariable($4.str) != NULL && type2 == "undefined") {
 			// Try to get the type from the table
 			type2 = (tables->getVariable($4.str))->getType();
 		}
