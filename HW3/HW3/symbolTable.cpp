@@ -18,6 +18,12 @@ symbolTable::~symbolTable() {
 }
 
 Scope::~Scope(){
+    output::endScope();
+
+    for (vector<TableEntry*>::iterator it = this->entries.begin(); it != this->entries.end(); ++it){
+        (*it)->print();
+    }
+
     clearVectorOfPointers(this->entries);
 }
 

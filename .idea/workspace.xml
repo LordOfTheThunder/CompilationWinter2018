@@ -11,8 +11,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2b6a5383-20c6-47f8-99cd-7269f0f9f4ae" name="Default Changelist" comment="">
+    <list default="true" id="2b6a5383-20c6-47f8-99cd-7269f0f9f4ae" name="Default Changelist" comment="redoing types and arguments push">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HW3/HW3/symbolTable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/HW3/HW3/symbolTable.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HW3/HW3/symbolTable.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/HW3/HW3/symbolTable.hpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,8 +32,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1486">
-              <caret line="208" column="1" lean-forward="true" selection-start-line="208" selection-start-column="1" selection-end-line="208" selection-end-column="1" />
+            <state relative-caret-position="291">
+              <caret line="22" column="38" selection-start-line="22" selection-start-column="38" selection-end-line="22" selection-end-column="38" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
                 <element signature="e#105#117#0" expanded="true" />
@@ -44,11 +46,23 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3850">
-              <caret line="154" column="29" selection-start-line="154" selection-start-column="29" selection-end-line="154" selection-end-column="29" />
+            <state relative-caret-position="197">
+              <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
               <folding>
                 <element signature="e#13#30#0" expanded="true" />
+                <element signature="e#862#1558#1" />
+                <element signature="e#1569#1718#0" />
+                <element signature="e#1812#2208#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HW3/HW3/output.hpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="137">
+              <caret line="9" column="9" selection-start-line="9" selection-start-column="9" selection-end-line="9" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -56,8 +70,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/HW3/HW3/StackStructs.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="242">
-              <caret line="13" column="14" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="14" />
+            <state relative-caret-position="914">
+              <caret line="48" column="15" lean-forward="true" selection-start-line="48" selection-start-column="15" selection-end-line="48" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -66,23 +80,7 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>template</find>
-      <find>isNullable</find>
-      <find>fol</find>
-      <find>rangeFirst</find>
-      <find>nir</find>
-      <find>getSelect</find>
-      <find>bitch</find>
-      <find>type</find>
-      <find>func</find>
-      <find>assert</find>
-      <find>existsStruct</find>
-      <find>existsMain</find>
-      <find>existsFunction</find>
-      <find>addStruct</find>
-      <find>addf</find>
       <find>existsId</find>
-      <find>addVariable</find>
       <find>FunctionEntry</find>
       <find>this-&gt;scopes</find>
       <find>newscope</find>
@@ -91,11 +89,27 @@
       <find>exists</find>
       <find>StructEntry</find>
       <find>isBreakAllowed</find>
-      <find>addv</find>
       <find>existsf</find>
       <find>existsVariable</find>
       <find>getVariable</find>
       <find>line</find>
+      <find>popsc</find>
+      <find>main</find>
+      <find>addvar</find>
+      <find>adde</find>
+      <find>varPair</find>
+      <find>StructMember</find>
+      <find>Formal</find>
+      <find>addv</find>
+      <find>addVariable</find>
+      <find>(&quot;.</find>
+      <find>(&quot;.+&quot;)</find>
+      <find>types</find>
+      <find>existsFunction</find>
+      <find>addFunction</find>
+      <find>addf</find>
+      <find>iswhil</find>
+      <find>= true</find>
     </findStrings>
     <replaceStrings>
       <replace>original</replace>
@@ -103,6 +117,8 @@
       <replace>this-&gt;scopes-&gt;</replace>
       <replace>lino</replace>
       <replace>lineno</replace>
+      <replace>string(\1)</replace>
+      <replace>string($1)</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -116,10 +132,10 @@
         <option value="$PROJECT_DIR$/HW2/HW2/nir" />
         <option value="$PROJECT_DIR$/HW2/hw2.cpp" />
         <option value="$PROJECT_DIR$/HW2/HW2/our_select" />
-        <option value="$PROJECT_DIR$/HW3/HW3/StackStructs.h" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/HW3/HW3/symbolTable.hpp" />
+        <option value="$PROJECT_DIR$/HW3/HW3/StackStructs.h" />
         <option value="$PROJECT_DIR$/HW3/HW3/symbolTable.cpp" />
+        <option value="$PROJECT_DIR$/HW3/HW3/symbolTable.hpp" />
       </list>
     </option>
   </component>
@@ -216,7 +232,7 @@
       <workItem from="1543521086997" duration="6000" />
       <workItem from="1543521126686" duration="39000" />
       <workItem from="1543523486220" duration="24373000" />
-      <workItem from="1544028917959" duration="36677000" />
+      <workItem from="1544028917959" duration="47077000" />
     </task>
     <task id="LOCAL-00001" summary="added implementation of follow set">
       <created>1543534503591</created>
@@ -330,11 +346,32 @@
       <option name="project" value="LOCAL" />
       <updated>1544106273693</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="fixed main existence checker">
+      <created>1544174838523</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1544174838523</updated>
+    </task>
+    <task id="LOCAL-00018" summary="redoing types and arguments push">
+      <created>1544182400517</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1544182400517</updated>
+    </task>
+    <task id="LOCAL-00019" summary="fixed print function error">
+      <created>1544184683472</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1544184683472</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="64957000" />
+    <option name="totallyTimeSpent" value="75357000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -347,9 +384,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49919224" visible="true" weight="0.22547974" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49919224" visible="true" weight="0.10074627" />
       <window_info id="Structure" order="1" sideWeight="0.50080776" side_tool="true" weight="0.09541578" />
       <window_info id="Favorites" order="2" sideWeight="0.50151974" side_tool="true" weight="0.09541578" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -360,10 +396,10 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.11484291" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.28710726" />
+      <window_info anchor="bottom" id="Version Control" order="8" visible="true" weight="0.19176598" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="11" visible="true" weight="0.23618636" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.23618636" />
       <window_info anchor="bottom" id="CMake" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -371,21 +407,21 @@
       <window_info anchor="right" id="Database" order="3" />
     </layout>
     <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.09541578" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49919224" visible="true" weight="0.22547974" />
+      <window_info id="Structure" order="1" sideWeight="0.50080776" side_tool="true" weight="0.09541578" />
+      <window_info id="Favorites" order="2" sideWeight="0.50151974" side_tool="true" weight="0.09541578" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3206934" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.16143012" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.11484291" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="8" visible="true" weight="0.28710726" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="11" weight="0.47995666" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.23618636" />
       <window_info anchor="bottom" id="CMake" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -439,7 +475,10 @@
     <MESSAGE value="added errors checks" />
     <MESSAGE value="added destructors of symbolTable and Scope" />
     <MESSAGE value="added more implementations" />
-    <option name="LAST_COMMIT_MESSAGE" value="added more implementations" />
+    <MESSAGE value="fixed main existence checker" />
+    <MESSAGE value="redoing types and arguments push" />
+    <MESSAGE value="fixed print function error" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed print function error" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
@@ -581,22 +620,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/HW3/HW3/StackStructs.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="13" column="14" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="14" />
+        <state relative-caret-position="914">
+          <caret line="48" column="15" lean-forward="true" selection-start-line="48" selection-start-column="15" selection-end-line="48" selection-end-column="15" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/HW3/HW3/output.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="556">
-          <caret line="29" column="9" selection-start-line="29" selection-start-column="9" selection-end-line="29" selection-end-column="9" />
+        <state relative-caret-position="137">
+          <caret line="9" column="9" selection-start-line="9" selection-start-column="9" selection-end-line="9" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1486">
-          <caret line="208" column="1" lean-forward="true" selection-start-line="208" selection-start-column="1" selection-end-line="208" selection-end-column="1" />
+        <state relative-caret-position="291">
+          <caret line="22" column="38" selection-start-line="22" selection-start-column="38" selection-end-line="22" selection-end-column="38" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
             <element signature="e#105#117#0" expanded="true" />
@@ -607,10 +646,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3850">
-          <caret line="154" column="29" selection-start-line="154" selection-start-column="29" selection-end-line="154" selection-end-column="29" />
+        <state relative-caret-position="197">
+          <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
           <folding>
             <element signature="e#13#30#0" expanded="true" />
+            <element signature="e#862#1558#1" />
+            <element signature="e#1569#1718#0" />
+            <element signature="e#1812#2208#0" />
           </folding>
         </state>
       </provider>
