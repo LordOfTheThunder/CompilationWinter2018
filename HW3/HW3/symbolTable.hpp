@@ -75,7 +75,6 @@ class FunctionEntry : public TableEntry{
 private:
     vector<varPair> formals;
     vector<string> args;
-    string id;
     string type;
 
 public:
