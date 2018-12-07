@@ -106,19 +106,22 @@ Formals: FormalsList {
 	}
 
 FormalsList: FormalDecl {
-
+	$$.func_info.push_back(varPair(typeToString($1.type), $1.str));
 }
 	| FormalDecl COMMA FormalsList {
-
+		$$.func_info = $3.func_info;
+		$$.func_info.push_back(varPair(typeToString($1.type), $1.str));
 	}
 
 FormalDecl: Type ID {
 	tables->setLine($$.lineno);
-	$$.func_info.push_back(varPair(typeToString($1.type), $2.str));
+	$$.type = $1.type;
+	$$.str = $2.str;
 }
 	| StructType ID {
+		$$.type = $1.type;
+		$$.str = $2.str;
 		tables->setLine($$.lineno);
-		$$.func_info.push_back(varPair(typeToString($1.type), $2.str));
 	}
 
 
@@ -172,6 +175,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 	}
 
 	| Type ID ASSIGN Exp SC {
+		tables->setLine($1.lineno);
 		CheckCorrectTypes($1.type, $4.str, $4.type);
 		tables->addVariable(typeToString($1.type), $2.str, $4.lineno);
 	}
@@ -231,11 +235,12 @@ Statement: StartScope LBRACE Statements RBRACE {
 
 Call: ID LPAREN ExpList RPAREN {
 	$$.str = $1.str;
-	// tables->callFunction($1.str, $3.func_info, $1.lineno);
+	tables->callFunction($1.str, $3.func_info, $1.lineno);
 }
 	| ID LPAREN RPAREN {
 		$$.str = $1.str;
-		// tables->callFunction($1.str, vector<varPair>(), $1.lineno);
+		vector<varPair> t;
+		tables->callFunction($1.str, t, $1.lineno);
 	}
 
 ExpList: Exp {

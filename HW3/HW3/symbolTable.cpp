@@ -65,7 +65,6 @@ void symbolTable::addFunction(string retval, string id, vector<varPair> formals,
         //    Adding arguments to the function's scope
         for (vector<varPair>::iterator it = formals.begin(); it != formals.end(); ++it) {
             this->addVariable(*it, lineno);
-            cout << "added variable " << (*it).type << " " << (*it).id << endl;
         }
     }
 }
