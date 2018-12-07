@@ -246,6 +246,7 @@ void symbolTable::addVariable(string type, string id, int lineno){
     if (!isPrimitive(type)){
         if (!this->getStruct(type)){
             output::errorUndefStruct(this->lineno, type);
+            exit(0);
         }
     }
     VariableEntry * res = new VariableEntry(type, id, this->getOffset());
