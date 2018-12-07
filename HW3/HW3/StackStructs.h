@@ -45,11 +45,11 @@ static string typeToString(types type){
 }
 
 static types stringToType(string type){
-	if (type == "int") return types_Int;
-	if (type == "byte") return types_Byte;
-	if (type == "bool") return types_Bool;
-	if (type == "void") return types_Void;
-	if (type == "string") return types_String;
+	if (type == "INT") return types_Int;
+	if (type == "BYTE") return types_Byte;
+	if (type == "BOOL") return types_Bool;
+	if (type == "VOID") return types_Void;
+	if (type == "STRING") return types_String;
 	return types_Undefined;
 }
 
