@@ -1,0 +1,6 @@
+struct potato {
+	int x;
+};
+void TestStructParami(struct potato t) {
+	int s;
+}
