@@ -86,9 +86,8 @@ Structs: StructsDecl Structs {
 	}
 
 StructsDecl: STRUCT ID LBRACE StructMemList RBRACE SC {
-	$$.str = string("struct " + $2.str);
-	$$.func_info = $4.func_info;
-	tables->addStruct($$.str, $$.func_info, $1.lineno);
+	$$.str = string($2.str);
+	tables->addStruct($$.str, $4.func_info, $1.lineno);
 }
 
 RetType: Type {
@@ -99,18 +98,29 @@ RetType: Type {
 	}
 
 Formals: FormalsList {
-
 }
 	| /*epsilon*/ {
 
 	}
 
 FormalsList: FormalDecl {
-	$$.func_info.push_back(varPair(typeToString($1.type), $1.str));
+	if ($1.struct_type != "") {
+		// we have a struct type
+		$$.func_info.push_back(varPair($1.struct_type, $1.str));
+	}
+	else {
+		$$.func_info.push_back(varPair(typeToString($1.type), $1.str));
+	}
 }
 	| FormalDecl COMMA FormalsList {
 		$$.func_info = $3.func_info;
-		$$.func_info.push_back(varPair(typeToString($1.type), $1.str));
+		if ($1.struct_type != "") {
+			// we have a struct type
+			$$.func_info.push_back(varPair($1.struct_type, $1.str));
+		}
+		else {
+			$$.func_info.push_back(varPair(typeToString($1.type), $1.str));
+		}
 	}
 
 FormalDecl: Type ID {
@@ -119,8 +129,8 @@ FormalDecl: Type ID {
 	$$.str = $2.str;
 }
 	| StructType ID {
-		$$.type = $1.type;
 		$$.str = $2.str;
+		$$.struct_type = $1.str;
 		tables->setLine($$.lineno);
 	}
 
@@ -263,7 +273,7 @@ Type: INT {
 	}
 
 StructType: STRUCT ID {
-
+	$$.str = $2.str;
 }
 
 Exp: Exp BINOPAS Exp {
