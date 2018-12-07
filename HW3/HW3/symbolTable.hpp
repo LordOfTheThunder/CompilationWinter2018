@@ -26,7 +26,11 @@ public:
     VariableEntry(string& type, string& id, int offset) : TableEntry(id, offset), type(type) {}
     string& getType(){return type;}
     void print(){
-        output::printID(id, offset, type);
+        if (isPrimitive(type)){
+            output::printID(id, offset, type);
+        } else{
+            output::printID(id, offset, "struct " + type);
+        }
     }
 };
 
@@ -99,6 +103,11 @@ public:
 
         for (int i = 0; i < args.size(); i++){
             if (formals[i] != rhs[i]){
+                if ((formals[i].type.compare(typeToString(types_Int)) == 0) &&
+                    (rhs[i].type.compare(typeToString(types_Byte)) == 0)){
+                    // Allowing byte to int casting
+                    continue;
+                }
                 return false;
             }
         }
