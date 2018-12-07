@@ -165,8 +165,10 @@ void symbolTable::isContinueAllowed(){
     }
 }
 
-bool symbolTable::existsMain(){
-    return this->mainExists;
+void symbolTable::existsMain(){
+    if (!this->mainExists){
+        output::errorMainMissing();
+    }
 }
 
 void symbolTable::addStruct(string& id, vector<types>& members){

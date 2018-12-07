@@ -150,7 +150,7 @@ public:
     bool existsVariable(string& id);
     bool existsFunction(string& id, vector<types> formals, types retval);
     bool existsStruct(string& id, vector<types>& members);
-    bool existsMain();
+    void existsMain();
     void isBreakAllowed();
     void isContinueAllowed();
     void validateByte(string& value);
