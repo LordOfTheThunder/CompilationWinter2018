@@ -198,7 +198,7 @@ void symbolTable::existsMain(){
     }
 }
 
-void symbolTable::addStruct(string& id, vector<varPair>& members){
+void symbolTable::addStruct(string& id, vector<varPair>& members, int lineno){
     if (this->existsId(id)){
         // TODOBOM: handle existing identifier
         output::errorDef(this->lineno, id);
@@ -206,7 +206,18 @@ void symbolTable::addStruct(string& id, vector<varPair>& members){
     }
 
 //    TODO: check which error should be printed if a name is used twice in a struct
-//    vector<string
+    vector<string> tmp;
+
+    for (vector<varPair>::iterator it = members.begin(); it != members.end(); ++it){
+        // Check if already defined
+        for (vector<string>::iterator in_it = tmp.begin(); in_it != tmp.end(); ++it) {
+            if ((*in_it).compare((*it).id) == 0) {
+                output::errorDef(lineno, *in_it);
+                exit(0);
+            }
+        }
+        tmp.push_back((*it).id);
+    }
 
     this->scopes.back()->addEntry(new StructEntry(members, id, this->getOffset()));
 }

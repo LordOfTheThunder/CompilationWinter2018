@@ -173,7 +173,7 @@ public:
     void popScope();
 
 //    The following functions aren't scope-related (i.e. doesn't create a new scope)
-    void addStruct(string& id, vector<varPair>& members);
+    void addStruct(string& id, vector<varPair>& members, int lineno);
     void addVariable(string type, string id);
     void addVariable(varPair v);
 
