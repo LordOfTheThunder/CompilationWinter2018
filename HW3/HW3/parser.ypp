@@ -60,15 +60,23 @@ Funcs: FuncDecl Funcs {
 	|	/*epsilon*/ ;
 
 FuncDecl: FuncDecl1 FuncDecl2 {
+	if ($2.ret_type != types_Undefined && $1.type != $2.ret_type) {
+		// return type is different from function type
+		errorMismatch($2.lineno);
+		exit(0);
+	}
 	tables->popScope();
 }
 
 FuncDecl1: RetType ID LPAREN Formals RPAREN {
 	tables->addFunction(typeToString($1.type), $2.str, $4.func_info, $1.lineno);
+	$$.type = $1.type;
+	$$.lineno = $1.lineno;
 }
 
 FuncDecl2: LBRACE Statements RBRACE {
-
+	$$.ret_type = $2.ret_type;
+	$$.lineno = $2.lineno;
 }
 
 Structs: StructsDecl Structs {
@@ -130,10 +138,16 @@ StructMem: Type ID SC {
 }
 
 Statements: Statement {
-
+	if ($1.ret_type != types_Undefined) {
+		$$.ret_type = $1.ret_type;
+	}
+	$$.lineno = $1.lineno;
 }
 	| Statements Statement {
-
+		if ($2.ret_type != types_Undefined) {
+			$$.ret_type = $2.ret_type;
+		}
+		$$.lineno = $2.lineno;
 	}
 
 StartScope: /*epsilon*/ {
@@ -189,7 +203,8 @@ Statement: StartScope LBRACE Statements RBRACE {
 	}
 
 	| RETURN Exp SC {
-
+		$$.ret_type = $2.type;
+		$$.lineno = $1.lineno;
 	}
 
 	| IF LPAREN Exp RPAREN Statement {
@@ -215,9 +230,11 @@ Statement: StartScope LBRACE Statements RBRACE {
 
 Call: ID LPAREN ExpList RPAREN {
 	$$.str = $1.str;
+	// tables->callFunction($1.str, $3.func_info, $1.lineno);
 }
 	| ID LPAREN RPAREN {
 		$$.str = $1.str;
+		// tables->callFunction($1.str, vector<varPair>(), $1.lineno);
 	}
 
 ExpList: Exp {
@@ -251,6 +268,7 @@ Exp: Exp BINOPAS Exp {
 
 	| ID {
 		$$.str = $1.str;
+		$$.lineno = $1.lineno;
 	}
 
 	| ID PERIOD ID {
@@ -259,6 +277,7 @@ Exp: Exp BINOPAS Exp {
 
 	| Call {
 		$$.str = $1.str;
+		$$.lineno = $1.lineno;
 	}
 
 	| NUM {
@@ -282,18 +301,21 @@ Exp: Exp BINOPAS Exp {
 
 	| STRING {
 		$$.str = $1.str;
-		tables->setLine($$.lineno);
 		$$.type = types_String;
+		$$.lineno = $1.lineno;
+		tables->setLine($$.lineno);
 	}
 
 	| TRUE {
 		$$.str = $1.str;
 		$$.type = types_Bool;
+		$$.lineno = $1.lineno;
 	}
 
 	| FALSE {
 		$$.str = $1.str;
 		$$.type = types_Bool;
+		$$.lineno = $1.lineno;
 	}
 
 	| NOT Exp {

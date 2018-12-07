@@ -69,8 +69,9 @@ struct StackType {
 	string str;
 	types type;
 	vector<varPair> func_info;
+	types ret_type;
 	StackType(types type = types_Undefined, string str = "") : type(type), str(str), lineno(1), func_info() {
-
+		ret_type = types_Undefined;
 	}
 };
 
