@@ -56,6 +56,7 @@ void symbolTable::addFunction(string retval, string id, vector<varPair> formals,
     if (!this->scopes.back()->isGlobal()){
         // TODO: handle declaration not in global scope
     }
+
     this->scopes.back()->addEntry(new FunctionEntry(formals, id, retval, this->getOffset()));
     if (addScope){
         Scope * funcScope = newScope(false);
@@ -110,7 +111,7 @@ bool symbolTable::existsFunction(string& id, vector<varPair>& formals, string& r
     return false;
 }
 
-void symbolTable::callFunction(string& id, vector<string>& args, int lineno){
+void symbolTable::callFunction(string& id, vector<varPair>& args, int lineno){
     this->lineno = lineno;
     FunctionEntry * res = getFunction(id);
     bool exists = existsId(id);
@@ -229,7 +230,11 @@ void symbolTable::addVariable(string type, string id, int lineno){
         output::errorDef(this->lineno, id);
         exit(0);
     }
-
+    if (!isPrimitive(type)){
+        if (!this->getStruct(type)){
+            output::errorUndefStruct(this->lineno, type);
+        }
+    }
     VariableEntry * res = new VariableEntry(type, id, this->getOffset());
     this->scopes.back()->addEntry(res);
 }

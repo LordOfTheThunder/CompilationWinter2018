@@ -34,6 +34,15 @@ public:
     }
 };
 
+static bool isPrimitive(string& type){
+    // TODO: implement
+    return ((type.compare(string("INT")) == 0) ||
+            (type.compare(string("BYTE")) == 0) ||
+            (type.compare(string("BOOL")) == 0) ||
+            (type.compare(string("VOID")) == 0) ||
+            (type.compare(string("STRING")) == 0));
+}
+
 static string typeToString(types type){
 	if (type == types_Int) return string("INT");
 	if (type == types_Byte) return string("BYTE");

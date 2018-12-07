@@ -92,13 +92,13 @@ public:
         output::printID(id, offset, output::makeFunctionType(type, args));
     }
 
-    bool matchArgs(vector<string>& rhs){
+    bool matchArgs(vector<varPair>& rhs){
         if (rhs.size() != args.size()){
             return false;
         }
 
         for (int i = 0; i < args.size(); i++){
-            if (args[i].compare(rhs[i]) != 0){
+            if (formals[i] != rhs[i]){
                 return false;
             }
         }
@@ -195,7 +195,7 @@ public:
     int getLine(){return this->lineno;}
 
 //    Strange API utils
-    void callFunction(string& id, vector<string>& args, int lineno);
+    void callFunction(string& id, vector<varPair>& args, int lineno);
 
 //    Setters
     void setLine(int lineno){this->lineno = lineno;}
