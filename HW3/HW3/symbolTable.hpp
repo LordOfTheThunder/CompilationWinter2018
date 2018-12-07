@@ -5,12 +5,13 @@
 #include "output.hpp"
 
 class TableEntry{
+
 protected:
     string id;
     int offset;
 
 public:
-    TableEntry(string& id, int offset) : id(id), offset(offset){}
+    TableEntry(string& id, int offset) : id(id), offset(offset) {}
     string& getId(){return this->id;}
     int getOffset(){return this->offset;}
     virtual void print() {}
@@ -87,8 +88,22 @@ public:
     string getType(){return this->type;}
     string& getId(){return this->id;}
 
+    vector<string>& getArgs() {return args;}
     void print(){
         output::printID(id, offset, output::makeFunctionType(type, args));
+    }
+
+    bool matchArgs(vector<string>& rhs){
+        if (rhs.size() != args.size()){
+            return false;
+        }
+
+        for (int i = 0; i < args.size(); i++){
+            if (args[i].compare(rhs[i]) != 0){
+                return false;
+            }
+        }
+        return true;
     }
 
     bool operator==(const FunctionEntry& rhs) const {
@@ -165,7 +180,7 @@ public:
 //    Existence checkers and validation
     bool existsId(string& id);
     bool existsVariable(string& id);
-    bool existsFunction(string& id, vector<varPair> formals, string& retval);
+    bool existsFunction(string& id, vector<varPair>& formals, string& retval);
     bool existsStruct(string& id, vector<varPair>& members);
     void existsMain();
     void isBreakAllowed();
@@ -174,10 +189,14 @@ public:
 
 //    Getters
     int getOffset();
+    TableEntry * getEntry(string& id);
     FunctionEntry * getFunction(string& id);
     VariableEntry * getVariable(string& id);
     StructEntry * getStruct(string& id);
     int getLine(){return this->lineno;}
+
+//    Strange API utils
+    void callFunction(string* ret_type, string& id, vector<string>& args, int lineno);
 
 //    Setters
     void setLine(int lineno){this->lineno = lineno;}

@@ -102,7 +102,7 @@ bool symbolTable::existsVariable(string& id){
     return false;
 }
 
-bool symbolTable::existsFunction(string& id, vector<varPair> formals, string& retval){
+bool symbolTable::existsFunction(string& id, vector<varPair>& formals, string& retval){
     FunctionEntry comp(formals, id, retval, 0);
     FunctionEntry * current = this->getFunction(id);
 
@@ -110,6 +110,22 @@ bool symbolTable::existsFunction(string& id, vector<varPair> formals, string& re
         return (comp == *current);
     }
     return false;
+}
+
+void symbolTable::callFunction(string* ret_type, string& id, vector<string>& args, int lineno){
+    this->lineno = lineno;
+    FunctionEntry * res = getFunction(id);
+    bool exists = existsId(id);
+
+    if (!res){
+        output::errorUndefFunc(lineno, id);
+        exit(0);
+    }
+
+    if (!res->matchArgs(args)){
+        output::errorPrototypeMismatch(lineno, id, res->getArgs());
+        exit(0);
+    }
 }
 
 bool symbolTable::existsStruct(string& id, vector<varPair>& members){
