@@ -1,9 +1,9 @@
 ---end scope---
-t INT 1
+t INT 0
 ---end scope---
-x INT 1
+x INT 0
 ---end scope---
 print (STRING)->VOID 1
-printi (INT)->VOID 1
-potato ()->INT 1
-tomato ()->VOID 1
+printi (INT)->VOID 2
+potato ()->INT 3
+tomato ()->VOID 4

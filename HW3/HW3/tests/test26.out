@@ -1,9 +1,8 @@
 ---end scope---
-t INT 0
----end scope---
-x INT 0
+t potato -1
+s INT 0
 ---end scope---
 print (STRING)->VOID 1
 printi (INT)->VOID 2
-potato ()->INT 3
-tomato ()->VOID 4
+struct potato {INT x}
+TestStructParami (potato)->VOID 3

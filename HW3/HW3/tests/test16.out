@@ -1,8 +1,7 @@
-Length: 4
 ---end scope---
 p INT 0
 ---end scope---
 print (STRING)->VOID 1
-printi (INT)->VOID 1
-struct struct t {INT t,INT x,BOOL s,INT p}
-func ()->VOID 1
+printi (INT)->VOID 2
+struct t {INT t,INT x,BOOL s,INT p}
+func ()->VOID 3
