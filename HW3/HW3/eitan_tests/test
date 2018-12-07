@@ -1,0 +1,8 @@
+struct t{
+	int x;
+};
+
+void func(struct t b){
+
+}
+
