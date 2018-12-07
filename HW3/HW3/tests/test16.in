@@ -1,6 +1,8 @@
 struct t {
 	int p;
 	bool s;
+	int x;
+	int t;
 };
 void func() {
 	int p;

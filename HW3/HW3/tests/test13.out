@@ -1,0 +1,9 @@
+---end scope---
+a BOOL 1
+---end scope---
+a INT 1
+---end scope---
+print (STRING)->VOID 1
+printi (INT)->VOID 1
+TestBoolA ()->VOID 1
+TestIntA ()->VOID 1

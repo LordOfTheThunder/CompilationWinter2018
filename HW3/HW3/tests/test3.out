@@ -1,0 +1,11 @@
+---end scope---
+a BOOL 1
+k INT 1
+---end scope---
+a BOOL 1
+k INT 1
+---end scope---
+print (STRING)->VOID 1
+printi (INT)->VOID 1
+TestInt (BOOL)->VOID 1
+TestIntMismatchByte (BOOL)->VOID 1
