@@ -103,9 +103,10 @@ FormalsList: FormalDecl {
 
 FormalDecl: Type ID {
 	tables->setLine($$.lineno);
+	$$.func_types.push_back($1.type);
 }
 	| StructType ID {
-
+		$$.func_types.push_back($1.type);
 	}
 
 
