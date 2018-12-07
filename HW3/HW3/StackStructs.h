@@ -17,6 +17,23 @@ enum types {
 	types_Undefined
 };
 
+class varPair{
+public:
+    string type;
+    string id;
+
+    varPair(){}
+    varPair(string type, string id) : type(type), id(id) {}
+
+    bool operator==(const varPair & rhs) const {
+        return ((this->type.compare(rhs.type)) == 0);
+    }
+
+    bool operator!=(const varPair & rhs) const {
+        return (!(rhs == *this));
+    }
+};
+
 static string typeToString(types type){
 	if (type == types_Int) return string("int");
 	if (type == types_Byte) return string("byte");
@@ -33,8 +50,9 @@ struct StackType {
 	// Information in the stack
 	string str;
 	types type;
-	vector<types> func_types;
-	StackType(types type = types_Undefined, string str = "") : type(type), str(str), lineno(1), func_types() {
+	vector<varPair> func_info;
+	StackType(types type = types_Undefined, string str = "") : type(type), str(str), lineno(1), func_info() {
+
 	}
 };
 

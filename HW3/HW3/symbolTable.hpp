@@ -3,23 +3,6 @@
 #include <vector>
 #include "StackStructs.h"
 
-class varPair{
-public:
-    string type;
-    string id;
-
-    varPair(){}
-    varPair(string type, string id) : type(type), id(id) {}
-
-    bool operator==(const varPair & rhs) const {
-        return ((this->type.compare(rhs.type)) == 0);
-    }
-
-    bool operator!=(const varPair & rhs) const {
-        return (!(rhs == *this));
-    }
-};
-
 class TableEntry{
 private:
     string id;
