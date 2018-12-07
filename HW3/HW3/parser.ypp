@@ -57,8 +57,16 @@ Funcs: FuncDecl Funcs {
 }
 	|	/*epsilon*/ ;
 
-FuncDecl: RetType ID LPAREN Formals RPAREN LBRACE Statements RBRACE {
-	tables->addScope(tables->getLine());
+FuncDecl: FuncDecl1 FuncDecl2 {
+	tables->popScope();
+}
+
+FuncDecl1: RetType ID LPAREN Formals RPAREN {
+	tables->addFunction($1.type, $2.str, $4.func_types);
+}
+
+FuncDecl2: LBRACE Statements RBRACE {
+
 }
 
 Structs: StructsDecl Structs {
@@ -94,11 +102,11 @@ FormalsList: FormalDecl {
 	}
 
 FormalDecl: Type ID {
-	tables->addVariable($1.type, $2.str);
 	tables->setLine($$.lineno);
+	$$.func_types.push_back($1.type);
 }
 	| StructType ID {
-
+		$$.func_types.push_back($1.type);
 	}
 
 
@@ -120,7 +128,15 @@ Statements: Statement {
 
 	}
 
-Statement: Type ID SC {
+StartScope: /*epsilon*/ {
+	tables->addScope($$.lineno);
+}
+
+Statement: StartScope LBRACE Statements RBRACE {
+	tables->popScope();
+}
+
+	| Type ID SC {
 	tables->setLine($$.lineno);
 	tables->addVariable($1.type, $2.str);
 }
@@ -147,11 +163,11 @@ Statement: Type ID SC {
 	}
 
 	| ID ASSIGN Exp SC {
+		tables->setLine($$.lineno);
 		if (!tables->existsId($1.str)) {
 			errorUndef(tables->getLine(), $1.str);
 			exit(0);
 		}
-		tables->setLine($$.lineno);
 		tables->addVariable((tables->getVariable($1.str))->getType(), $2.str);
 	}
 
@@ -258,7 +274,9 @@ Exp: Exp BINOPAS Exp {
 	}
 
 	| STRING {
-
+		$$.str = $1.str;
+		tables->setLine($$.lineno);
+		$$.type = types_String;
 	}
 
 	| TRUE {
