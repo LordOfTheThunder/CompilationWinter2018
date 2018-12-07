@@ -63,22 +63,22 @@ private:
     vector<varPair> formals;
     vector<string> args;
     string id;
-    string ret;
+    string type;
 
 public:
-    FunctionEntry(vector<varPair> formals, string& id, string& ret, int offset) : TableEntry(id, offset), formals(formals), ret(ret)
+    FunctionEntry(vector<varPair> formals, string& id, string& type, int offset) : TableEntry(id, offset), formals(formals), type(type)
     {
         for (vector<varPair>::iterator it = formals.begin(); it != formals.end(); ++it){
             args.push_back((*it).type);
         }
     }
-    string getType(){return this->ret;}
+    string getType(){return this->type;}
     string& getId(){return this->id;}
 
     const vector<string>& getArgs() const {return args;}
 
     void print(){
-//        output::printID(id, offset, output::makeFunctionType(getType(), getArgs()));
+        output::printID(id, offset, output::makeFunctionType(type, args));
     }
 
     bool operator==(const FunctionEntry& rhs) const {
