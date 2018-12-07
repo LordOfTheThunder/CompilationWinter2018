@@ -1,0 +1,3 @@
+void FirstFunc(int x) {
+	print("aaa");
+}

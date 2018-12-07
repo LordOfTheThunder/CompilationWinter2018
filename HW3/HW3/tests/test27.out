@@ -1,0 +1,6 @@
+---end scope---
+x INT -1
+---end scope---
+print (STRING)->VOID 1
+printi (INT)->VOID 2
+FirstFunc (INT)->VOID 3

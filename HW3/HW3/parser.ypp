@@ -301,6 +301,7 @@ Exp: Exp BINOPAS Exp {
 		tables->setLine($$.lineno);
 		$$.type = types_Int;
 		$$.lineno = $1.lineno;
+		$$.func_info.push_back(varPair(typeToString(types_Int), $1.str));
 	}
 
 	| NUM B {
@@ -313,6 +314,7 @@ Exp: Exp BINOPAS Exp {
 		}
 		$$.type = types_Byte;
 		$$.lineno = $1.lineno;
+		$$.func_info.push_back(varPair(typeToString(types_Byte), $1.str));
 	}
 
 	| STRING {
@@ -320,18 +322,21 @@ Exp: Exp BINOPAS Exp {
 		$$.type = types_String;
 		$$.lineno = $1.lineno;
 		tables->setLine($$.lineno);
+		$$.func_info.push_back(varPair(typeToString(types_String), $1.str));
 	}
 
 	| TRUE {
 		$$.str = $1.str;
 		$$.type = types_Bool;
 		$$.lineno = $1.lineno;
+		$$.func_info.push_back(varPair(typeToString(types_Bool), $1.str));
 	}
 
 	| FALSE {
 		$$.str = $1.str;
 		$$.type = types_Bool;
 		$$.lineno = $1.lineno;
+		$$.func_info.push_back(varPair(typeToString(types_Bool), $1.str));
 	}
 
 	| NOT Exp {
