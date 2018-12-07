@@ -161,6 +161,10 @@ Statement: StartScope LBRACE Statements RBRACE {
 
 		string type1 = typeToString($1.type);
 		string type2 = typeToString($4.type);
+		if (type2 == "undefined") {
+			// Try to get the type from the table
+			type2 = (tables->getVariable($4.str))->getType();
+		}
 		if (tables->getFunction($4.str) != NULL) {
 			// This is a function. Treat it as a function
 			type2 = (tables->getFunction($4.str))->getType();
@@ -267,7 +271,7 @@ Exp: Exp BINOPAS Exp {
 	}
 
 	| ID {
-
+		$$.str = $1.str;
 	}
 
 	| ID PERIOD ID {

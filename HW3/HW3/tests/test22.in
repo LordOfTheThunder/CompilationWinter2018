@@ -1,0 +1,6 @@
+int potato(int a) {
+	int t = a;
+}
+void tomato() {
+	bool x = potato();
+}

@@ -1,0 +1,3 @@
+int potato(int a) {
+	int t = a;
+}
