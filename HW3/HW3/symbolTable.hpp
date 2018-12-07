@@ -3,24 +3,21 @@
 #include <vector>
 #include "StackStructs.h"
 
-class StructMember{
-private:
-    types type;
+class varPair{
+public:
+    string type;
     string id;
 
-public:
-    StructMember(types type, string& id) : type(type), id(id) {}
-    types getType(){return this->type;}
-    string getId(){return this->id;}
-};
+    varPair(){}
+    varPair(string type, string id) : type(type), id(id) {}
 
-class Formal{
-private:
-    types type;
-    string id;
+    bool operator==(const varPair & rhs) const {
+        return ((this->type.compare(rhs.type)) == 0);
+    }
 
-public:
-    Formal(types type, string& id) : type(type), id(id) {}
+    bool operator!=(const varPair & rhs) const {
+        return (!(rhs == *this));
+    }
 };
 
 class TableEntry{
@@ -37,22 +34,22 @@ public:
 
 class VariableEntry : public TableEntry{
 private:
-    types type;
+    string type;
     string id;
 
 public:
-    VariableEntry(types type, string& id, int offset) : TableEntry(id, offset), type(type){}
-    types getType() const { return this->type; }
+    VariableEntry(string type, string& id, int offset) : TableEntry(id, offset), type(type){}
+    string getType() const { return this->type; }
 };
 
 class StructEntry : public TableEntry{
 private:
     int size;
     string id;
-    vector<types> members;
+    vector<varPair> members;
 
 public:
-    StructEntry(vector<types> members, string id, int offset) : TableEntry(id, offset), members(members) {}
+    StructEntry(vector<varPair> members, string id, int offset) : TableEntry(id, offset), members(members) {}
 
     bool operator==(const StructEntry& rhs) const {
         if (rhs.id.compare(this->id) != 0){
@@ -68,17 +65,21 @@ public:
 
         return true;
     }
+
+    bool operator!=(const StructEntry& rhs) const {
+        return (!(rhs == *this));
+    }
 };
 
 class FunctionEntry : public TableEntry{
 private:
-    vector<types> formals;
+    vector<varPair> formals;
     string id;
-    types ret;
+    string ret;
 
 public:
-    FunctionEntry(vector<types> formals, string id, types ret, int offset) : TableEntry(id, offset), formals(formals), ret(ret) {}
-    types getType(){return this->ret;}
+    FunctionEntry(vector<varPair> formals, string& id, string& ret, int offset) : TableEntry(id, offset), formals(formals), ret(ret) {}
+    string getType(){return this->ret;}
     string& getId(){return this->id;}
 
     bool operator==(const FunctionEntry& rhs) const {
@@ -94,6 +95,10 @@ public:
         }
 
         return true;
+    }
+
+    bool operator!=(const FunctionEntry& rhs) const {
+        return (!(rhs == *this));
     }
 };
 
@@ -126,15 +131,16 @@ private:
     int lineno;
     bool mainExists;
 
-    void newScope(bool isWhile){
+    Scope * newScope(bool isWhile){
         this->scopes.push_back(new Scope(this->getOffset(), isWhile));
+        return this->scopes.back();
     }
 
 public:
     symbolTable();
     ~symbolTable();
 //    The following functions are scope-related functions (i.e. create a new scope)
-    void addFunction(types retval, string id, vector<types> formals);
+    void addFunction(string retval, string id, vector<varPair> formals);
     void addWhile(int lineno);
     void addIf(int lineno);
     void addElse(int lineno);
@@ -142,14 +148,15 @@ public:
     void popScope();
 
 //    The following functions aren't scope-related (i.e. doesn't create a new scope)
-    void addStruct(string& id, vector<types>& members);
-    void addVariable(types type, string id);
+    void addStruct(string& id, vector<varPair>& members);
+    void addVariable(string type, string id);
+    void addVariable(varPair v);
 
 //    Existence checkers and validation
     bool existsId(string& id);
     bool existsVariable(string& id);
-    bool existsFunction(string& id, vector<types> formals, types retval);
-    bool existsStruct(string& id, vector<types>& members);
+    bool existsFunction(string& id, vector<varPair> formals, string& retval);
+    bool existsStruct(string& id, vector<varPair>& members);
     void existsMain();
     void isBreakAllowed();
     void isContinueAllowed();

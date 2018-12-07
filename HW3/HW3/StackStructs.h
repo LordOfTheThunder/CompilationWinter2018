@@ -17,6 +17,16 @@ enum types {
 	types_Undefined
 };
 
+static string typeToString(types type){
+	if (type == types_Int) return string("int");
+	if (type == types_Byte) return string("byte");
+	if (type == types_Bool) return string("bool");
+	if (type == types_Void) return string("void");
+	if (type == types_String) return string("string");
+	if (type == types_Undefined) return string("undefined");
+	else return string("None");
+}
+
 struct StackType {
 	// For error reports
 	int lineno;

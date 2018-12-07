@@ -24,15 +24,15 @@ Scope::~Scope(){
 symbolTable::symbolTable() : lineno(1), mainExists(false) {
     this->global = new Scope(this->lineno, false, true); // The last parameter indicates a global scope
     this->scopes.push_back(global);
-    vector<types> print_args;
-    print_args.push_back(types_String);
-    vector<types> printi_args;
-    printi_args.push_back(types_Int);
-    this->addFunction(types_Void, string("print"), print_args);
-    this->addFunction(types_Void, string("printi"), printi_args);
+    vector<varPair> print_args;
+    print_args.push_back(varPair(typeToString(types_String), string("")));
+    vector<varPair> printi_args;
+    printi_args.push_back(varPair(typeToString(types_Int), string("")));
+    this->addFunction(typeToString(types_Void), string("print"), print_args);
+    this->addFunction(typeToString(types_Void), string("printi"), printi_args);
 }
 
-void symbolTable::addFunction(types retval, string id, vector<types> formals) {
+void symbolTable::addFunction(string retval, string id, vector<varPair> formals) {
     if (this->existsId(id)){
         // TODOBOM: handle this
         output::errorDef(this->lineno, id);
@@ -41,7 +41,7 @@ void symbolTable::addFunction(types retval, string id, vector<types> formals) {
 
     if ((id.compare("main") == 0) &&
             (formals.size() == 0) &&
-            (retval == types_Void)){
+            (retval.compare(typeToString(types_Void)) == 0)){
         this->mainExists = true;
     }
 
@@ -50,7 +50,12 @@ void symbolTable::addFunction(types retval, string id, vector<types> formals) {
     }
 
     this->scopes.back()->addEntry(new FunctionEntry(formals, id, retval, this->getOffset()));
-    newScope(false);
+    Scope * funcScope = newScope(false);
+
+//    Adding arguments to the function's scope
+    for (vector<varPair>::iterator it = formals.begin(); it != formals.end(); ++it){
+        this->addVariable(*it);
+    }
 }
 
 void symbolTable::addWhile(int lineno){
@@ -91,7 +96,7 @@ bool symbolTable::existsVariable(string& id){
     return false;
 }
 
-bool symbolTable::existsFunction(string& id, vector<types> formals, types retval){
+bool symbolTable::existsFunction(string& id, vector<varPair> formals, string& retval){
     FunctionEntry comp(formals, id, retval, 0);
     FunctionEntry * current = this->getFunction(id);
 
@@ -101,7 +106,7 @@ bool symbolTable::existsFunction(string& id, vector<types> formals, types retval
     return false;
 }
 
-bool symbolTable::existsStruct(string& id, vector<types>& members){
+bool symbolTable::existsStruct(string& id, vector<varPair>& members){
     StructEntry comp(members, id, 0);
     StructEntry * current = this->getStruct(id);
 
@@ -171,20 +176,17 @@ void symbolTable::existsMain(){
     }
 }
 
-void symbolTable::addStruct(string& id, vector<types>& members){
+void symbolTable::addStruct(string& id, vector<varPair>& members){
     if (this->existsId(id)){
         // TODOBOM: handle existing identifier
         output::errorDef(this->lineno, id);
         exit(0);
     }
-    if (!this->scopes.back()->isGlobal()){
-        // TODO: handle declaration not in global scope
-    }
 
     this->scopes.back()->addEntry(new StructEntry(members, id, this->getOffset()));
 }
 
-void symbolTable::addVariable(types type, string id){
+void symbolTable::addVariable(string type, string id){
     if (this->existsId(id)){
         // TODOBOM: handle existing identifier
         output::errorDef(this->lineno, id);
@@ -193,6 +195,10 @@ void symbolTable::addVariable(types type, string id){
 
     VariableEntry * res = new VariableEntry(type, id, this->getOffset());
     this->scopes.back()->addEntry(res);
+}
+
+void symbolTable::addVariable(varPair v){
+    this->addVariable(v.type, v.id);
 }
 
 void Scope::addEntry(TableEntry * ent){
