@@ -32,12 +32,24 @@ public:
 class StructEntry : public TableEntry{
 private:
     vector<varPair> members;
+    vector<string> types;
+    vector<string> names;
 
 public:
-    StructEntry(vector<varPair> members, string id, int offset) : TableEntry(id, offset), members(members) {}
+    StructEntry(vector<varPair> members, string id, int offset) : TableEntry(id, offset), members(members)
+    {
+        for (vector<varPair>::iterator it = members.begin(); it != members.end(); ++it){
+            types.push_back((*it).type);
+            names.push_back((*it).id);
+        }
+    }
 
     int size(){return members.size();}
-    void print(){} // Does nothing...
+
+    void print() {
+        output::printStructType(id, types, names);
+    }
+
     bool operator==(const StructEntry& rhs) const {
         if (rhs.id.compare(this->id) != 0){
             return false;
@@ -74,8 +86,6 @@ public:
     }
     string getType(){return this->type;}
     string& getId(){return this->id;}
-
-    const vector<string>& getArgs() const {return args;}
 
     void print(){
         output::printID(id, offset, output::makeFunctionType(type, args));

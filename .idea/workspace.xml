@@ -11,9 +11,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2b6a5383-20c6-47f8-99cd-7269f0f9f4ae" name="Default Changelist" comment="redoing types and arguments push">
+    <list default="true" id="2b6a5383-20c6-47f8-99cd-7269f0f9f4ae" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HW3/HW3/symbolTable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/HW3/HW3/symbolTable.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/HW3/HW3/symbolTable.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/HW3/HW3/symbolTable.hpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -46,11 +45,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
+            <state relative-caret-position="494">
+              <caret line="70" column="2" lean-forward="true" selection-start-line="70" selection-start-column="2" selection-end-line="70" selection-end-column="2" />
               <folding>
                 <element signature="e#13#30#0" expanded="true" />
-                <element signature="e#862#1558#1" />
+                <element signature="e#743#996#0" />
+                <element signature="e#1084#1478#0" />
                 <element signature="e#1569#1718#0" />
                 <element signature="e#1812#2208#0" />
               </folding>
@@ -61,8 +61,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/HW3/HW3/output.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
-              <caret line="9" column="9" selection-start-line="9" selection-start-column="9" selection-end-line="9" selection-end-column="9" />
+            <state relative-caret-position="247">
+              <caret line="15" column="11" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -232,7 +232,7 @@
       <workItem from="1543521086997" duration="6000" />
       <workItem from="1543521126686" duration="39000" />
       <workItem from="1543523486220" duration="24373000" />
-      <workItem from="1544028917959" duration="47077000" />
+      <workItem from="1544028917959" duration="48104000" />
     </task>
     <task id="LOCAL-00001" summary="added implementation of follow set">
       <created>1543534503591</created>
@@ -367,13 +367,27 @@
       <option name="project" value="LOCAL" />
       <updated>1544184683472</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="added prints">
+      <created>1544188247217</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1544188247217</updated>
+    </task>
+    <task id="LOCAL-00021" summary="fixed some shit">
+      <created>1544188636553</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1544188636553</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="75357000" />
+    <option name="totallyTimeSpent" value="76384000" />
   </component>
-  <component name="TodoView">
+  <component name="TodoView" selected-index="4">
     <todo-panel id="selected-file">
       <is-autoscroll-to-source value="true" />
     </todo-panel>
@@ -384,6 +398,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49919224" visible="true" weight="0.10074627" />
       <window_info id="Structure" order="1" sideWeight="0.50080776" side_tool="true" weight="0.09541578" />
@@ -394,9 +409,9 @@
       <window_info anchor="bottom" id="Debug" order="3" weight="0.16143012" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.11484291" />
+      <window_info anchor="bottom" id="TODO" order="6" visible="true" weight="0.11484291" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" visible="true" weight="0.19176598" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.19176598" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.23618636" />
@@ -478,7 +493,9 @@
     <MESSAGE value="fixed main existence checker" />
     <MESSAGE value="redoing types and arguments push" />
     <MESSAGE value="fixed print function error" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed print function error" />
+    <MESSAGE value="added prints" />
+    <MESSAGE value="fixed some shit" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed some shit" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
@@ -604,13 +621,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/HW3/HW3/parser.ypp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3792">
-          <caret line="24" column="13" lean-forward="true" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/HW3/HW3/scanner.lex">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
@@ -622,13 +632,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="914">
           <caret line="48" column="15" lean-forward="true" selection-start-line="48" selection-start-column="15" selection-end-line="48" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HW3/HW3/output.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="9" column="9" selection-start-line="9" selection-start-column="9" selection-end-line="9" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -644,13 +647,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/parser.ypp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="172" column="21" selection-start-line="172" selection-start-column="21" selection-end-line="172" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/output.hpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="15" column="11" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="15" column="27" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
+        <state relative-caret-position="494">
+          <caret line="70" column="2" lean-forward="true" selection-start-line="70" selection-start-column="2" selection-end-line="70" selection-end-column="2" />
           <folding>
             <element signature="e#13#30#0" expanded="true" />
-            <element signature="e#862#1558#1" />
+            <element signature="e#743#996#0" />
+            <element signature="e#1084#1478#0" />
             <element signature="e#1569#1718#0" />
             <element signature="e#1812#2208#0" />
           </folding>
