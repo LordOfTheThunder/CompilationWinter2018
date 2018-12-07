@@ -203,15 +203,11 @@ void symbolTable::existsMain(){
 }
 
 void symbolTable::addStruct(string& id, vector<varPair>& members, int lineno){
-    for (vector<varPair>::iterator it = members.begin(); it != members.end(); ++it){
-        cout << (*it).type << " " << (*it).id << endl;
-    }
     if (this->existsId(id)){
         // TODOBOM: handle existing identifier
         output::errorDef(this->lineno, id);
         exit(0);
     }
-    cout << "1" << endl;
 //    TODO: check which error should be printed if a name is used twice in a struct
     vector<string> tmp;
 
@@ -225,10 +221,8 @@ void symbolTable::addStruct(string& id, vector<varPair>& members, int lineno){
         }
         tmp.push_back((*it).id);
     }
-    cout << "2" << endl;
 
     this->scopes.back()->addEntry(new StructEntry(members, id, this->getOffset()));
-    cout << "3" << endl;
 }
 
 void symbolTable::addVariable(string type, string id, int lineno){
