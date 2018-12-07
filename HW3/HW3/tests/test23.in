@@ -1,6 +1,3 @@
-int potato(int a) {
-	int t = a;
-}
 void tomato() {
 	int x = potato();
 }
