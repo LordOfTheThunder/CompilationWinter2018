@@ -34,8 +34,9 @@ symbolTable::symbolTable() : lineno(1), mainExists(false) {
     print_args.push_back(varPair(typeToString(types_String), string("")));
     vector<varPair> printi_args;
     printi_args.push_back(varPair(typeToString(types_Int), string("")));
-    this->addFunction(typeToString(types_Void), string("print"), print_args, false);
-    this->addFunction(typeToString(types_Void), string("printi"), printi_args, false);
+
+    this->addFunction(typeToString(types_Void), string("print"), print_args, this->lineno, false);
+    this->addFunction(typeToString(types_Void), string("printi"), printi_args, this->lineno, false);
 }
 
 void symbolTable::addFunction(string retval, string id, vector<varPair> formals, int lineno, bool addScope) {
