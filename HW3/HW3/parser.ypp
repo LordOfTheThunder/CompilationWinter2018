@@ -128,7 +128,15 @@ Statements: Statement {
 
 	}
 
-Statement: Type ID SC {
+StartScope: /*epsilon*/ {
+	tables->addScope($$.lineno);
+}
+
+Statement: StartScope LBRACE Statements RBRACE {
+	tables->popScope();
+}
+
+	| Type ID SC {
 	tables->setLine($$.lineno);
 	tables->addVariable($1.type, $2.str);
 }
@@ -155,11 +163,11 @@ Statement: Type ID SC {
 	}
 
 	| ID ASSIGN Exp SC {
+		tables->setLine($$.lineno);
 		if (!tables->existsId($1.str)) {
 			errorUndef(tables->getLine(), $1.str);
 			exit(0);
 		}
-		tables->setLine($$.lineno);
 		tables->addVariable((tables->getVariable($1.str))->getType(), $2.str);
 	}
 
@@ -266,7 +274,9 @@ Exp: Exp BINOPAS Exp {
 	}
 
 	| STRING {
-
+		$$.str = $1.str;
+		tables->setLine($$.lineno);
+		$$.type = types_String;
 	}
 
 	| TRUE {
