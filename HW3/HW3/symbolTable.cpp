@@ -28,7 +28,7 @@ Scope::~Scope(){
     clearVectorOfPointers(this->entries);
 }
 
-symbolTable::symbolTable() : lineno(1), mainExists(false) {
+symbolTable::symbolTable() : lineno(0), mainExists(false) {
     this->global = new Scope(0, false, true); // The last parameter indicates a global scope
     this->scopes.push_back(global);
     vector<varPair> print_args;
@@ -168,11 +168,11 @@ void symbolTable::callFunction(string& id, vector<varPair>& args, int lineno){
     FunctionEntry * res = getFunction(id);
 
     if (!res){
-        output::errorUndefFunc(lineno, id);
+        output::errorUndefFunc(this->lineno, id);
         exit(0);
     }
     if (!res->matchArgs(args)){
-        output::errorPrototypeMismatch(lineno, id, res->getArgs());
+        output::errorPrototypeMismatch(this->lineno, id, res->getArgs());
         exit(0);
     }
 }
@@ -254,6 +254,7 @@ void symbolTable::existsMain(){
 
 void symbolTable::addStruct(string& id, vector<varPair>& members, int lineno){
     if (debug) cout << "add struct " << id << endl;
+    this->lineno = lineno;
     if (this->existsId(id)){
         // TODOBOM: handle existing identifier
         output::errorDef(this->lineno, id);
