@@ -294,15 +294,18 @@ Statement: StartScope LBRACE Statements RBRACE {
 		$$.lineno = $1.lineno;
 	}
 
-	| IF LPAREN Exp RPAREN Statement {
+	| StartScope IF LPAREN Exp RPAREN Statement {
+		if ($4.type != types_Bool) {
+			errorMismatch($2.lineno);
+			exit(0);
+		}
+	}
+
+	| StartScope ELSE Statement %prec IF LPAREN Exp RPAREN Statement {
 
 	}
 
-	| ELSE Statement %prec IF LPAREN Exp RPAREN Statement {
-
-	}
-
-	| WHILE LPAREN Exp RPAREN Statement {
+	| StartScope WHILE LPAREN Exp RPAREN Statement {
 
 	}
 
@@ -470,7 +473,12 @@ Exp: Exp BINOPAS Exp {
 	}
 
 	| NOT Exp {
-
+		if ($2.type != types_Bool) {
+			// Not can only be used on booleans
+			errorMismatch($1.lineno);
+			exit(0);
+		}
+		$$.type = types_Bool;
 	}
 
 	| Exp AND Exp {
@@ -482,7 +490,9 @@ Exp: Exp BINOPAS Exp {
 	}
 
 	| Exp RELOP Exp {
-
+		// TODO : check if binary operation is legal between 2 Exp's
+		$$.type = types_Bool;
+		$$.lineno = $2.lineno;
 	}
 
 %%

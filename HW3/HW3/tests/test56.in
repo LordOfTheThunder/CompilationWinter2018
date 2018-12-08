@@ -1,0 +1,6 @@
+void TestIfBool() {
+	int x;
+	if (x) {
+		int t;
+	}
+}

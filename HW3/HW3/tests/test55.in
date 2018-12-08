@@ -1,0 +1,8 @@
+void TestIf() {
+	int t;
+	if (t == 3) {
+		int x;
+		x = 5;
+	}
+	x = 4;
+}
