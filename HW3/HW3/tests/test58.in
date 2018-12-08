@@ -4,3 +4,5 @@ void TestNot() {
 		int y;
 	}
 }
+
+void main() { print("Max is cool"); }

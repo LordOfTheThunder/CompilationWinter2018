@@ -4,3 +4,5 @@ void TestUndefLegal(bool a) {
 void TestUndefIllegal(bool a) {
 	b = true;
 }
+
+void main() { print("Max is cool"); }

@@ -5,7 +5,9 @@ k INT 0
 a BOOL -1
 k INT 0
 ---end scope---
+---end scope---
 print (STRING)->VOID 0
 printi (INT)->VOID 0
 TestInt (BOOL)->VOID 0
 TestIntMismatchByte (BOOL)->VOID 0
+main ()->VOID 0

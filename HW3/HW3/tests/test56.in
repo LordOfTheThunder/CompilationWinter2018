@@ -4,3 +4,5 @@ void TestIfBool() {
 		int t;
 	}
 }
+
+void main() { print("Max is cool"); }

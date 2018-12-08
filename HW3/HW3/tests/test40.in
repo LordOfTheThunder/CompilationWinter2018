@@ -15,3 +15,5 @@ void callPutPotato() {
 	struct potato pot;
 	PutToPotato(313, false, 33b, 22b, pot);
 }
+
+void main() { print("Max is cool"); }

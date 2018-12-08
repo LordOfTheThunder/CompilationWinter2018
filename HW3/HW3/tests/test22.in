@@ -4,3 +4,5 @@ int potato(int a) {
 void tomato() {
 	int x = potato();
 }
+
+void main() { print("Max is cool"); }

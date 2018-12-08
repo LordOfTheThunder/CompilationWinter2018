@@ -14,3 +14,5 @@ void TestAll() {
 	IntFunc(33b);
 }
 
+
+void main() { print("Max is cool"); }

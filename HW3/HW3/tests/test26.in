@@ -4,3 +4,5 @@ struct potato {
 void TestStructParami(struct potato t) {
 	int s;
 }
+
+void main() { print("Max is cool"); }

@@ -9,3 +9,5 @@ int TestRelop() {
 		int k;
 	}
 }
+
+void main() { print("Max is cool"); }

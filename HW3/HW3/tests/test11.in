@@ -2,3 +2,5 @@ void TestDefineThenWrongType(bool a) {
 	int x;
 	x = true;
 }
+
+void main() { print("Max is cool"); }

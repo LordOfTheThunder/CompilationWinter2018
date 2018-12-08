@@ -6,3 +6,5 @@ void TestCreatePotato() {
 	bool rr;
 	rr = t.x;
 }
+
+void main() { print("Max is cool"); }

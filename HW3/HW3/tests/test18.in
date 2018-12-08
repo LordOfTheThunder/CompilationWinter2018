@@ -4,3 +4,5 @@ struct a {
 struct a {
 	int z;
 };
+
+void main() { print("Max is cool"); }

@@ -2,3 +2,5 @@ struct a {
 	int x;
 	int x;
 };
+
+void main() { print("Max is cool"); }

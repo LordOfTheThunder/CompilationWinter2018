@@ -6,3 +6,5 @@ void CheckBinary(int x, byte y, int z) {
 }
 
 
+
+void main() { print("Max is cool"); }

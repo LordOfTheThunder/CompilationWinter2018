@@ -16,3 +16,5 @@ void callPutPotato() {
 	PutToPotato(313, false, 333b, 22b, pot);
 }
 
+
+void main() { print("Max is cool"); }

@@ -12,3 +12,5 @@ int TestRetInt(int s) {
 	x = retInt();
 }
 
+
+void main() { print("Max is cool"); }

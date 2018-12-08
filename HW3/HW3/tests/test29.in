@@ -8,3 +8,5 @@ void TestPrintI() {
 		printi(x);
 	}
 }
+
+void main() { print("Max is cool"); }

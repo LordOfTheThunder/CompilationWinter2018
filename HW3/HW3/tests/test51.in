@@ -15,3 +15,5 @@ void IntoPotato() {
 }
 
 
+
+void main() { print("Max is cool"); }

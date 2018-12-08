@@ -4,3 +4,5 @@ void TestBoolA() {
 void TestIntA() {
 	int a = 33;
 }
+
+void main() { print("Max is cool"); }

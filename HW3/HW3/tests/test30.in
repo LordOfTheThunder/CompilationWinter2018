@@ -4,3 +4,5 @@ struct potato {
 void TestCreatePotato(struct tomato s) {
 	struct potato t;
 }
+
+void main() { print("Max is cool"); }

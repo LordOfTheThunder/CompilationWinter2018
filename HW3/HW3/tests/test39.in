@@ -5,3 +5,5 @@ void TestCreatePotato() {
 	struct potato t;
 	t.x = 33b;
 }
+
+void main() { print("Max is cool"); }

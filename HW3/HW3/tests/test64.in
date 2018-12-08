@@ -5,3 +5,5 @@ void TestIfElse() {
 	else int y = 5;
 	y = 3;
 }
+
+void main() { print("Max is cool"); }

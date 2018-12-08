@@ -3,3 +3,5 @@ int TestFuncWithWrongReturn() {
 	int b = 43;
 	return false;
 }
+
+void main() { print("Max is cool"); }

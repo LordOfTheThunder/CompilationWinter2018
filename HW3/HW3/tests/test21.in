@@ -1,3 +1,5 @@
 int potato(int a) {
 	int t = a;
 }
+
+void main() { print("Max is cool"); }

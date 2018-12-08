@@ -21,3 +21,5 @@ void callPutPotato() {
 }
 
 
+
+void main() { print("Max is cool"); }

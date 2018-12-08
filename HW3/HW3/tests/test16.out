@@ -1,7 +1,9 @@
 ---end scope---
 p INT 0
 ---end scope---
+---end scope---
 print (STRING)->VOID 0
 printi (INT)->VOID 0
 struct t {INT p,BOOL s,INT x,INT t}
 func ()->VOID 0
+main ()->VOID 0

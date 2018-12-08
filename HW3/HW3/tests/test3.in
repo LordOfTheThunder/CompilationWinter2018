@@ -4,3 +4,5 @@ void TestInt(bool a) {
 void TestIntMismatchByte(bool a) {
 	int k = 133b;
 }
+
+void main() { print("Max is cool"); }

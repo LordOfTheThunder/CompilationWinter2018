@@ -2,3 +2,5 @@ void tomato() {
 	int x;
 	x = potato();
 }
+
+void main() { print("Max is cool"); }

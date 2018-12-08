@@ -13,3 +13,5 @@ void IntoPotato() {
 	struct tomato z;
 	x.x = y;
 }
+
+void main() { print("Max is cool"); }

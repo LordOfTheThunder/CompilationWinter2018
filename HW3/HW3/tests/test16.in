@@ -7,3 +7,5 @@ struct t {
 void func() {
 	int p;
 }
+
+void main() { print("Max is cool"); }

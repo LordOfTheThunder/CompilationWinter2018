@@ -2,3 +2,5 @@ void TestMismatchByteBool(bool k) {
 	int a = 4;
 	int a = 3;
 }
+
+void main() { print("Max is cool"); }

@@ -4,3 +4,5 @@ void TestBool (int x) {
 void TestBoolMismatch(bool a) {
 	int k = true;
 }
+
+void main() { print("Max is cool"); }

@@ -1,3 +1,5 @@
 void TestAssignByteToInt() {
 	int x = 33b;
 }
+
+void main() { print("Max is cool"); }

@@ -3,8 +3,10 @@ x struct potato 0
 y struct potato 1
 z struct tomato 2
 ---end scope---
+---end scope---
 print (STRING)->VOID 0
 printi (INT)->VOID 0
 struct potato {INT x}
 struct tomato {INT x}
 IntoPotato ()->VOID 0
+main ()->VOID 0

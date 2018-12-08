@@ -10,3 +10,5 @@ void StructInsideFunc() {
 	s.z = 31b;
 	s.x = s.z;
 }
+
+void main() { print("Max is cool"); }

@@ -12,3 +12,5 @@ int aa() {
 		int x;
 	}
 }
+
+void main() { print("Max is cool"); }

@@ -4,3 +4,5 @@ void CheckBinary(int x, byte y, int z) {
 	z = 3 + 3b;
 }
 
+
+void main() { print("Max is cool"); }

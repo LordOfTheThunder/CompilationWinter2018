@@ -6,5 +6,5 @@ y INT 0
 x INT 0
 ---end scope---
 ---end scope---
-x INT 0
+x INT 1
 line 11: type mismatch

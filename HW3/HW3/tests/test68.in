@@ -3,3 +3,5 @@ void TestBreak() {
 		break;
 	}
 }
+
+void main() { print("Max is cool"); }

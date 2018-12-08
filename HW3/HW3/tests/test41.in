@@ -7,3 +7,5 @@ void StructInsideFunc() {
 void illegalStructCall(struct potato t) {
 	int x;
 }
+
+void main() { print("Max is cool"); }
