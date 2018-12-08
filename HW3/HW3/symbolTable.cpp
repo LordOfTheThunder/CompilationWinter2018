@@ -4,6 +4,7 @@
 #include "output.hpp"
 #include <stdlib.h>
 
+bool debug = false;
 template <class T>
 void clearVectorOfPointers(vector<T>& v){
     for (typename vector<T>::iterator it = v.begin(); it != v.end(); ++it){
@@ -40,6 +41,13 @@ symbolTable::symbolTable() : lineno(1), mainExists(false) {
 }
 
 void symbolTable::addFunction(string retval, string id, vector<varPair> formals, int lineno, bool addScope) {
+    if (debug){
+        cout << "add function " << id << ", args:" << endl;
+        for (vector<varPair>::iterator it = formals.begin(); it!=formals.end(); ++it){
+            cout << (*it).type << " " << (*it).id << endl;
+        }
+    }
+    int argOffset = -1;
     this->lineno = lineno;
     if (this->existsId(id)){
         output::errorDef(this->lineno, id);
@@ -57,30 +65,57 @@ void symbolTable::addFunction(string retval, string id, vector<varPair> formals,
     this->scopes.back()->incrementOffset(1);
 
     if (addScope){
-
-        Scope * funcScope = newScope(false, -countSize(formals), true);
+        Scope * funcScope = newScope(false, true);
 
         //    Adding arguments to the function's scope
         for (vector<varPair>::iterator it = formals.begin(); it != formals.end(); ++it) {
-            this->addVariable(*it, lineno);
+            this->addFunctionArgument((*it).type, (*it).id, argOffset, lineno);
+            argOffset -= getVariableSize((*it).type);
         }
     }
+}
+
+void symbolTable::addFunctionArgument(string type, string id, int offset, int lineno){
+    if (debug) cout << "add arg: " << type << " " << id << endl;
+    this->lineno = lineno;
+
+    if (this->existsId(id)){
+        // TODOBOM: handle existing identifier
+        output::errorDef(this->lineno, id);
+        exit(0);
+    }
+
+    if (!isPrimitive(type)){
+        if (!this->getStruct(type)){
+            output::errorUndefStruct(this->lineno, type);
+            exit(0);
+        }
+    }
+
+    VariableEntry * res = new VariableEntry(type, id, offset);
+    this->scopes.back()->addEntry(res);
 }
 
 int symbolTable::countSize(vector<varPair>& types){
     int size = 0;
     for (vector<varPair>::iterator it = types.begin(); it != types.end(); ++it){
-        if (isPrimitive((*it).type)){
-            size++;
-        }
-        else if (getStruct((*it).type)){
-            size += getStruct((*it).type)->size();
-        }
-        else {
-            return -1;
-        }
+        int var_size = getVariableSize((*it).type);
+        if (var_size == -1) return -1;
+        size += var_size;
     }
     return size;
+}
+
+int symbolTable::getVariableSize(string& type){
+    if (isPrimitive(type)){
+        return 1;
+    }
+    else if (getStruct(type)){
+        return getStruct(type)->size();
+    }
+    else {
+        return -1;
+    }
 }
 
 void symbolTable::addWhile(){
@@ -128,6 +163,7 @@ bool symbolTable::existsFunction(string& id, vector<varPair>& formals, string& r
 }
 
 void symbolTable::callFunction(string& id, vector<varPair>& args, int lineno){
+    if (debug) cout << "called function: " << id << endl;
     this->lineno = lineno;
     FunctionEntry * res = getFunction(id);
 
@@ -217,6 +253,7 @@ void symbolTable::existsMain(){
 }
 
 void symbolTable::addStruct(string& id, vector<varPair>& members, int lineno){
+    if (debug) cout << "add struct " << id << endl;
     if (this->existsId(id)){
         // TODOBOM: handle existing identifier
         output::errorDef(this->lineno, id);
@@ -241,6 +278,7 @@ void symbolTable::addStruct(string& id, vector<varPair>& members, int lineno){
 }
 
 void symbolTable::addVariable(string type, string id, int lineno){
+    if (debug) cout << "add var: " << type << " " << id << endl;
     this->lineno = lineno;
 
     if (this->existsId(id)){
@@ -275,7 +313,6 @@ void symbolTable::addVariable(string type, string id, int lineno){
     }
 
     this->scopes.back()->incrementOffset(size);
-
 }
 
 void symbolTable::addVariable(varPair v, int lineno){

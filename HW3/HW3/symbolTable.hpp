@@ -182,10 +182,10 @@ private:
     int lineno;
     bool mainExists;
 
-    Scope * newScope(bool isWhile, int initOffset = 0, bool useInitOffset = false){
-        if (useInitOffset){
-            this->scopes.push_back(new Scope(initOffset, isWhile));
-        } else{
+    Scope * newScope(bool isWhile, bool initOffset = false){
+        if (initOffset){
+            this->scopes.push_back(new Scope(0, isWhile));
+        } else {
             this->scopes.push_back(new Scope(this->getOffset(), isWhile));
         }
         return this->scopes.back();
@@ -205,6 +205,7 @@ public:
 //    The following functions aren't scope-related (i.e. doesn't create a new scope)
     void addStruct(string& id, vector<varPair>& members, int lineno);
     void addVariable(string type, string id, int lineno);
+    void addFunctionArgument(string type, string id, int offset, int lineno);
     void addFunctionArgument(string& type, string& id, int lineno);
     void addVariable(varPair v, int lineno);
 
@@ -229,6 +230,7 @@ public:
     StructEntry * getStruct(string& id);
     int getLine(){return this->lineno;}
     int countSize(vector<varPair>& types);
+    int getVariableSize(string& type);
 
 //    Strange API utils
     void callFunction(string& id, vector<varPair>& args, int lineno);
