@@ -299,6 +299,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 			errorMismatch($2.lineno);
 			exit(0);
 		}
+		tables->popScope();
 	}
 
 	| StartScope IF LPAREN Exp RPAREN Statement ELSE Statement {
@@ -306,10 +307,15 @@ Statement: StartScope LBRACE Statements RBRACE {
 			errorMismatch($2.lineno);
 			exit(0);
 		}
+		tables->popScope();
 	}
 
 	| StartScope WHILE LPAREN Exp RPAREN Statement {
-
+		if ($4.type != types_Bool) {
+			errorMismatch($2.lineno);
+			exit(0);
+		}
+		tables->popScope();
 	}
 
 	| BREAK SC {
