@@ -1,0 +1,3 @@
+struct tomato {
+	int x;
+}

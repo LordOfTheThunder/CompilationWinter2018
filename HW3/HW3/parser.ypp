@@ -85,10 +85,17 @@ Structs: StructsDecl Structs {
 
 	}
 
-StructsDecl: STRUCT ID LBRACE StructMemList RBRACE SC {
-	$$.str = string($2.str);
-	tables->addStruct($$.str, $4.func_info, $1.lineno);
-}
+StructsDecl: STRUCT ID LBRACE StructMemList RBRACE {
+		// Struct without ;
+		output::errorSyn($5.lineno);
+		exit(0);
+	}
+
+	| STRUCT ID LBRACE StructMemList RBRACE SC {
+		$$.str = string($2.str);
+		tables->addStruct($$.str, $4.func_info, $1.lineno);
+		$$.lineno = $1.lineno;
+	}
 
 RetType: Type {
 	$$.type = $1.type;
