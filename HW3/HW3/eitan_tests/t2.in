@@ -1,0 +1,13 @@
+void main(){
+        if (true){
+                int first;
+                if (true) int sec;
+                else int third;
+        } else {
+                int fourth;
+
+                if (true) {int fifth; int sixth;}
+                else if (true) int seventh;
+                else int eight;
+        }
+}
