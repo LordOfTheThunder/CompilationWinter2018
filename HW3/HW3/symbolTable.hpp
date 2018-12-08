@@ -165,10 +165,8 @@ public:
     ~Scope();
     Scope(int offset, bool isWhile_, bool isGlobal_ = false) : offset(offset), isWhile_(isWhile_), isGlobal_(isGlobal_){}
     void addEntry(TableEntry * ent);
-    void removeEntry(){} // TODO
     bool existsId(string& id);
     VariableEntry * getVariable(string& id);
-    VariableEntry * getFunction(string& id){} // TODO
     bool existsVariable(string& id);
     TableEntry * getEntry(string& id);
     int getOffset() {return this->offset;}
