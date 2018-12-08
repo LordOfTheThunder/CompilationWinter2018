@@ -12,3 +12,5 @@ void checkIfElse() {
 		int y;
 	}
 }
+
+void main() { print("Max is cool"); }
