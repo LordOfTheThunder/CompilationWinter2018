@@ -1,0 +1,22 @@
+struct potato {
+	int a;
+	bool b;
+	byte c;
+	int d;
+};
+int PutToPotato(int a, bool b, byte c, int d, struct potato pot) {
+	pot.a = a;
+	pot.b = b;
+	pot.c = c;
+	pot.d = d;
+}
+
+int ReturnIntFunc() {
+	int a = 3;
+}
+
+void callPutPotato() {
+	struct potato pot;
+	PutToPotato(ReturnIntFunc(), false, 33b, 22b, pot);
+}
+

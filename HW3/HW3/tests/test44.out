@@ -1,0 +1,7 @@
+---end scope---
+a INT -8
+b BOOL -7
+c BYTE -6
+d INT -5
+pot struct potato -4
+line 16: byte value 333 out of range

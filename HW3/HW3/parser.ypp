@@ -396,6 +396,12 @@ Exp: Exp BINOPAS Exp {
 	| Call {
 		$$.str = $1.str;
 		$$.lineno = $1.lineno;
+		FunctionEntry* func_entry = tables->getFunction($$.str);
+		if (func_entry == NULL) {
+			errorUndefFunc($$.lineno, $$.str);
+			exit(0);
+		}
+		$$.type = stringToType(func_entry->getType());
 	}
 
 	| NUM {

@@ -1,0 +1,9 @@
+---end scope---
+a INT -8
+b BOOL -7
+c BYTE -6
+d INT -5
+pot struct potato -4
+---end scope---
+a INT 0
+line 20: function UndefFunc is not defined

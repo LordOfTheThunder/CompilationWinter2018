@@ -1,0 +1,12 @@
+void StructInsideFunc() {
+	struct potato {
+		int x;
+		bool y;
+		byte z;
+	};
+	struct potato s;
+	s.x = 3;
+	s.y = false;
+	s.z = 31b;
+	s.x = s.z;
+}

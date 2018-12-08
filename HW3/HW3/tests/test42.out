@@ -1,0 +1,7 @@
+---end scope---
+struct potato {INT x,BOOL y,BYTE z}
+s struct potato 0
+---end scope---
+print (STRING)->VOID 1
+printi (INT)->VOID 2
+StructInsideFunc ()->VOID 3
