@@ -3,8 +3,6 @@
 #include <assert.h>
 #include "output.hpp"
 #include <stdlib.h>
-
-bool debug = false;
 template <class T>
 void clearVectorOfPointers(vector<T>& v){
     for (typename vector<T>::iterator it = v.begin(); it != v.end(); ++it){
@@ -41,7 +39,7 @@ symbolTable::symbolTable() : lineno(0), mainExists(false) {
 }
 
 void symbolTable::addFunction(string retval, string id, vector<varPair> formals, int lineno, bool addScope) {
-    if (debug){
+    if (DEBUGGING){
         cout << "add function " << id << ", args:" << endl;
         for (vector<varPair>::iterator it = formals.begin(); it!=formals.end(); ++it){
             cout << (*it).type << " " << (*it).id << endl;
@@ -76,7 +74,7 @@ void symbolTable::addFunction(string retval, string id, vector<varPair> formals,
 }
 
 void symbolTable::addFunctionArgument(string type, string id, int offset, int lineno){
-    if (debug) cout << "add arg: " << type << " " << id << endl;
+    if (DEBUGGING) cout << "add arg: " << type << " " << id << endl;
     this->lineno = lineno;
 
     if (this->existsId(id)){
@@ -163,7 +161,7 @@ bool symbolTable::existsFunction(string& id, vector<varPair>& formals, string& r
 }
 
 void symbolTable::callFunction(string& id, vector<varPair>& args, int lineno){
-    if (debug) cout << "called function: " << id << endl;
+    if (DEBUGGING) cout << "called function: " << id << endl;
     this->lineno = lineno;
     FunctionEntry * res = getFunction(id);
 
@@ -225,8 +223,16 @@ void symbolTable::popScope(){
     if (this->scopes.empty()){
         return;
     }
+    Scope * current = scopes.back();
 
-    delete this->scopes.back();
+    if (!current->isGlobal()){
+        this->scopes.pop_back();
+        scopes.back()->updateOffset(current->getOffset());
+        delete current;
+        return;
+    }
+
+    delete current;
     this->scopes.pop_back();
 }
 
@@ -264,7 +270,7 @@ void symbolTable::existsMain(){
 }
 
 void symbolTable::addStruct(string& id, vector<varPair>& members, int lineno){
-    if (debug) cout << "add struct " << id << endl;
+    if (DEBUGGING) cout << "add struct " << id << endl;
     this->lineno = lineno;
     if (this->existsId(id)){
         // TODOBOM: handle existing identifier
@@ -290,7 +296,7 @@ void symbolTable::addStruct(string& id, vector<varPair>& members, int lineno){
 }
 
 void symbolTable::addVariable(string type, string id, int lineno){
-    if (debug) cout << "add var: " << type << " " << id << endl;
+    if (DEBUGGING) cout << "add var: " << type << " " << id << endl;
     this->lineno = lineno;
 
     if (this->existsId(id)){

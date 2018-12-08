@@ -1,0 +1,7 @@
+void main(){
+        if (true){
+                int x;
+        } else {
+                int x;
+        }
+}

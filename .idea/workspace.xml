@@ -11,9 +11,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2b6a5383-20c6-47f8-99cd-7269f0f9f4ae" name="Default Changelist" comment="changed vector type of call function to varPair&#10;and&#10;implemented primitive type check">
+    <list default="true" id="2b6a5383-20c6-47f8-99cd-7269f0f9f4ae" name="Default Changelist" comment="more fixes to offset">
+      <change afterPath="$PROJECT_DIR$/HW3/HW3/eitan_tests/t1.in" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/HW3/HW3/eitan_tests/t1.out" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HW3/HW3/eitan_tests/test" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/HW3/HW3/symbolTable.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/HW3/HW3/symbolTable.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HW3/HW3/symbolTable.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/HW3/HW3/symbolTable.hpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -27,108 +31,143 @@
     <favorites_list name="CompilationWinter2018" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.cpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="60" column="42" selection-start-line="60" selection-start-column="42" selection-end-line="60" selection-end-column="42" />
-              <folding>
-                <element signature="e#0#26#0" expanded="true" />
-                <element signature="e#105#117#0" expanded="true" />
-                <element signature="e#96#156#0" />
-                <element signature="e#279#350#0" />
-                <element signature="e#1015#1097#0" />
-                <element signature="e#1099#1171#0" />
-                <element signature="e#1173#1247#0" />
-                <element signature="e#1249#1324#0" />
-                <element signature="e#1326#1540#0" />
-                <element signature="e#1542#1768#0" />
-                <element signature="e#1770#2030#0" />
-                <element signature="e#3124#3512#0" />
-                <element signature="e#2032#2265#0" />
-                <element signature="e#2267#2473#0" />
-                <element signature="e#2475#2762#0" />
-                <element signature="e#2764#2962#0" />
-                <element signature="e#2964#3074#0" />
-                <element signature="e#3613#3759#0" />
-                <element signature="e#3761#3935#0" />
-                <element signature="e#3396#3576#0" />
-                <element signature="e#3192#3254#0" />
-                <element signature="e#5292#6184#0" />
-                <element signature="e#5025#5073#0" />
-                <element signature="e#3803#3878#0" />
-                <element signature="e#3880#4109#0" />
-                <element signature="e#4990#5044#0" />
-                <element signature="e#4990#5036#0" />
-                <element signature="e#4990#5038#0" />
-                <element signature="e#4676#4756#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.hpp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="495">
-              <caret line="158" column="53" selection-start-line="158" selection-start-column="53" selection-end-line="158" selection-end-column="53" />
-              <folding>
-                <element signature="e#13#30#0" expanded="true" />
-                <element signature="e#371#606#1" />
-                <element signature="e#743#996#0" />
-                <element signature="e#1084#1478#0" />
-                <element signature="e#1812#2208#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="vertical" split-proportion="0.5373317">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.cpp">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="210">
+                  <caret line="167" column="12" lean-forward="true" selection-start-line="167" selection-start-column="12" selection-end-line="167" selection-end-column="12" />
+                  <folding>
+                    <element signature="e#147#156#0" expanded="true" />
+                    <element signature="e#7297#7397#0" />
+                    <element signature="e#7399#7474#0" />
+                    <element signature="e#7476#7717#0" />
+                    <element signature="e#7719#7860#0" />
+                    <element signature="e#7862#7979#0" />
+                    <element signature="e#7981#8231#0" />
+                    <element signature="e#8233#8435#0" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.hpp">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="150">
+                  <caret line="6" column="19" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
+                  <folding>
+                    <element signature="e#13#30#0" expanded="true" />
+                    <element signature="e#98#373#1" />
+                    <element signature="e#376#773#1" />
+                    <element signature="e#588#771#0" />
+                    <element signature="e#776#2356#1" />
+                    <element signature="e#918#1211#0" />
+                    <element signature="e#1257#1328#0" />
+                    <element signature="e#1334#1728#0" />
+                    <element signature="e#1734#1821#0" />
+                    <element signature="e#1827#2057#0" />
+                    <element signature="e#2062#2354#0" />
+                    <element signature="e#2359#4039#1" />
+                    <element signature="e#2493#2775#0" />
+                    <element signature="e#2905#2999#0" />
+                    <element signature="e#3005#3540#0" />
+                    <element signature="e#3546#3942#0" />
+                    <element signature="e#3948#4037#0" />
+                    <element signature="e#4808#5126#0" />
+                    <element signature="e#6186#6297#0" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/HW3/HW3/eitan_tests/t1.in">
+              <provider selected="true" editor-type-id="text-editor">
+                <state>
+                  <caret selection-end-line="7" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/HW3/HW3/eitan_tests/t1.out">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="136">
+                  <caret line="8" selection-start-line="8" selection-end-line="11" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/HW3/HW3/eitan_tests/t2.in">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="175">
+                  <caret line="7" selection-start-line="7" selection-end-line="7" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/HW3/HW3/eitan_tests/t2.out">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="121">
+                  <caret line="15" column="1" lean-forward="true" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="15" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/HW3/HW3/eitan_tests/t2.in">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="52">
+                  <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>adde</find>
-      <find>varPair</find>
-      <find>StructMember</find>
-      <find>Formal</find>
-      <find>(&quot;.</find>
-      <find>(&quot;.+&quot;)</find>
-      <find>types</find>
-      <find>iswhil</find>
-      <find>= true</find>
-      <find>entry_type</find>
-      <find>existsFunction</find>
-      <find>call</find>
-      <find>TODO</find>
-      <find>addFunction</find>
-      <find>~scope</find>
-      <find>0</find>
-      <find>typeMismatch</find>
-      <find>type mis</find>
-      <find>callFunction</find>
-      <find>getStruct</find>
-      <find>type.compare(.*)</find>
-      <find>(type\.compare\(string\(&quot;.*&quot;\){2})</find>
-      <find>errorMismatch</find>
-      <find>callf</find>
-      <find>addVariable</find>
       <find>addf</find>
-      <find>addst</find>
-      <find>getOffset</find>
+      <find>getVariableSize</find>
+      <find>countSize</find>
+      <find>scope::sc</find>
+      <find>IF</find>
+      <find>lineno</find>
+      <find>Scope</find>
+      <find>output</find>
+      <find>exit(0)</find>
+      <find>addw</find>
+      <find>addScope</find>
+      <find>StartWhileScope</find>
+      <find>brea</find>
+      <find>---end scope---.*</find>
+      <find>add</find>
+      <find>addsc</find>
       <find>addv</find>
-      <find>addstruct</find>
+      <find>getoff</find>
+      <find>newScope</find>
+      <find>debug</find>
+      <find>debugging</find>
+      <find>popscope</find>
+      <find>fourth</find>
     </findStrings>
     <replaceStrings>
-      <replace>original</replace>
-      <replace>sub</replace>
-      <replace>this-&gt;scopes-&gt;</replace>
-      <replace>lino</replace>
-      <replace>lineno</replace>
-      <replace>string(\1)</replace>
-      <replace>$1 == 0</replace>
-      <replace>string($1)</replace>
-      <replace>($1 == 0)</replace>
+      <replace>---end scope---</replace>
+      <replace>if (debug) cout</replace>
+      <replace>debugging</replace>
+      <replace>symbolTable.hpp</replace>
+      <replace>DEBUGGING</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -142,15 +181,17 @@
         <option value="$PROJECT_DIR$/HW2/HW2/nir" />
         <option value="$PROJECT_DIR$/HW2/hw2.cpp" />
         <option value="$PROJECT_DIR$/HW2/HW2/our_select" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/HW3/HW3/test.in" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/HW3/HW3/eitan_tests/t1.in" />
+        <option value="$PROJECT_DIR$/HW3/HW3/eitan_tests/t2.in" />
         <option value="$PROJECT_DIR$/HW3/HW3/StackStructs.h" />
-        <option value="$PROJECT_DIR$/HW3/HW3/symbolTable.hpp" />
         <option value="$PROJECT_DIR$/HW3/HW3/symbolTable.cpp" />
+        <option value="$PROJECT_DIR$/HW3/HW3/symbolTable.hpp" />
+        <option value="$PROJECT_DIR$/HW3/HW3/eitan_tests/t2.out" />
       </list>
     </option>
   </component>
-  <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="306" />
     <option name="y" value="167" />
@@ -173,11 +214,6 @@
             <path>
               <item name="CompilationWinter2018" type="b2602c69:ProjectViewProjectNode" />
               <item name="CompilationWinter2018" type="462c0819:PsiDirectoryNode" />
-              <item name="Gal_Nir_Wet_Sol" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CompilationWinter2018" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CompilationWinter2018" type="462c0819:PsiDirectoryNode" />
               <item name="HW3" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -191,7 +227,7 @@
               <item name="CompilationWinter2018" type="462c0819:PsiDirectoryNode" />
               <item name="HW3" type="462c0819:PsiDirectoryNode" />
               <item name="HW3" type="462c0819:PsiDirectoryNode" />
-              <item name="tests" type="462c0819:PsiDirectoryNode" />
+              <item name="eitan_tests" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -201,15 +237,6 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="CPPToolchains" />
-  </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\eitan\TechnionProjects\CompilationWinter2018\HW3\HW3\eitan_tests" />
-    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -255,42 +282,45 @@
       <workItem from="1543521086997" duration="6000" />
       <workItem from="1543521126686" duration="39000" />
       <workItem from="1543523486220" duration="24373000" />
-      <workItem from="1544028917959" duration="68381000" />
+      <workItem from="1544028917959" duration="81605000" />
+      <workItem from="1544267288403" duration="293000" />
+      <workItem from="1544267599722" duration="724000" />
+      <workItem from="1544268423073" duration="18180000" />
     </task>
-    <task id="LOCAL-00001" summary="added implementation of follow set">
-      <created>1543534503591</created>
+    <task id="LOCAL-00001" summary="fixed offsets and printing order">
+      <created>1544278102242</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1543534503591</updated>
+      <updated>1544278102243</updated>
     </task>
-    <task id="LOCAL-00002" summary="follow works">
-      <created>1543614773324</created>
+    <task id="LOCAL-00002" summary="fixed init offset for global scope">
+      <created>1544280648396</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1543614773325</updated>
+      <updated>1544280648396</updated>
     </task>
-    <task id="LOCAL-00003" summary="select works">
-      <created>1543618269518</created>
+    <task id="LOCAL-00003" summary="fixed lineno on an struct">
+      <created>1544282379026</created>
       <option name="number" value="00003" />
       <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
-      <updated>1543618269518</updated>
+      <updated>1544282379026</updated>
     </task>
-    <task id="LOCAL-00004" summary="initial commit for symbolTable">
-      <created>1544048373490</created>
+    <task id="LOCAL-00004" summary="added exit(0) after outputs">
+      <created>1544287720380</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1544048373490</updated>
+      <updated>1544287720380</updated>
     </task>
-    <task id="LOCAL-00005" summary="added a few implementations">
-      <created>1544050570783</created>
+    <task id="LOCAL-00005" summary="fixed break &amp; continue checkers">
+      <created>1544288843586</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1544050570783</updated>
+      <updated>1544288843586</updated>
     </task>
     <task id="LOCAL-00006" summary="added more implementations to symbolTable">
       <created>1544089517904</created>
@@ -495,39 +525,101 @@
       <option name="project" value="LOCAL" />
       <updated>1544209131841</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="improved offset inspection">
+      <created>1544210878066</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1544210878066</updated>
+    </task>
+    <task id="LOCAL-00036" summary="improved function argument offset inspection">
+      <created>1544213303677</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1544213303677</updated>
+    </task>
+    <task id="LOCAL-00037" summary="fixed type checking in add variable">
+      <created>1544216845262</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1544216845262</updated>
+    </task>
+    <task id="LOCAL-00038" summary="allow byte to int cast in functions args">
+      <created>1544219816967</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1544219816967</updated>
+    </task>
+    <task id="LOCAL-00039" summary="removed debug prints">
+      <created>1544220783087</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1544220783087</updated>
+    </task>
+    <task id="LOCAL-00040" summary="removed unnecessary function declarations">
+      <created>1544264639239</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1544264639241</updated>
+    </task>
+    <task id="LOCAL-00041" summary="implemented freedom">
+      <created>1544264894422</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1544264894422</updated>
+    </task>
+    <task id="LOCAL-00042" summary="fixed usage of struct which isn't defined in the global scope">
+      <created>1544265905288</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1544265905288</updated>
+    </task>
+    <task id="LOCAL-00043" summary="removed unnecessary line from callFunction">
+      <created>1544267137894</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1544267137894</updated>
+    </task>
+    <task id="LOCAL-00044" summary="commit for untrack unnecessary files">
+      <created>1544267801953</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1544267801953</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="96661000" />
-  </component>
-  <component name="TodoView" selected-index="4">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
+    <option name="totallyTimeSpent" value="18465000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49919224" visible="true" weight="0.1609808" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49919224" visible="true" weight="0.16577825" />
       <window_info id="Structure" order="1" sideWeight="0.50080776" side_tool="true" weight="0.09541578" />
       <window_info id="Favorites" order="2" sideWeight="0.50151974" side_tool="true" weight="0.09541578" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49946696" weight="0.32936078" />
       <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3206934" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.16143012" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49946696" visible="true" weight="0.11484291" />
+      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49946696" weight="0.11484291" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.19176598" />
-      <window_info anchor="bottom" id="Terminal" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50053304" side_tool="true" weight="0.11484291" />
-      <window_info anchor="bottom" id="Messages" order="11" weight="0.23618636" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.32936078" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50053304" side_tool="true" visible="true" weight="0.23618636" />
+      <window_info active="true" anchor="bottom" id="Messages" order="11" sideWeight="0.49946696" visible="true" weight="0.23618636" />
       <window_info anchor="bottom" id="CMake" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -561,26 +653,16 @@
     <option name="version" value="1" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
+    <option name="RECENT_FILTERS">
       <map>
-        <entry key="MAIN">
+        <entry key="Branch">
           <value>
-            <State>
-              <option name="RECENTLY_FILTERED_USER_GROUPS">
-                <collection />
-              </option>
-              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
-                <collection />
-              </option>
-              <option name="COLUMN_ORDER">
-                <list>
-                  <option value="0" />
-                  <option value="1" />
-                  <option value="2" />
-                  <option value="3" />
-                </list>
-              </option>
-            </State>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
           </value>
         </entry>
       </map>
@@ -588,22 +670,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="added more implementations to symbolTable:&#10;- addVariable" />
-    <MESSAGE value="fixed compilation errors" />
-    <MESSAGE value="added lineno getter" />
-    <MESSAGE value="added lineno setter" />
-    <MESSAGE value="added isContinueAllowed()" />
-    <MESSAGE value="added errors checks" />
-    <MESSAGE value="added destructors of symbolTable and Scope" />
-    <MESSAGE value="added more implementations" />
-    <MESSAGE value="fixed main existence checker" />
-    <MESSAGE value="redoing types and arguments push" />
-    <MESSAGE value="fixed print function error" />
-    <MESSAGE value="added prints" />
-    <MESSAGE value="fixed some shit" />
-    <MESSAGE value="added print for structs" />
-    <MESSAGE value="added function all to symbolTable" />
-    <MESSAGE value="fixed function call" />
     <MESSAGE value="added check for struct members" />
     <MESSAGE value="added lineno to a few funcs" />
     <MESSAGE value="fixed default parameters passing to addFunction" />
@@ -613,231 +679,146 @@
     <MESSAGE value="added test" />
     <MESSAGE value="fixed seg fault in addStruct" />
     <MESSAGE value="removed prints from addStruct" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed prints from addStruct" />
+    <MESSAGE value="improved offset inspection" />
+    <MESSAGE value="improved function argument offset inspection" />
+    <MESSAGE value="fixed type checking in add variable" />
+    <MESSAGE value="allow byte to int cast in functions args" />
+    <MESSAGE value="removed debug prints" />
+    <MESSAGE value="removed unnecessary function declarations" />
+    <MESSAGE value="implemented freedom" />
+    <MESSAGE value="fixed usage of struct which isn't defined in the global scope" />
+    <MESSAGE value="removed unnecessary line from callFunction" />
+    <MESSAGE value="commit for untrack unnecessary files" />
+    <MESSAGE value="fixed offsets and printing order" />
+    <MESSAGE value="fixed init offset for global scope" />
+    <MESSAGE value="fixed lineno on an struct" />
+    <MESSAGE value="added exit(0) after outputs" />
+    <MESSAGE value="fixed break &amp; continue checkers" />
+    <MESSAGE value="more fixes to offset" />
+    <option name="LAST_COMMIT_MESSAGE" value="more fixes to offset" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/facebook_tests/run.sh">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://C:/MinGW/lib/gcc/mingw32/6.3.0/include/c++/bits/stl_tree.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="1998" column="61" selection-start-line="1998" selection-start-column="61" selection-end-line="1998" selection-end-column="61" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/facebook_tests/t1.out">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://C:/MinGW/lib/gcc/mingw32/6.3.0/include/c++/set">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="59" selection-start-line="59" selection-end-line="59" />
-          <folding>
-            <element signature="e#2309#2335#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/MinGW/lib/gcc/mingw32/6.3.0/include/c++/bits/stl_function.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="876" column="6" selection-start-line="876" selection-start-column="6" selection-end-line="876" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/MinGW/lib/gcc/mingw32/6.3.0/include/c++/bits/stl_vector.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="548" selection-start-line="548" selection-end-line="548" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/MinGW/lib/gcc/mingw32/6.3.0/include/c++/bits/stl_iterator.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="789" selection-start-line="789" selection-end-line="789" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HW2/HW2/nir">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="67" lean-forward="true" selection-start-line="12" selection-start-column="67" selection-end-line="12" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HW2/HW2/our_select">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="28" lean-forward="true" selection-start-line="19" selection-start-column="28" selection-end-line="19" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HW2/tokens.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HW2/main.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HW2/grammar.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1785">
-          <caret line="105" column="27" selection-start-line="105" selection-start-column="27" selection-end-line="105" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HW2/grammar.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HW2/hw2.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HW2/hw2.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="10" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
-          <folding>
-            <element signature="e#1284#2241#0" />
-            <element signature="e#2306#2322#0" expanded="true" />
-            <element signature="e#2297#2647#0" />
-            <element signature="e#2649#2922#0" />
-          </folding>
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/facebook_tests/t1.in">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="509">
-          <caret line="156" column="13" selection-start-line="156" selection-start-column="13" selection-end-line="156" selection-end-column="13" />
+          <caret line="157" column="19" selection-start-line="157" selection-start-column="19" selection-end-line="157" selection-end-column="19" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/HW3/HW3/scanner.lex">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="11" column="56" selection-start-line="11" selection-start-column="56" selection-end-line="11" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HW3/makefile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HW3/HW3/output.hpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="15" column="11" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HW3/HW3/tests/test16.in">
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/tests/test.out">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/HW3/HW3/test.in">
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/tests/test2.in">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/tests/test2.out">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="10" selection-start-column="10" selection-end-column="10" />
+        <state relative-caret-position="51">
+          <caret line="3" column="21" lean-forward="true" selection-start-line="3" selection-start-column="21" selection-end-line="3" selection-end-column="21" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/HW3/HW3/output.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="78" column="26" selection-start-line="78" selection-start-column="13" selection-end-line="78" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/tests/test66.in">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/HW3/HW3/tests/test22.in">
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/tests/test65.in">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/HW3/HW3/parser.ypp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="29" column="12" lean-forward="true" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
+        <state relative-caret-position="289">
+          <caret line="190" column="15" selection-start-line="190" selection-end-line="190" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/eitan_tests/t1.out">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" selection-start-line="8" selection-end-line="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/HW3/HW3/StackStructs.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="502">
-          <caret line="46" column="24" selection-start-line="46" selection-start-column="24" selection-end-line="46" selection-end-column="24" />
+        <state relative-caret-position="170">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+          <folding>
+            <element signature="e#43#60#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/eitan_tests/t1.in">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="7" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="158" column="53" selection-start-line="158" selection-start-column="53" selection-end-line="158" selection-end-column="53" />
+        <state relative-caret-position="150">
+          <caret line="6" column="19" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
           <folding>
             <element signature="e#13#30#0" expanded="true" />
-            <element signature="e#371#606#1" />
-            <element signature="e#743#996#0" />
-            <element signature="e#1084#1478#0" />
-            <element signature="e#1812#2208#0" />
+            <element signature="e#98#373#1" />
+            <element signature="e#376#773#1" />
+            <element signature="e#588#771#0" />
+            <element signature="e#776#2356#1" />
+            <element signature="e#918#1211#0" />
+            <element signature="e#1257#1328#0" />
+            <element signature="e#1334#1728#0" />
+            <element signature="e#1734#1821#0" />
+            <element signature="e#1827#2057#0" />
+            <element signature="e#2062#2354#0" />
+            <element signature="e#2359#4039#1" />
+            <element signature="e#2493#2775#0" />
+            <element signature="e#2905#2999#0" />
+            <element signature="e#3005#3540#0" />
+            <element signature="e#3546#3942#0" />
+            <element signature="e#3948#4037#0" />
+            <element signature="e#4808#5126#0" />
+            <element signature="e#6186#6297#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/eitan_tests/t2.out">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="15" column="1" lean-forward="true" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/eitan_tests/t2.in">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="60" column="42" selection-start-line="60" selection-start-column="42" selection-end-line="60" selection-end-column="42" />
+        <state relative-caret-position="210">
+          <caret line="167" column="12" lean-forward="true" selection-start-line="167" selection-start-column="12" selection-end-line="167" selection-end-column="12" />
           <folding>
-            <element signature="e#0#26#0" expanded="true" />
-            <element signature="e#105#117#0" expanded="true" />
-            <element signature="e#96#156#0" />
-            <element signature="e#279#350#0" />
-            <element signature="e#1015#1097#0" />
-            <element signature="e#1099#1171#0" />
-            <element signature="e#1173#1247#0" />
-            <element signature="e#1249#1324#0" />
-            <element signature="e#1326#1540#0" />
-            <element signature="e#1542#1768#0" />
-            <element signature="e#1770#2030#0" />
-            <element signature="e#3124#3512#0" />
-            <element signature="e#2032#2265#0" />
-            <element signature="e#2267#2473#0" />
-            <element signature="e#2475#2762#0" />
-            <element signature="e#2764#2962#0" />
-            <element signature="e#2964#3074#0" />
-            <element signature="e#3613#3759#0" />
-            <element signature="e#3761#3935#0" />
-            <element signature="e#3396#3576#0" />
-            <element signature="e#3192#3254#0" />
-            <element signature="e#5292#6184#0" />
-            <element signature="e#5025#5073#0" />
-            <element signature="e#3803#3878#0" />
-            <element signature="e#3880#4109#0" />
-            <element signature="e#4990#5044#0" />
-            <element signature="e#4990#5036#0" />
-            <element signature="e#4990#5038#0" />
-            <element signature="e#4676#4756#0" />
+            <element signature="e#147#156#0" expanded="true" />
+            <element signature="e#7297#7397#0" />
+            <element signature="e#7399#7474#0" />
+            <element signature="e#7476#7717#0" />
+            <element signature="e#7719#7860#0" />
+            <element signature="e#7862#7979#0" />
+            <element signature="e#7981#8231#0" />
+            <element signature="e#8233#8435#0" />
           </folding>
         </state>
       </provider>

@@ -4,6 +4,8 @@
 #include "StackStructs.h"
 #include "output.hpp"
 
+#define DEBUGGING 0
+
 class TableEntry{
 
 protected:
@@ -173,6 +175,7 @@ public:
     void incrementOffset(int delta){offset += delta;}
     bool isWhile(){return this->isWhile_;}
     bool isGlobal(){return this->isGlobal_;}
+    void updateOffset(int newOffset){this->offset = newOffset;}
 };
 
 class symbolTable{
@@ -184,8 +187,10 @@ private:
 
     Scope * newScope(bool isWhile, bool initOffset = false){
         if (initOffset){
+            if (DEBUGGING) cout << "adding scope with offset " << 0 << endl;
             this->scopes.push_back(new Scope(0, isWhile));
         } else {
+            if (DEBUGGING) cout << "adding scope with offset " << getOffset() << endl;
             this->scopes.push_back(new Scope(this->getOffset(), isWhile));
         }
         return this->scopes.back();
