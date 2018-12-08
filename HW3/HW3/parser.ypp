@@ -106,9 +106,10 @@ RetType: Type {
 
 Formals: FormalsList {
 	tables->setLine($1.lineno);
+	$$.func_info = $1.func_info;
 }
 	| /*epsilon*/ {
-
+		$$.func_info.clear();
 	}
 
 FormalsList: FormalDecl {
@@ -304,7 +305,6 @@ Call: ID LPAREN ExpList RPAREN {
 	}
 
 ExpList: Exp {
-	// TODO: Check struct ... And check func type...
 	if ($1.type == types_Undefined) {
 		$$.func_info.insert($$.func_info.begin(), varPair($1.struct_type, $1.str));
 	} else {
@@ -316,7 +316,6 @@ ExpList: Exp {
 	| Exp COMMA ExpList {
 		$$.func_info = $3.func_info;
 		$$.type = $1.type;
-		// TODO: Check struct ... And check func type...
 		if ($1.type == types_Undefined) {
 			$$.func_info.insert($$.func_info.begin(), varPair($1.struct_type, $1.str));
 		} else {
