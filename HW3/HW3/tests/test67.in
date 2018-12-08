@@ -2,4 +2,9 @@ int TestDanglingElse() {
 	else int x = 0;
 }
 
-void main() { print("Max is cool"); }
+
+
+void main() { print("I hate this course"); }
+
+
+

@@ -3,4 +3,10 @@ void TestMismatchByteBool(bool k) {
 	int a = 3;
 }
 
-void main() { print("Max is cool"); }
+
+
+
+void main() { print("I hate this course"); }
+
+
+

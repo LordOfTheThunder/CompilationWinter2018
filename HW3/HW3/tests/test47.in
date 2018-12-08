@@ -14,4 +14,9 @@ void IntoPotato() {
 	x = z;
 }
 
-void main() { print("Max is cool"); }
+
+
+void main() { print("I hate this course"); }
+
+
+

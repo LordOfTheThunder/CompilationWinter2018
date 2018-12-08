@@ -16,4 +16,9 @@ void callPutPotato() {
 	PutToPotato(313, false, 33b, 22b, pot);
 }
 
-void main() { print("Max is cool"); }
+
+
+void main() { print("I hate this course"); }
+
+
+

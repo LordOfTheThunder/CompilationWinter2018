@@ -5,4 +5,10 @@ void TestUndefIllegal(bool a) {
 	b = true;
 }
 
-void main() { print("Max is cool"); }
+
+
+
+void main() { print("I hate this course"); }
+
+
+

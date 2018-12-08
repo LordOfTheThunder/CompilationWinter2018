@@ -3,4 +3,10 @@ void TestDefineThenWrongType(bool a) {
 	x = true;
 }
 
-void main() { print("Max is cool"); }
+
+
+
+void main() { print("I hate this course"); }
+
+
+

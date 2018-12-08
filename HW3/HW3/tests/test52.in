@@ -12,4 +12,9 @@ int TestRetInt(int s) {
 	t = retBool();
 }
 
-void main() { print("Max is cool"); }
+
+
+void main() { print("I hate this course"); }
+
+
+

@@ -9,4 +9,9 @@ void TestPrintI() {
 	}
 }
 
-void main() { print("Max is cool"); }
+
+
+void main() { print("I hate this course"); }
+
+
+

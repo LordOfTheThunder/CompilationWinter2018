@@ -2,4 +2,10 @@ void TestMismatchByteBool(bool a) {
 	byte k = false;
 }
 
-void main() { print("Max is cool"); }
+
+
+
+void main() { print("I hate this course"); }
+
+
+

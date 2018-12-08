@@ -7,4 +7,9 @@ void TestCreatePotato() {
 	rr = t.s;
 }
 
-void main() { print("Max is cool"); }
+
+
+void main() { print("I hate this course"); }
+
+
+

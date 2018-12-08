@@ -2,4 +2,9 @@ void TestSpace() {
 	byte b = 100 b;
 }
 
-void main() { print("Max is cool"); }
+
+
+void main() { print("I hate this course"); }
+
+
+

@@ -5,4 +5,10 @@ void TestMismatchByte(bool a) {
 	byte k = 133;
 }
 
-void main() { print("Max is cool"); }
+
+
+
+void main() { print("I hate this course"); }
+
+
+

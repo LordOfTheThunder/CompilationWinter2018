@@ -7,4 +7,9 @@ void CheckBinary(int x, byte y, int z) {
 
 
 
-void main() { print("Max is cool"); }
+
+
+void main() { print("I hate this course"); }
+
+
+
