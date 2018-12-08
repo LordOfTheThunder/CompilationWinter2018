@@ -129,6 +129,10 @@ FormalDecl: Type ID {
 	$$.str = $2.str;
 }
 	| StructType ID {
+		if (tables->getStruct($1.str) == NULL) {
+			errorUndefStruct(tables->getLine(), $1.str);
+			exit(0);
+		}
 		$$.str = $2.str;
 		$$.struct_type = $1.str;
 		tables->setLine($$.lineno);
@@ -177,7 +181,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 }
 
 	| StructType ID SC {
-
+		tables->addVariable($1.str, $2.str, $1.lineno);
 	}
 
 	| STRUCT ID LBRACE StructMemList RBRACE SC {
@@ -192,7 +196,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 	}
 
 	| StructType ID ASSIGN Exp SC {
-
+		tables->addVariable($1.str, $2.str, $1.lineno);
 	}
 
 	| ID ASSIGN Exp SC {
@@ -303,7 +307,26 @@ Exp: Exp BINOPAS Exp {
 	}
 
 	| ID PERIOD ID {
-
+		$$.lineno = $1.lineno;
+		tables->setLine($$.lineno);
+		// Check if variable of struct type exists
+		VariableEntry* var_entry = tables->getVariable($1.str);
+		if (var_entry == NULL) {
+			errorUndef(tables->getLine(), $1.str);
+			exit(0);
+		}
+		// Check if struct itself exists
+		StructEntry* struct_entry = tables->getStruct((tables->getVariable($1.str))->getType());
+		if (struct_entry == NULL) {
+			errorUndefStruct(tables->getLine(), $1.str);
+			exit(0);
+		}
+		// Check if field of struct exists
+		if (!struct_entry->varExists($3.str)) {
+			errorUndef(tables->getLine(), $3.str);
+			exit(0);
+		}
+		$$.type = stringToType(struct_entry->getTypeOfVar($3.str));
 	}
 
 	| Call {

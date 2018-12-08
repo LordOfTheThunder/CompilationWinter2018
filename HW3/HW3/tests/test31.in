@@ -1,0 +1,8 @@
+struct potato {
+	int x;
+};
+void TestCreatePotato() {
+	struct potato t;
+	int rr;
+	rr = s.x;
+}

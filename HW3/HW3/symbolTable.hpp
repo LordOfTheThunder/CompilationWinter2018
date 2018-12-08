@@ -73,6 +73,25 @@ public:
     bool operator!=(const StructEntry& rhs) const {
         return (!(rhs == *this));
     }
+
+    bool varExists(string& id) {
+        for (vector<varPair>::iterator it = members.begin(); it != members.end(); ++it){
+            if (it->id == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+    string getTypeOfVar(string& id) {
+        if (!varExists(id)) {
+            return string("None");
+        }
+        for (vector<varPair>::iterator it = members.begin(); it != members.end(); ++it){
+            if (it->id == id) {
+                return it->type;
+            }
+        }
+    }
 };
 
 class FunctionEntry : public TableEntry{
