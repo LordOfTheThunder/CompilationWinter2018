@@ -130,7 +130,6 @@ bool symbolTable::existsFunction(string& id, vector<varPair>& formals, string& r
 void symbolTable::callFunction(string& id, vector<varPair>& args, int lineno){
     this->lineno = lineno;
     FunctionEntry * res = getFunction(id);
-    bool exists = existsId(id);
 
     if (!res){
         output::errorUndefFunc(lineno, id);
