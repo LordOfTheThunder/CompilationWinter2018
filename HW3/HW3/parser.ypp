@@ -35,7 +35,7 @@ void CheckCorrectTypes(types _type1, string id2, types _type2);
 %token WHILE
 %token BREAK
 %token CONTINUE
-%token SC
+%left SC
 %token COMMA
 %token PERIOD
 %token LPAREN
@@ -98,6 +98,7 @@ RetType: Type {
 	}
 
 Formals: FormalsList {
+	tables->setLine($1.lineno);
 }
 	| /*epsilon*/ {
 
@@ -111,6 +112,8 @@ FormalsList: FormalDecl {
 	else {
 		$$.func_info.insert($$.func_info.begin(),varPair(typeToString($1.type), $1.str));
 	}
+	tables->setLine($1.lineno);
+	$$.lineno = $1.lineno;
 }
 	| FormalDecl COMMA FormalsList {
 		$$.func_info = $3.func_info;
@@ -121,36 +124,39 @@ FormalsList: FormalDecl {
 		else {
 			$$.func_info.insert($$.func_info.begin(),varPair(typeToString($1.type), $1.str));
 		}
+		tables->setLine($1.lineno);
+		$$.lineno = $1.lineno;
 	}
 
 FormalDecl: Type ID {
-	tables->setLine($$.lineno);
+	tables->setLine($2.lineno);
+	$$.lineno = $2.lineno;
 	$$.type = $1.type;
 	$$.str = $2.str;
 }
 	| StructType ID {
+		tables->setLine($2.lineno);
 		if (tables->getStruct($1.str) == NULL) {
 			errorUndefStruct(tables->getLine(), $1.str);
 			exit(0);
 		}
 		$$.str = $2.str;
 		$$.struct_type = $1.str;
-		tables->setLine($$.lineno);
+		$$.lineno = $2.lineno;
 	}
 
 
 StructMemList: StructMem {
-	tables->setLine($$.lineno);
 	$$.func_info.insert($$.func_info.begin(),varPair(typeToString($1.type), $1.str));
 }
 	| StructMem StructMemList {
-		tables->setLine($$.lineno);
 		$$.func_info = $2.func_info;
 		$$.func_info.insert($$.func_info.begin(),varPair(typeToString($1.type), $1.str));
 	}
 
 StructMem: Type ID SC {
-	tables->setLine($$.lineno);
+	tables->setLine($2.lineno);
+	$$.lineno = $2.lineno;
 	$$.type = $1.type;
 	$$.str = $2.str;
 }
@@ -160,12 +166,14 @@ Statements: Statement {
 		$$.ret_type = $1.ret_type;
 	}
 	$$.lineno = $1.lineno;
+	tables->setLine($$.lineno);
 }
 	| Statements Statement {
 		if ($2.ret_type != types_Undefined) {
 			$$.ret_type = $2.ret_type;
 		}
 		$$.lineno = $2.lineno;
+		tables->setLine($$.lineno);
 	}
 
 StartScope: /*epsilon*/ {
@@ -184,9 +192,16 @@ Statement: StartScope LBRACE Statements RBRACE {
 		tables->addVariable($1.str, $2.str, $1.lineno);
 	}
 
+	| STRUCT ID LBRACE StructMemList RBRACE {
+		// Struct without ;
+		output::errorSyn($5.lineno);
+		exit(0);
+	}
+
 	| STRUCT ID LBRACE StructMemList RBRACE SC {
 		$$.str = string($2.str);
 		tables->addStruct($$.str, $4.func_info, $1.lineno);
+		$$.lineno = $1.lineno;
 	}
 
 	| Type ID ASSIGN Exp SC {

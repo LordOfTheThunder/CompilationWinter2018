@@ -1,0 +1,9 @@
+void StructInsideFunc() {
+	struct potato {
+		int x;
+		bool y;
+	}
+}
+void illegalStructCall(struct potato t) {
+	int x;
+}
