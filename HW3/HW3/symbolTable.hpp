@@ -219,6 +219,9 @@ public:
     void validateByte(string& value);
 
 //    Getters
+    void getFreedom(){
+        cout << "Freedom is for those Willing to Defend it" << endl;
+    }
     int getOffset();
     TableEntry * getEntry(string& id);
     FunctionEntry * getFunction(string& id);
