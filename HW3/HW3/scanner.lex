@@ -26,7 +26,7 @@ void debug(yytokentype token);
 void						FLEX_MACRO(VOID)
 int							TYPE_FLEX_MACRO(INT, types_Int)
 byte						TYPE_FLEX_MACRO(BYTE, types_Byte)
-<after_num>b				TYPE_FLEX_MACRO(B, types_Byte)
+<after_num>[\ \t\r\n]*b				TYPE_FLEX_MACRO(B, types_Byte)
 bool						TYPE_FLEX_MACRO(BOOL, types_Bool)
 struct						FLEX_MACRO(STRUCT)
 and							FLEX_MACRO(AND)
