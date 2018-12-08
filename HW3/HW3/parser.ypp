@@ -490,7 +490,11 @@ Exp: Exp BINOPAS Exp {
 	}
 
 	| Exp RELOP Exp {
-		// TODO : check if binary operation is legal between 2 Exp's
+		if (($1.type != types_Int && $1.type != types_Byte) || ($3.type != types_Int && $3.type != types_Byte)) {
+			// Both must be numbers
+			errorMismatch($2.lineno);
+			exit(0);
+		}
 		$$.type = types_Bool;
 		$$.lineno = $2.lineno;
 	}
