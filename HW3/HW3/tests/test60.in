@@ -1,0 +1,5 @@
+void CheckBinary() {
+	int x = 3 - 2;
+	byte y = 5b / 3b;
+	int z = 3 + 3b;
+}

@@ -1,0 +1,8 @@
+---end scope---
+x INT 0
+y BYTE 1
+z INT 2
+---end scope---
+print (STRING)->VOID 1
+printi (INT)->VOID 2
+CheckBinary ()->VOID 3

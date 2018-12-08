@@ -365,9 +365,27 @@ StructType: STRUCT ID {
 }
 
 Exp: Exp BINOPAS Exp {
-
+	if (($1.type != types_Int && $1.type != types_Byte) || ($3.type != types_Int && $3.type != types_Byte)) {
+		// Both must be numbers
+		errorMismatch($2.lineno);
+		exit(0);
+	}
+	if ($1.type == types_Int || $3.type == types_Int) {
+		$$.type = types_Int;
+	} else {
+		$$.type = types_Byte;
+	}
 }	| Exp BINOPMD Exp {
-
+		if (($1.type != types_Int && $1.type != types_Byte) || ($3.type != types_Int && $3.type != types_Byte)) {
+			// Both must be numbers
+			errorMismatch($2.lineno);
+			exit(0);
+		}
+		if ($1.type == types_Int || $3.type == types_Int) {
+			$$.type = types_Int;
+		} else {
+			$$.type = types_Byte;
+		}
 	}
 
 	| ID {

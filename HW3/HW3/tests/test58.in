@@ -1,0 +1,6 @@
+void TestNot() {
+	int x;
+	if (not x) {
+		int y;
+	}
+}

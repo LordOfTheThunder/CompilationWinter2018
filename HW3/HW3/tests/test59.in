@@ -1,0 +1,11 @@
+int TestRelop() {
+	if (33 < 33b) {
+		int k;
+	}
+	if (33b == 33) {
+		int k;
+	}
+	if (33 < "potato") {
+		int k;
+	}
+}
