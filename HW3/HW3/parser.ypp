@@ -188,80 +188,7 @@ StartScope: /*epsilon*/ {
 	tables->addScope();
 }
 
-Statement: open_statement {
-
-}
-
-	| closed_statement {
-
-	}
-
-open_statement: StartScope IF LPAREN Exp RPAREN simple_statement {
-		if ($4.type != types_Bool) {
-			errorMismatch($2.lineno);
-			exit(0);
-		}
-		tables->popScope();
-		$$.lineno = $2.lineno;
-		tables->setLine($2.lineno);
-	}
-
-	| StartScope IF LPAREN Exp RPAREN open_statement {
-		if ($4.type != types_Bool) {
-			errorMismatch($2.lineno);
-			exit(0);
-		}
-		tables->popScope();
-		$$.lineno = $2.lineno;
-		tables->setLine($2.lineno);
-	}
-
-	| StartScope IF LPAREN Exp RPAREN closed_statement ElseScope_open {
-		if ($4.type != types_Bool) {
-			errorMismatch($2.lineno);
-			exit(0);
-		}
-		tables->popScope();
-		$$.lineno = $2.lineno;
-		tables->setLine($2.lineno);
-	}
-
-	| StartScope WHILE LPAREN Exp RPAREN open_statement {
-		if ($4.type != types_Bool) {
-				errorMismatch($2.lineno);
-				exit(0);
-		}
-		tables->popScope();
-		$$.lineno = $2.lineno;
-		tables->setLine($2.lineno);
-	}
-
-closed_statement: simple_statement {
-
-}
-
-	| StartScope IF LPAREN Exp RPAREN closed_statement ElseScope_closed {
-		if ($4.type != types_Bool) {
-			errorMismatch($2.lineno);
-			exit(0);
-		}
-		tables->popScope();
-		$$.lineno = $2.lineno;
-		tables->setLine($2.lineno);
-	}
-
-	| StartScope WHILE LPAREN Exp RPAREN closed_statement {
-		if ($4.type != types_Bool) {
-				errorMismatch($2.lineno);
-				exit(0);
-		}
-		tables->popScope();
-		$$.lineno = $2.lineno;
-		tables->setLine($2.lineno);
-	}
-
-
-simple_statement: StartScope LBRACE Statements RBRACE {
+Statement: StartScope LBRACE Statements RBRACE {
 	tables->popScope();
 	$$.lineno = $2.lineno;
 }
@@ -373,6 +300,21 @@ simple_statement: StartScope LBRACE Statements RBRACE {
 		tables->setLine($$.lineno);
 	}
 
+	| If_Scope %prec IF {
+
+	}
+
+	| If_Scope ElseScope {
+	}
+
+	| StartScope WHILE LPAREN Exp RPAREN Statement {
+		if ($4.type != types_Bool) {
+			errorMismatch($2.lineno);
+			exit(0);
+		}
+		tables->popScope();
+	}
+
 	| BREAK SC {
 
 	}
@@ -381,13 +323,17 @@ simple_statement: StartScope LBRACE Statements RBRACE {
 
 	}
 
-ElseScope_open: ELSE StartScope open_statement {
+If_Scope: StartScope IF LPAREN Exp RPAREN Statement {
+	if ($4.type != types_Bool) {
+			errorMismatch($2.lineno);
+			exit(0);
+		}
 	tables->popScope();
-	$$.lineno = $3.lineno;
-	tables->setLine($$.lineno);
+	$$.lineno = $2.lineno;
+	tables->setLine($2.lineno);
 }
 
-ElseScope_closed: ELSE StartScope closed_statement {
+ElseScope: ELSE StartScope Statement {
 	tables->popScope();
 	$$.lineno = $3.lineno;
 	tables->setLine($$.lineno);
