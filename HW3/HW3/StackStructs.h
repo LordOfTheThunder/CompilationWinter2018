@@ -62,8 +62,8 @@ static types stringToType(string type){
 	return types_Undefined;
 }
 
-static bool typesEqual(types type1, types type2) {
-	if (type1 == types_Int && type2 == types_Byte) {
+static bool typesEqual(string type1, string type2) {
+	if (type1 == typeToString(types_Int) && type2 == typeToString(types_Byte)) {
 		return true;
 	}
 	return type1 == type2;

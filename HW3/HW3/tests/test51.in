@@ -1,0 +1,17 @@
+struct potato {
+	int x;
+};
+struct tomato {
+	int x;
+};
+void IntoPotato() {
+	struct potato x;
+	struct potato y;
+	x.x = 3;
+	y.x = 4;
+	x.x = y.x;
+	struct tomato z;
+	x.x = z.x;
+}
+
+
