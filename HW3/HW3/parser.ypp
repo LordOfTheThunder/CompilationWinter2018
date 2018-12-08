@@ -306,16 +306,12 @@ Statement: StartScope LBRACE Statements RBRACE {
 			exit(0);
 		}
 		tables->popScope();
-	}
-
-	| StartScope IF LPAREN Exp RPAREN Statement ElseScope {
-		if ($4.type != types_Bool) {
-			errorMismatch($2.lineno);
-			exit(0);
-		}
-		tables->popScope();
 		$$.lineno = $2.lineno;
 		tables->setLine($2.lineno);
+	}
+
+	| ElseScope %prec IF {
+
 	}
 
 	| StartScope WHILE LPAREN Exp RPAREN Statement {
