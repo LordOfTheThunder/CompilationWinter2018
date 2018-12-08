@@ -282,9 +282,24 @@ Call: ID LPAREN ExpList RPAREN {
 	}
 
 ExpList: Exp {
-
+	// TODO: Check struct ... And check func type...
+	if ($1.type == types_Undefined) {
+		$$.func_info.insert($$.func_info.begin(), varPair($1.struct_type, $1.str));
+	} else {
+		$$.func_info.insert($$.func_info.begin(), varPair(typeToString($1.type), $1.str));
+	}
+	$$.type = $1.type;
+	$$.str = $1.str;
 }
 	| Exp COMMA ExpList {
+		$$.func_info = $3.func_info;
+		$$.type = $1.type;
+		// TODO: Check struct ... And check func type...
+		if ($1.type == types_Undefined) {
+			$$.func_info.insert($$.func_info.begin(), varPair($1.struct_type, $1.str));
+		} else {
+			$$.func_info.insert($$.func_info.begin(), varPair(typeToString($1.type), $1.str));
+		}
 
 	}
 
@@ -315,18 +330,28 @@ Exp: Exp BINOPAS Exp {
 		$$.lineno = $1.lineno;
 		// Check if function
 		if (tables->getFunction($1.str) != NULL) {
-			$$.func_info.insert($$.func_info.begin(),varPair((tables->getFunction($1.str))->getType(), $1.str));
+			$$.type = stringToType((tables->getFunction($1.str))->getType());
 		}
 		// Check if variable
 		else if (tables->getVariable($1.str) != NULL) {
-			$$.func_info.insert($$.func_info.begin(),varPair((tables->getVariable($1.str))->getType(), $1.str));
+			$$.type = stringToType((tables->getVariable($1.str))->getType());
 		}
 		else {
 			// Not defined ...
 			errorUndef($$.lineno, $$.str);
 			exit(0);
 		}
-
+		if ($$.type == types_Undefined) {
+			// We probably have a struct type...
+			VariableEntry* var = tables->getVariable($$.str);
+			StructEntry* struct_type = tables->getStruct(var->getType());
+			if (struct_type == NULL) {
+				// WTF?
+				errorUndefStruct($$.lineno, $$.str);
+				exit(0);
+			}
+			$$.struct_type = struct_type->getId();
+		}
 	}
 
 	| ID PERIOD ID {
@@ -350,6 +375,7 @@ Exp: Exp BINOPAS Exp {
 			exit(0);
 		}
 		$$.type = stringToType(struct_entry->getTypeOfVar($3.str));
+		$$.str = string($1.str + "." + $3.str);
 	}
 
 	| Call {
@@ -362,7 +388,6 @@ Exp: Exp BINOPAS Exp {
 		tables->setLine($$.lineno);
 		$$.type = types_Int;
 		$$.lineno = $1.lineno;
-		$$.func_info.insert($$.func_info.begin(),varPair(typeToString(types_Int), $1.str));
 	}
 
 	| NUM B {
@@ -375,7 +400,6 @@ Exp: Exp BINOPAS Exp {
 		}
 		$$.type = types_Byte;
 		$$.lineno = $1.lineno;
-		$$.func_info.insert($$.func_info.begin(),varPair(typeToString(types_Byte), $1.str));
 	}
 
 	| STRING {
@@ -383,21 +407,18 @@ Exp: Exp BINOPAS Exp {
 		$$.type = types_String;
 		$$.lineno = $1.lineno;
 		tables->setLine($$.lineno);
-		$$.func_info.insert($$.func_info.begin(),varPair(typeToString(types_String), $1.str));
 	}
 
 	| TRUE {
 		$$.str = $1.str;
 		$$.type = types_Bool;
 		$$.lineno = $1.lineno;
-		$$.func_info.insert($$.func_info.begin(),varPair(typeToString(types_Bool), $1.str));
 	}
 
 	| FALSE {
 		$$.str = $1.str;
 		$$.type = types_Bool;
 		$$.lineno = $1.lineno;
-		$$.func_info.insert($$.func_info.begin(),varPair(typeToString(types_Bool), $1.str));
 	}
 
 	| NOT Exp {
