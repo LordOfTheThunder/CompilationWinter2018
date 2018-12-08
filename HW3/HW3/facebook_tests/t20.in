@@ -1,0 +1,32 @@
+struct student{
+  int grade;
+  bool isGood;
+  };
+  
+struct car{
+  int year;
+  byte color;
+};
+
+int func1(int var1, bool var2){
+  if(var2){
+    var2 = true;
+  }
+  else{
+    var2 = false;
+  }
+}
+byte func2(struct car coco){
+  while(true){
+    break;
+  } 
+  while(true){
+    continue;
+  } 
+}
+void main()
+{
+  int x;
+  byte y;
+  func1(x,true);
+}

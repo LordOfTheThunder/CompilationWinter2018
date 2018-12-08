@@ -1,0 +1,6 @@
+void main1() {
+   int x;
+}
+void main1() {
+  int x;
+}

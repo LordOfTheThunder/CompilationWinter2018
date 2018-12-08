@@ -1,0 +1,5 @@
+byte func2(int x){
+  if(5){
+    int y;
+  } 
+}

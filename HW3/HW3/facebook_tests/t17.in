@@ -1,0 +1,6 @@
+struct rana{
+    int x;
+    };
+void rana() {
+  int x;
+}

@@ -1,0 +1,8 @@
+---end scope---
+i struct student -2
+---end scope---
+struct a {BOOL yes,BOOL no}
+---end scope---
+x INT 1
+---end scope---
+line 25: syntax error

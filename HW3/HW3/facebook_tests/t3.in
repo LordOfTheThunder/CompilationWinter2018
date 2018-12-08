@@ -1,0 +1,8 @@
+struct student {
+    int id;
+    bool isGood;
+};
+
+int structParam(struct students i){
+    return i.id;
+}

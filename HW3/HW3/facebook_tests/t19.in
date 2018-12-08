@@ -1,0 +1,8 @@
+void rana() {
+  int x;
+}
+void chair(){
+  struct rana{
+    int x;
+    };
+}

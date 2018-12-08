@@ -1,0 +1,24 @@
+---end scope---
+---end scope---
+---end scope---
+---end scope---
+---end scope---
+var1 INT -1
+var2 BOOL -2
+---end scope---
+---end scope---
+---end scope---
+---end scope---
+---end scope---
+coco struct car -2
+---end scope---
+x INT 0
+y BYTE 1
+---end scope---
+print (STRING)->VOID 0
+printi (INT)->VOID 0
+func1 (INT,BOOL)->INT 0
+func2 (struct car)->BYTE 0
+main ()->VOID 0
+struct student {INT grade,BOOL isGood}
+struct car {INT year,BYTE color}

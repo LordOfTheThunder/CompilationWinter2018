@@ -1,0 +1,5 @@
+byte func2(int x){
+  while(5){
+    break;
+  } 
+}

@@ -1,0 +1,26 @@
+struct student {
+    int id;
+    bool isGood;
+};
+
+int structParam(struct student i){
+    return i.id;
+}
+
+int return6() {
+    struct a {
+        bool yes;
+        bool no;
+    };
+    return 6;
+}
+
+void main() {
+    bool c = true;
+    if (not c) {
+        int x = 6;
+        printi(x);
+    }
+    else
+        syntax error;
+}
