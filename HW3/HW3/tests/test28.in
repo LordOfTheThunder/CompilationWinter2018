@@ -1,0 +1,16 @@
+void IntFunc(int x) {
+	int t;
+}
+void BoolFunc(bool x) {
+	int t;
+}
+void ByteFunc(byte x) {
+	int t;
+}
+void TestAll() {
+	IntFunc(33);
+	BoolFunc(true);
+	ByteFunc(33b);
+	IntFunc(33b);
+}
+

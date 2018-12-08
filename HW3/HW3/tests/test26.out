@@ -1,5 +1,5 @@
 ---end scope---
-t potato -1
+t struct potato -1
 s INT 0
 ---end scope---
 print (STRING)->VOID 1

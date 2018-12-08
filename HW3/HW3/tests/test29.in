@@ -1,0 +1,10 @@
+void SomeFunc(int x) {
+	int a;
+}
+void TestPrintI() {
+	bool c = true;
+	if (not c) {
+		int x = 3;
+		printi(x);
+	}
+}
