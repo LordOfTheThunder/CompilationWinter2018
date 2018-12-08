@@ -171,11 +171,14 @@ VariableEntry * symbolTable::getVariable(string& id){
 }
 
 StructEntry * symbolTable::getStruct(string& id){
-    if (!this->global){
-        return NULL;
+    assert(!this->scopes.empty());
+    for (vector<Scope*>::iterator it = scopes.begin(); it != scopes.end(); ++it){
+        StructEntry * res = dynamic_cast<StructEntry*>((*it)->getEntry(id));
+        if (res){
+            return (res);
+        }
     }
-    StructEntry * res = dynamic_cast<StructEntry*>(this->global->getEntry(id));
-    return res;
+    return NULL;
 }
 
 int symbolTable::getOffset(){
