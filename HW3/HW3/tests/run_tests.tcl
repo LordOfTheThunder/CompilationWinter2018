@@ -11,8 +11,10 @@ proc comp_file {file1 file2} {
     return $equal
 }
 set test_files [glob test*.in]
+set num_tests [llength $test_files]
 exec make
 foreach file $test_files {
+	incr num_tests -1
 	puts "-I- sourcing $file"
 	set res_file [lindex [split $file .] 0].res
 	set out_file [lindex [split $file .] 0].out
@@ -28,4 +30,18 @@ foreach file $test_files {
 		file delete $res_file
 	}
 }
-
+if {$num_tests == 0} {
+	puts "############################################################"
+	puts "################### ALL CLEAN ##############################"
+	puts "############################################################"
+} else {
+	
+	puts "############################################################"
+	puts "################### Failed #################################"
+	puts "############################################################"
+	set res_files [glob test*.res]
+	puts "To check results run the following commands"
+	foreach file $res_files {
+		puts "diff [lindex [split $file .] 0].out $file"
+	}
+}
