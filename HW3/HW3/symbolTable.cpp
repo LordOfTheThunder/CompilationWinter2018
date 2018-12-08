@@ -235,6 +235,7 @@ void symbolTable::isBreakAllowed(int lineno){
     this->lineno = lineno;
     if (!(this->scopes.back()->isWhile())){
         output::errorUnexpectedBreak(this->lineno);
+        exit(0);
     }
 }
 
@@ -243,12 +244,14 @@ void symbolTable::isContinueAllowed(int lineno){
     this->lineno = lineno;
     if (!(this->scopes.back()->isWhile())){
         output::errorUnexpectedContinue(this->lineno);
+        exit(0);
     }
 }
 
 void symbolTable::existsMain(){
     if (!this->mainExists){
         output::errorMainMissing();
+        exit(0);
     }
 }
 
@@ -358,5 +361,6 @@ void symbolTable::validateByte(string& value){
     int value_int = atoi(value.c_str());
     if (value_int > 255 || value_int < 0){
         output::errorByteTooLarge(this->lineno, string(value));
+        exit(0);
     }
 }
