@@ -1,5 +1,7 @@
 ---end scope---
 k INT 0
 ---end scope---
+---end scope---
 k INT 0
+---end scope---
 line 8: type mismatch

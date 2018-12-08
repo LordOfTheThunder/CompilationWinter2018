@@ -1,9 +1,9 @@
 ---end scope---
-a INT -8
-b BOOL -7
-c BYTE -6
-d INT -5
-pot struct potato -4
+a INT -1
+b BOOL -2
+c BYTE -3
+d INT -4
+pot struct potato -5
 ---end scope---
 a INT 0
 ---end scope---

@@ -1,6 +1,6 @@
 ---end scope---
-x INT -2
-y INT -1
+x INT -1
+y INT -2
 ---end scope---
 print (STRING)->VOID 1
 printi (INT)->VOID 2

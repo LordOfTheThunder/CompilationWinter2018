@@ -302,7 +302,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 		tables->popScope();
 	}
 
-	| StartScope IF LPAREN Exp RPAREN Statement ELSE Statement {
+	| StartScope IF LPAREN Exp RPAREN Statement ElseScope {
 		if ($4.type != types_Bool) {
 			errorMismatch($2.lineno);
 			exit(0);
@@ -326,6 +326,9 @@ Statement: StartScope LBRACE Statements RBRACE {
 
 	}
 
+ElseScope: StartScope ELSE Statement {
+	tables->popScope();
+}
 
 Call: ID LPAREN ExpList RPAREN {
 	$$.str = $1.str;
