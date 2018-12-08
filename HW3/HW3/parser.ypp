@@ -525,17 +525,42 @@ Exp: Exp BINOPAS Exp {
 	}
 
 	| Exp AND Exp {
-
+		if ($1.type != types_Bool) {
+			// And can only be used on booleans
+			errorMismatch($1.lineno);
+			exit(0);
+		}
+		if ($3.type != types_Bool) {
+			// And can only be used on booleans
+			errorMismatch($3.lineno);
+			exit(0);
+		}
+		$$.type = types_Bool;
 	}
 
 	| Exp OR Exp {
-
+		if ($1.type != types_Bool) {
+			// And can only be used on booleans
+			errorMismatch($1.lineno);
+			exit(0);
+		}
+		if ($3.type != types_Bool) {
+			// And can only be used on booleans
+			errorMismatch($3.lineno);
+			exit(0);
+		}
+		$$.type = types_Bool;
 	}
 
 	| Exp RELOP Exp {
-		if (($1.type != types_Int && $1.type != types_Byte) || ($3.type != types_Int && $3.type != types_Byte)) {
+		if (($1.type != types_Int && $1.type != types_Byte)) {
 			// Both must be numbers
-			errorMismatch($2.lineno);
+			errorMismatch($1.lineno);
+			exit(0);
+		}
+		if ($3.type != types_Int && $3.type != types_Byte) {
+			// Both must be numbers
+			errorMismatch($3.lineno);
 			exit(0);
 		}
 		$$.type = types_Bool;
