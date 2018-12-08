@@ -326,7 +326,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 
 	}
 
-ElseScope: StartScope ELSE Statement {
+ElseScope: ELSE StartScope Statement {
 	tables->popScope();
 }
 
