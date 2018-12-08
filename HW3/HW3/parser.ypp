@@ -188,6 +188,11 @@ StartScope: /*epsilon*/ {
 	tables->addScope();
 }
 
+StartWhileScope: /*epsilon*/ {
+	cout << "Adding While" << endl;
+	tables->addWhile();
+}
+
 Statement: StartScope LBRACE Statements RBRACE {
 	tables->popScope();
 	$$.lineno = $2.lineno;
@@ -307,20 +312,22 @@ Statement: StartScope LBRACE Statements RBRACE {
 	| If_Scope ElseScope {
 	}
 
-	| StartScope WHILE LPAREN Exp RPAREN Statement {
+	| StartWhileScope WHILE LPAREN Exp RPAREN Statement {
 		if ($4.type != types_Bool) {
 			errorMismatch($2.lineno);
 			exit(0);
 		}
+		cout << "Popping While scope" << endl;
 		tables->popScope();
 	}
 
 	| BREAK SC {
-
+		cout << "Checking if break is allowed" << endl;
+		tables->isBreakAllowed($1.lineno);
 	}
 
 	| CONTINUE SC {
-
+		tables->isContinueAllowed($1.lineno);
 	}
 
 If_Scope: StartScope IF LPAREN Exp RPAREN Statement {
