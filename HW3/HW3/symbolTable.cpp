@@ -47,7 +47,7 @@ void symbolTable::addFunction(string retval, string id, vector<varPair> formals,
             cout << (*it).type << " " << (*it).id << endl;
         }
     }
-    int argOffset = -1;
+    int argOffset = 0;
     this->lineno = lineno;
     if (this->existsId(id)){
         output::errorDef(this->lineno, id);
@@ -69,8 +69,8 @@ void symbolTable::addFunction(string retval, string id, vector<varPair> formals,
 
         //    Adding arguments to the function's scope
         for (vector<varPair>::iterator it = formals.begin(); it != formals.end(); ++it) {
-            this->addFunctionArgument((*it).type, (*it).id, argOffset, lineno);
             argOffset -= getVariableSize((*it).type);
+            this->addFunctionArgument((*it).type, (*it).id, argOffset, lineno);
         }
     }
 }
