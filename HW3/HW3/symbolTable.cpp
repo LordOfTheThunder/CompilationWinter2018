@@ -233,19 +233,27 @@ void symbolTable::popScope(){
 void symbolTable::isBreakAllowed(int lineno){
     assert(!this->scopes.empty());
     this->lineno = lineno;
-    if (!(this->scopes.back()->isWhile())){
-        output::errorUnexpectedBreak(this->lineno);
-        exit(0);
+
+    for (vector<Scope*>::reverse_iterator it = scopes.rbegin(); it != scopes.rend(); ++it){
+        if ((*it)->isWhile()){
+            return;
+        }
     }
+    output::errorUnexpectedBreak(this->lineno);
+    exit(0);
 }
 
 void symbolTable::isContinueAllowed(int lineno){
     assert(!this->scopes.empty());
     this->lineno = lineno;
-    if (!(this->scopes.back()->isWhile())){
-        output::errorUnexpectedContinue(this->lineno);
-        exit(0);
+
+    for (vector<Scope*>::reverse_iterator it = scopes.rbegin(); it != scopes.rend(); ++it){
+        if ((*it)->isWhile()){
+            return;
+        }
     }
+    output::errorUnexpectedContinue(this->lineno);
+    exit(0);
 }
 
 void symbolTable::existsMain(){
