@@ -29,7 +29,7 @@ Scope::~Scope(){
 }
 
 symbolTable::symbolTable() : lineno(1), mainExists(false) {
-    this->global = new Scope(this->lineno, false, true); // The last parameter indicates a global scope
+    this->global = new Scope(0, false, true); // The last parameter indicates a global scope
     this->scopes.push_back(global);
     vector<varPair> print_args;
     print_args.push_back(varPair(typeToString(types_String), string("")));
@@ -62,7 +62,7 @@ void symbolTable::addFunction(string retval, string id, vector<varPair> formals,
 
     this->scopes.back()->addEntry(new FunctionEntry(formals, id, retval, this->getOffset()));
 
-    this->scopes.back()->incrementOffset(1);
+//    this->scopes.back()->incrementOffset(1);
 
     if (addScope){
         Scope * funcScope = newScope(false, true);
