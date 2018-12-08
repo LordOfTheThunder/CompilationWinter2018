@@ -14,7 +14,6 @@ set test_files [glob test*.in]
 set num_tests [llength $test_files]
 exec make
 foreach file $test_files {
-	incr num_tests -1
 	puts "-I- sourcing $file"
 	set res_file [lindex [split $file .] 0].res
 	set out_file [lindex [split $file .] 0].out
@@ -26,6 +25,7 @@ foreach file $test_files {
 	}
 	close $fh
 	if {[comp_file $out_file $res_file]} {
+		incr num_tests -1
 		puts "Test $file clean"
 		file delete $res_file
 	}

@@ -1,0 +1,14 @@
+int retInt() {
+	int t;
+}
+bool retBool() {
+	bool s;
+}
+int TestRetInt(int s) {
+	int t = retBool();
+	s = retInt();
+	int x;
+	x = retInt();
+}
+
+
