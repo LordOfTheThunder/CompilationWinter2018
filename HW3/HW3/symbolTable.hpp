@@ -27,6 +27,7 @@ private:
 public:
     VariableEntry(string& type, string& id, int offset) : TableEntry(id, offset), type(type) {}
     string& getType(){return type;}
+
     void print(){
         if (isPrimitive(type)){
             output::printID(id, offset, type);
@@ -106,7 +107,11 @@ public:
     FunctionEntry(vector<varPair> formals, string& id, string& type) : TableEntry(id, 0), formals(formals), type(type)
     {
         for (vector<varPair>::iterator it = formals.begin(); it != formals.end(); ++it){
-            args.push_back((*it).type);
+            if (isPrimitive((*it).type)){
+                args.push_back((*it).type);
+            } else {
+                args.push_back("struct " + (*it).type);
+            }
         }
 
         if (DEBUGGING) cout << id << " " << offset << endl;
