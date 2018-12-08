@@ -3,7 +3,7 @@ a INT -1
 b BOOL -2
 c BYTE -3
 d INT -4
-pot struct potato -5
+pot struct potato -8
 ---end scope---
 a INT 0
 line 20: prototype mismatch, function PutToPotato expects arguments (INT,BOOL,BYTE,INT,potato)

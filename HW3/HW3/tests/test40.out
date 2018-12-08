@@ -3,12 +3,12 @@ a INT -1
 b BOOL -2
 c BYTE -3
 d INT -4
-pot struct potato -5
+pot struct potato -8
 ---end scope---
 pot struct potato 0
 ---end scope---
-print (STRING)->VOID 1
-printi (INT)->VOID 2
+print (STRING)->VOID 0
+printi (INT)->VOID 0
 struct potato {INT a,BOOL b,BYTE c,INT d}
-PutToPotato (INT,BOOL,BYTE,INT,potato)->INT 3
-callPutPotato ()->VOID 4
+PutToPotato (INT,BOOL,BYTE,INT,potato)->INT 0
+callPutPotato ()->VOID 0

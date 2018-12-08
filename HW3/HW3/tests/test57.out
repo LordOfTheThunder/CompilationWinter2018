@@ -1,6 +1,6 @@
 ---end scope---
 b BYTE 0
 ---end scope---
-print (STRING)->VOID 1
-printi (INT)->VOID 2
-TestSpace ()->VOID 3
+print (STRING)->VOID 0
+printi (INT)->VOID 0
+TestSpace ()->VOID 0

@@ -1,0 +1,9 @@
+void main() {
+    bool c = true;
+    if (not c) {
+        int x = 6;
+    }
+    else
+	synthax error
+}
+

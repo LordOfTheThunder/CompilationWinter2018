@@ -8,10 +8,12 @@
 #include "symbolTable.hpp"
 
 void debug(yytokentype token);
+extern symbolTable* tables;
 /* Don't forget to remove the debug before handing in */
 #define REST_OF_MACRO(token) yylval.str = yytext;\
 							 yylval.lineno = yylineno;\
 							 debug(token);\
+							 tables->setLine(yylineno);\
 							 return token;
 #define FLEX_MACRO(token)		yylval = StackType(); REST_OF_MACRO(token)
 #define TYPE_FLEX_MACRO(token, type)		yylval = StackType(type); REST_OF_MACRO(token)
@@ -55,7 +57,7 @@ continue					FLEX_MACRO(CONTINUE)
 0|[1-9][0-9]*				BEGIN(after_num); TYPE_FLEX_MACRO(NUM, types_Int)
 \"([^\n\r\"\\]|[rnt\"\\])+\"	TYPE_FLEX_MACRO(STRING, types_String)
 [\ \t\r\n]+					BEGIN(INITIAL);
-\/\/[^\r\n]*[\r|\n|\r\n]?	;
+\/\/[^\r\n]*[\r|\n|\r\n]?	yylval.lineno = yylineno; tables->setLine(yylineno);
 .							output::errorLex(yylineno); exit(0);
 %%
 

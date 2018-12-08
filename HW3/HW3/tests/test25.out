@@ -2,6 +2,6 @@
 x INT -1
 y INT -2
 ---end scope---
-print (STRING)->VOID 1
-printi (INT)->VOID 2
-func (INT,INT)->INT 3
+print (STRING)->VOID 0
+printi (INT)->VOID 0
+func (INT,INT)->INT 0

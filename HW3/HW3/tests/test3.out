@@ -5,7 +5,7 @@ k INT 0
 a BOOL -1
 k INT 0
 ---end scope---
-print (STRING)->VOID 1
-printi (INT)->VOID 2
-TestInt (BOOL)->VOID 3
-TestIntMismatchByte (BOOL)->VOID 4
+print (STRING)->VOID 0
+printi (INT)->VOID 0
+TestInt (BOOL)->VOID 0
+TestIntMismatchByte (BOOL)->VOID 0

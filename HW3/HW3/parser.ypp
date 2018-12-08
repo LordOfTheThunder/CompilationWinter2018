@@ -190,14 +190,17 @@ StartScope: /*epsilon*/ {
 
 Statement: StartScope LBRACE Statements RBRACE {
 	tables->popScope();
+	$$.lineno = $2.lineno;
 }
 
 	| Type ID SC {
 	tables->addVariable(typeToString($1.type), $2.str, $1.lineno);
+	$$.lineno = $1.lineno;
 }
 
 	| StructType ID SC {
 		tables->addVariable($1.str, $2.str, $1.lineno);
+		$$.lineno = $1.lineno;
 	}
 
 	| STRUCT ID LBRACE StructMemList RBRACE {
@@ -282,16 +285,19 @@ Statement: StartScope LBRACE Statements RBRACE {
 	}
 
 	| Call SC {
-
+		$$.lineno = $2.lineno;
+		tables->setLine($$.lineno);
 	}
 
 	| RETURN SC {
-
+		$$.lineno = $1.lineno;
+		tables->setLine($$.lineno);
 	}
 
 	| RETURN Exp SC {
 		$$.ret_type = $2.type;
 		$$.lineno = $1.lineno;
+		tables->setLine($$.lineno);
 	}
 
 	| StartScope IF LPAREN Exp RPAREN Statement %prec IF {
@@ -308,6 +314,8 @@ Statement: StartScope LBRACE Statements RBRACE {
 			exit(0);
 		}
 		tables->popScope();
+		$$.lineno = $2.lineno;
+		tables->setLine($2.lineno);
 	}
 
 	| StartScope WHILE LPAREN Exp RPAREN Statement {
@@ -316,6 +324,8 @@ Statement: StartScope LBRACE Statements RBRACE {
 			exit(0);
 		}
 		tables->popScope();
+		$$.lineno = $2.lineno;
+		tables->setLine($2.lineno);
 	}
 
 	| BREAK SC {
@@ -328,6 +338,8 @@ Statement: StartScope LBRACE Statements RBRACE {
 
 ElseScope: ELSE StartScope Statement {
 	tables->popScope();
+	$$.lineno = $3.lineno;
+	tables->setLine($$.lineno);
 }
 
 Call: ID LPAREN ExpList RPAREN {

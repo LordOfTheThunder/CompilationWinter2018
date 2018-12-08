@@ -3,7 +3,7 @@ a BOOL 0
 ---end scope---
 a INT 0
 ---end scope---
-print (STRING)->VOID 1
-printi (INT)->VOID 2
-TestBoolA ()->VOID 3
-TestIntA ()->VOID 4
+print (STRING)->VOID 0
+printi (INT)->VOID 0
+TestBoolA ()->VOID 0
+TestIntA ()->VOID 0

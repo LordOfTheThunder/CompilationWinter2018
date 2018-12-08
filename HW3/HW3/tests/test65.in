@@ -1,0 +1,14 @@
+bool RetBool() {
+	int x;
+}
+int RetInt() {
+	int y;
+}
+int aa() {
+	if (RetBool()) {
+		int x;
+	}
+	if (RetInt()) {
+		int x;
+	}
+}

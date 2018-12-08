@@ -1,6 +1,6 @@
 ---end scope---
 x INT 0
 ---end scope---
-print (STRING)->VOID 1
-printi (INT)->VOID 2
-TestAssignByteToInt ()->VOID 3
+print (STRING)->VOID 0
+printi (INT)->VOID 0
+TestAssignByteToInt ()->VOID 0

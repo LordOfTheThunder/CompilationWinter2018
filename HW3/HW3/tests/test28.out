@@ -9,9 +9,9 @@ x BYTE -1
 t INT 0
 ---end scope---
 ---end scope---
-print (STRING)->VOID 1
-printi (INT)->VOID 2
-IntFunc (INT)->VOID 3
-BoolFunc (BOOL)->VOID 4
-ByteFunc (BYTE)->VOID 5
-TestAll ()->VOID 6
+print (STRING)->VOID 0
+printi (INT)->VOID 0
+IntFunc (INT)->VOID 0
+BoolFunc (BOOL)->VOID 0
+ByteFunc (BYTE)->VOID 0
+TestAll ()->VOID 0

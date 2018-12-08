@@ -7,7 +7,7 @@ x INT 1
 ---end scope---
 c BOOL 0
 ---end scope---
-print (STRING)->VOID 1
-printi (INT)->VOID 2
-SomeFunc (INT)->VOID 3
-TestPrintI ()->VOID 4
+print (STRING)->VOID 0
+printi (INT)->VOID 0
+SomeFunc (INT)->VOID 0
+TestPrintI ()->VOID 0

@@ -1,0 +1,7 @@
+void TestIfElse() {
+	if (true) {
+		int x = 3;
+	}
+	else int y = 5;
+	y = 3;
+}

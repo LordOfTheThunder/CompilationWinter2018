@@ -2,7 +2,7 @@
 t struct potato -1
 s INT 0
 ---end scope---
-print (STRING)->VOID 1
-printi (INT)->VOID 2
+print (STRING)->VOID 0
+printi (INT)->VOID 0
 struct potato {INT x}
-TestStructParami (potato)->VOID 3
+TestStructParami (potato)->VOID 0
