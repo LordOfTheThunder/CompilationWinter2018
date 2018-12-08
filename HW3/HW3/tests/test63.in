@@ -1,0 +1,14 @@
+void checkIfElse() {
+	if (true) {
+		if (true) {
+			int x;
+		}
+		else {
+			int y;
+		}
+	}
+	else {
+		int x;
+		int y;
+	}
+}
