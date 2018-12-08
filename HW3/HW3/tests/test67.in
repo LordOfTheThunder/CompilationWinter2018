@@ -1,0 +1,3 @@
+int TestDanglingElse() {
+	else int x = 0;
+}
