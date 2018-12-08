@@ -62,6 +62,13 @@ static types stringToType(string type){
 	return types_Undefined;
 }
 
+static bool typesEqual(types type1, types type2) {
+	if (type1 == types_Int && type2 == types_Byte) {
+		return true;
+	}
+	return type1 == type2;
+}
+
 struct StackType {
 	// For error reports
 	int lineno;
