@@ -58,7 +58,7 @@ void symbolTable::addFunction(string retval, string id, vector<varPair> formals,
         this->mainExists = true;
     }
 
-    this->scopes.back()->addEntry(new FunctionEntry(formals, id, retval, this->getOffset()));
+    this->scopes.back()->addEntry(new FunctionEntry(formals, id, retval));
 
 //    this->scopes.back()->incrementOffset(1);
 
@@ -151,7 +151,7 @@ bool symbolTable::existsVariable(string& id){
 }
 
 bool symbolTable::existsFunction(string& id, vector<varPair>& formals, string& retval){
-    FunctionEntry comp(formals, id, retval, 0);
+    FunctionEntry comp(formals, id, retval);
     FunctionEntry * current = this->getFunction(id);
 
     if (current){

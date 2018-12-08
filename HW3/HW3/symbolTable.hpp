@@ -103,11 +103,13 @@ private:
     string type;
 
 public:
-    FunctionEntry(vector<varPair> formals, string& id, string& type, int offset) : TableEntry(id, offset), formals(formals), type(type)
+    FunctionEntry(vector<varPair> formals, string& id, string& type) : TableEntry(id, 0), formals(formals), type(type)
     {
         for (vector<varPair>::iterator it = formals.begin(); it != formals.end(); ++it){
             args.push_back((*it).type);
         }
+
+        if (DEBUGGING) cout << id << " " << offset << endl;
     }
     string getType(){return this->type;}
     string& getId(){return this->id;}
