@@ -154,4 +154,4 @@ HW1/eitan/Inputs/to_add_input_9.in
 HW1/eitan/regressionTest.py
 
 CmakeLists.txt
-workspace.xml
+.idea/
