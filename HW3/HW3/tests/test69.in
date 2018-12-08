@@ -1,0 +1,9 @@
+void ReturnFromVoid() {
+	return;
+} 
+
+void ReturnFromVoid2() {
+	return 3;
+}
+
+void main() { print("Max is cool"); }

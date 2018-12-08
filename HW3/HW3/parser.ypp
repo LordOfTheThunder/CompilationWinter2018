@@ -297,6 +297,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 	| RETURN SC {
 		$$.lineno = $1.lineno;
 		tables->setLine($$.lineno);
+		$$.ret_type = types_Void;
 	}
 
 	| RETURN Exp SC {

@@ -1,0 +1,10 @@
+void ReturnFromVoid() {
+	return;
+} 
+
+int ReturnFromVoid2() {
+	return;
+}
+
+
+void main() { print("Max is cool"); }

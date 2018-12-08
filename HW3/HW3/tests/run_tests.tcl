@@ -13,6 +13,7 @@ proc comp_file {file1 file2} {
 set test_files [glob test*.in]
 set num_tests [llength $test_files]
 exec make
+source add_main_to_tests.tcl
 foreach file $test_files {
 	puts "-I- sourcing $file"
 	set res_file [lindex [split $file .] 0].res
