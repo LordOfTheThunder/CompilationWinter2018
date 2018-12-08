@@ -53,6 +53,7 @@ void CheckCorrectTypes(string _type1, string id2, string _type2);
 
 %%
 Program: Structs Funcs  {
+	tables->existsMain();
 }
 
 Funcs: FuncDecl Funcs {
