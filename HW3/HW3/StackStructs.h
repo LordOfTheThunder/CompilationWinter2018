@@ -21,9 +21,10 @@ class varPair{
 public:
     string type;
     string id;
+    int lineno;
 
     varPair(){}
-    varPair(string type, string id) : type(type), id(id) {}
+    varPair(string type, string id, int lineno) : type(type), id(id), lineno(lineno) {}
 
     bool operator==(const varPair & rhs) const {
         return ((this->type.compare(rhs.type)) == 0);

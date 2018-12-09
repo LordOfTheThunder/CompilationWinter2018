@@ -82,7 +82,7 @@ void symbolTable::addFunction(string retval, string id, vector<varPair> formals,
     }
 }
 
-void symbolTable::addFunctionArgument(string type, string id, int offset, int lineno){
+void symbolTable::addFunctionArgument(string& type, string& id, int offset, int lineno){
     if (DEBUGGING) cout << "add arg: " << type << " " << id << endl;
     this->lineno = lineno;
 

@@ -217,8 +217,7 @@ public:
 //    The following functions aren't scope-related (i.e. doesn't create a new scope)
     void addStruct(string& id, vector<varPair>& members, int lineno);
     void addVariable(string type, string id, int lineno);
-    void addFunctionArgument(string type, string id, int offset, int lineno);
-    void addFunctionArgument(string& type, string& id, int lineno);
+    void addFunctionArgument(string& type, string& id, int offset, int lineno);
     void addVariable(varPair v, int lineno);
 
 //    Existence checkers and validation
