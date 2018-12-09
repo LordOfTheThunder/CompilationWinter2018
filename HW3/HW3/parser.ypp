@@ -116,10 +116,10 @@ Formals: FormalsList {
 FormalsList: FormalDecl {
 	if ($1.struct_type != "") {
 		// we have a struct type
-		$$.func_info.insert($$.func_info.begin(),varPair($1.struct_type, $1.str));
+		$$.func_info.insert($$.func_info.begin(),varPair($1.struct_type, $1.str, $1.lineno));
 	}
 	else {
-		$$.func_info.insert($$.func_info.begin(),varPair(typeToString($1.type), $1.str));
+		$$.func_info.insert($$.func_info.begin(),varPair(typeToString($1.type), $1.str, $1.lineno));
 	}
 	tables->setLine($1.lineno);
 	$$.lineno = $1.lineno;
@@ -128,10 +128,10 @@ FormalsList: FormalDecl {
 		$$.func_info = $3.func_info;
 		if ($1.struct_type != "") {
 			// we have a struct type
-			$$.func_info.insert($$.func_info.begin(),varPair($1.struct_type, $1.str));
+			$$.func_info.insert($$.func_info.begin(),varPair($1.struct_type, $1.str, $1.lineno));
 		}
 		else {
-			$$.func_info.insert($$.func_info.begin(),varPair(typeToString($1.type), $1.str));
+			$$.func_info.insert($$.func_info.begin(),varPair(typeToString($1.type), $1.str, $1.lineno));
 		}
 		tables->setLine($1.lineno);
 		$$.lineno = $1.lineno;
@@ -156,11 +156,11 @@ FormalDecl: Type ID {
 
 
 StructMemList: StructMem {
-	$$.func_info.insert($$.func_info.begin(),varPair(typeToString($1.type), $1.str));
+	$$.func_info.insert($$.func_info.begin(),varPair(typeToString($1.type), $1.str, $1.lineno));
 }
 	| StructMem StructMemList {
 		$$.func_info = $2.func_info;
-		$$.func_info.insert($$.func_info.begin(),varPair(typeToString($1.type), $1.str));
+		$$.func_info.insert($$.func_info.begin(),varPair(typeToString($1.type), $1.str, $1.lineno));
 	}
 
 StructMem: Type ID SC {
@@ -357,9 +357,9 @@ Call: ID LPAREN ExpList RPAREN {
 
 ExpList: Exp {
 	if ($1.type == types_Undefined) {
-		$$.func_info.insert($$.func_info.begin(), varPair($1.struct_type, $1.str));
+		$$.func_info.insert($$.func_info.begin(), varPair($1.struct_type, $1.str, $1.lineno));
 	} else {
-		$$.func_info.insert($$.func_info.begin(), varPair(typeToString($1.type), $1.str));
+		$$.func_info.insert($$.func_info.begin(), varPair(typeToString($1.type), $1.str, $1.lineno));
 	}
 	$$.type = $1.type;
 	$$.str = $1.str;
@@ -368,9 +368,9 @@ ExpList: Exp {
 		$$.func_info = $3.func_info;
 		$$.type = $1.type;
 		if ($1.type == types_Undefined) {
-			$$.func_info.insert($$.func_info.begin(), varPair($1.struct_type, $1.str));
+			$$.func_info.insert($$.func_info.begin(), varPair($1.struct_type, $1.str, $1.lineno));
 		} else {
-			$$.func_info.insert($$.func_info.begin(), varPair(typeToString($1.type), $1.str));
+			$$.func_info.insert($$.func_info.begin(), varPair(typeToString($1.type), $1.str, $1.lineno));
 		}
 
 	}
