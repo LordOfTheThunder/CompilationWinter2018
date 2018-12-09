@@ -1,6 +1,6 @@
 int TestFuncWithWrongReturn() {
 	int a = 3;
-	int b = 43;
+	int r = 43;
 	return false;
 }
 

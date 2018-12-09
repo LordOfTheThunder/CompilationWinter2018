@@ -24,3 +24,6 @@ int x) {
 	int t;
 }
 
+
+void main() { print("I hate this course"); }
+

@@ -1,5 +1,5 @@
 ---end scope---
-b BYTE 0
+t BYTE 0
 ---end scope---
 ---end scope---
 print (STRING)->VOID 0

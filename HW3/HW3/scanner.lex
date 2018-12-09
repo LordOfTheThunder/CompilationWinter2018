@@ -22,13 +22,12 @@ extern symbolTable* tables;
 
 %option yylineno
 %option noyywrap
-%s after_num
 
 %%
 void						FLEX_MACRO(VOID)
 int							TYPE_FLEX_MACRO(INT, types_Int)
 byte						TYPE_FLEX_MACRO(BYTE, types_Byte)
-<after_num>[\ \t]*b				TYPE_FLEX_MACRO(B, types_Byte)
+b							FLEX_MACRO(B)
 bool						TYPE_FLEX_MACRO(BOOL, types_Bool)
 struct						FLEX_MACRO(STRUCT)
 and							FLEX_MACRO(AND)
@@ -54,9 +53,9 @@ continue					FLEX_MACRO(CONTINUE)
 \+|\-						FLEX_MACRO(BINOPAS)
 \*|\/						FLEX_MACRO(BINOPMD)
 [a-zA-Z][a-zA-Z0-9]*		FLEX_MACRO(ID)
-0|[1-9][0-9]*				BEGIN(after_num); TYPE_FLEX_MACRO(NUM, types_Int)
+0|[1-9][0-9]*				TYPE_FLEX_MACRO(NUM, types_Int)
 \"([^\n\r\"\\]|[rnt\"\\])+\"	TYPE_FLEX_MACRO(STRING, types_String)
-[\ \t\r\n]+					BEGIN(INITIAL);
+[\ \t\r\n]+					;
 \/\/[^\r\n]*[\r|\n|\r\n]?	yylval.lineno = yylineno; tables->setLine(yylineno);
 .							output::errorLex(yylineno); exit(0);
 %%

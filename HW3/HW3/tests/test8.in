@@ -2,7 +2,7 @@ void TestUndefLegal(bool a) {
 	a = true;
 }
 void TestUndefIllegal(bool a) {
-	b = true;
+	t = true;
 }
 
 

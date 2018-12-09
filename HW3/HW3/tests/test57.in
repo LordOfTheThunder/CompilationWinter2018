@@ -1,5 +1,5 @@
 void TestSpace() {
-	byte b = 100 b;
+	byte t = 100 b;
 }
 
 

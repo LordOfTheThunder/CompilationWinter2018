@@ -1,12 +1,12 @@
 struct potato {
 	int a;
-	bool b;
+	bool s;
 	byte c;
 	int d;
 };
-int PutToPotato(int a, bool b, byte c, int d, struct potato pot) {
+int PutToPotato(int a, bool s, byte c, int d, struct potato pot) {
 	pot.a = a;
-	pot.b = b;
+	pot.s = s;
 	pot.c = c;
 	pot.d = d;
 }

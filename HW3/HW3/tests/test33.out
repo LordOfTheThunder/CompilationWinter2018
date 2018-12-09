@@ -5,6 +5,6 @@ rr INT 1
 ---end scope---
 print (STRING)->VOID 0
 printi (INT)->VOID 0
-struct potato {INT x}
 TestCreatePotato ()->VOID 0
 main ()->VOID 0
+struct potato {INT x}

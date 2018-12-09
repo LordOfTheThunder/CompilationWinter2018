@@ -1,6 +1,6 @@
 ---end scope---
 a INT -1
-b BOOL -2
+s BOOL -2
 c BYTE -3
 d INT -4
 pot struct potato -8
@@ -16,4 +16,4 @@ PutToPotato (INT,BOOL,BYTE,INT,struct potato)->INT 0
 ReturnIntFunc ()->INT 0
 callPutPotato ()->VOID 0
 main ()->VOID 0
-struct potato {INT a,BOOL b,BYTE c,INT d}
+struct potato {INT a,BOOL s,BYTE c,INT d}

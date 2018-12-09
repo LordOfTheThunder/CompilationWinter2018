@@ -1,6 +1,6 @@
 ---end scope---
-struct potato {INT x,BOOL y,BYTE z}
 s struct potato 0
+struct potato {INT x,BOOL y,BYTE z}
 ---end scope---
 ---end scope---
 print (STRING)->VOID 0
