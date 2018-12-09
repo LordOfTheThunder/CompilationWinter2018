@@ -19,26 +19,15 @@ symbolTable::~symbolTable() {
 Scope::~Scope(){
     output::endScope();
 
-        // TODO: change according to Yaakov's answer
-//    for (vector<TableEntry*>::iterator it = this->entries.begin(); it != this->entries.end(); ++it){
-//        (*it)->print();
-//    }
-
-    if (isGlobal_){
-        for (vector<TableEntry*>::iterator it = this->entries.begin(); it != this->entries.end(); ++it){
-            StructEntry * res = dynamic_cast<StructEntry*>(*it);
-            if (!res){
-                (*it)->print();
-            }
+    for (vector<TableEntry*>::iterator it = this->entries.begin(); it != this->entries.end(); ++it){
+        StructEntry * res = dynamic_cast<StructEntry*>(*it);
+        if (!res){
+            (*it)->print();
         }
-        for (vector<TableEntry*>::iterator it = this->entries.begin(); it != this->entries.end(); ++it){
-            StructEntry * res = dynamic_cast<StructEntry*>(*it);
-            if (res){
-                (*it)->print();
-            }
-        }
-    } else {
-        for (vector<TableEntry*>::iterator it = this->entries.begin(); it != this->entries.end(); ++it){
+    }
+    for (vector<TableEntry*>::iterator it = this->entries.begin(); it != this->entries.end(); ++it){
+        StructEntry * res = dynamic_cast<StructEntry*>(*it);
+        if (res){
             (*it)->print();
         }
     }
