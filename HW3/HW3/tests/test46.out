@@ -6,4 +6,4 @@ d INT -4
 pot struct potato -8
 ---end scope---
 a INT 0
-line 20: prototype mismatch, function PutToPotato expects arguments (INT,BOOL,BYTE,INT,potato)
+line 20: prototype mismatch, function PutToPotato expects arguments (INT,BOOL,BYTE,INT,struct potato)

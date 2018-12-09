@@ -5,6 +5,6 @@ s INT 0
 ---end scope---
 print (STRING)->VOID 0
 printi (INT)->VOID 0
-struct potato {INT x}
-TestStructParami (potato)->VOID 0
+TestStructParami (struct potato)->VOID 0
 main ()->VOID 0
+struct potato {INT x}
