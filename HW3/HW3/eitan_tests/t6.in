@@ -1,0 +1,14 @@
+struct id{
+	int x;
+	bool y;
+	bool xzzzzz;
+	byte dsa;
+	int zzx;
+	int fdassag;
+	int dfsafasd;
+	int fsadvxc;
+};
+
+void main(){
+	int x;
+}
