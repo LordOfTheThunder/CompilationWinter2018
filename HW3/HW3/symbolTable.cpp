@@ -77,7 +77,7 @@ void symbolTable::addFunction(string retval, string id, vector<varPair> formals,
         //    Adding arguments to the function's scope
         for (vector<varPair>::iterator it = formals.begin(); it != formals.end(); ++it) {
             argOffset -= getVariableSize((*it).type);
-            this->addFunctionArgument((*it).type, (*it).id, argOffset, lineno);
+            this->addFunctionArgument((*it).type, (*it).id, argOffset, (*it).lineno);
         }
     }
 }
@@ -293,8 +293,7 @@ void symbolTable::addStruct(string& id, vector<varPair>& members, int lineno){
         // Check if already defined
         for (vector<string>::iterator in_it = tmp.begin(); in_it != tmp.end(); ++in_it) {
             if ((*in_it).compare((*it).id) == 0) {
-                //    TODO: check which error should be printed if a name is used twice in a struct
-                output::errorDef(lineno, *in_it);
+                output::errorDef((*it).lineno, (*it).id);
                 exit(0);
             }
         }
