@@ -263,7 +263,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 		// Check if variable of struct type exists
 		VariableEntry* var_entry = tables->getVariable($1.str);
 		if (var_entry == NULL) {
-			errorUndef(tables->getLine(), $1.str);
+			errorUndefStructMember(tables->getLine(), $1.str);
 			exit(0);
 		}
 		// Check if struct itself exists
