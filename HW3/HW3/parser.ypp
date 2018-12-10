@@ -263,7 +263,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 		// Check if variable of struct type exists
 		VariableEntry* var_entry = tables->getVariable($1.str);
 		if (var_entry == NULL) {
-			errorUndefStructMember(tables->getLine(), $1.str);
+			errorUndef(tables->getLine(), $1.str);
 			exit(0);
 		}
 		// Check if struct itself exists
@@ -274,7 +274,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 		}
 		// Check if field of struct exists
 		if (!struct_entry->varExists($3.str)) {
-			errorUndef(tables->getLine(), $3.str);
+			errorUndefStructMember(tables->getLine(), $3.str);
 			exit(0);
 		}
 		// Check type mismatch
@@ -466,7 +466,7 @@ Exp: Exp BINOPAS Exp {
 		}
 		// Check if field of struct exists
 		if (!struct_entry->varExists($3.str)) {
-			errorUndef(tables->getLine(), $3.str);
+			errorUndefStructMember(tables->getLine(), $3.str);
 			exit(0);
 		}
 		$$.type = stringToType(struct_entry->getTypeOfVar($3.str));
