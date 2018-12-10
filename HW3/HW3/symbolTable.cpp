@@ -232,15 +232,20 @@ void symbolTable::popScope(){
     if (this->scopes.empty()){
         return;
     }
+    // TODO: clean code - remove unnecessary code
+//    Scope * current = scopes.back();
+//
+//    if (!current->isGlobal()){
+//        this->scopes.pop_back();
+//        scopes.back()->updateOffset(current->getOffset());
+//        delete current;
+//        return;
+//    }
+//
+//    delete current;
+//    this->scopes.pop_back();
+
     Scope * current = scopes.back();
-
-    if (!current->isGlobal()){
-        this->scopes.pop_back();
-        scopes.back()->updateOffset(current->getOffset());
-        delete current;
-        return;
-    }
-
     delete current;
     this->scopes.pop_back();
 }
