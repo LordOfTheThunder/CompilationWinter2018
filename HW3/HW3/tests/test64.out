@@ -2,5 +2,5 @@
 x INT 0
 ---end scope---
 ---end scope---
-y INT 1
+y INT 0
 line 6: variable y is not defined
