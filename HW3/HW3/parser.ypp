@@ -232,7 +232,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 	| ID ASSIGN Exp SC {
 		tables->setLine($$.lineno);
 		// Check ID exists
-		if (!tables->existsId($1.str)) {
+		if (!tables->getVariable($1.str)) {
 			errorUndef(tables->getLine(), $1.str);
 			exit(0);
 		}

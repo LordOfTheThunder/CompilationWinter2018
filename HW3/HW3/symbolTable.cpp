@@ -49,9 +49,9 @@ symbolTable::symbolTable() : lineno(0), mainExists(false) {
 
 void symbolTable::addFunction(string retval, string id, vector<varPair> formals, int lineno, bool addScope) {
     if (DEBUGGING){
-        cout << "add function " << id << ", args:" << endl;
+        cout << "add function " << id << ", args: " << formals.size() << endl;
         for (vector<varPair>::iterator it = formals.begin(); it!=formals.end(); ++it){
-            cout << (*it).type << " " << (*it).id << endl;
+            cout << "argument " << (*it).type << " " << (*it).id << endl;
         }
     }
     int argOffset = 0;
@@ -68,8 +68,6 @@ void symbolTable::addFunction(string retval, string id, vector<varPair> formals,
     }
 
     this->scopes.back()->addEntry(new FunctionEntry(formals, id, retval));
-
-//    this->scopes.back()->incrementOffset(1);
 
     if (addScope){
         Scope * funcScope = newScope(false, true);
