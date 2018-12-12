@@ -21,10 +21,10 @@ in_files = sorted(in_files)
 for test in in_files:
     test_name = test + '.in'
     print "Running " + test_name,
-    output = Popen([r"./../hw3 < " + test_name], stdout=subprocess.PIPE, shell=True).stdout.read()
+    output = Popen([r"./../hw3 < " + test_name], stdout=subprocess.PIPE, shell=True).stdout.read().decode('utf-8')
     passed = False
     with open(test + '.out') as fp:
-        expected = fp.read()
+        expected = fp.read().decode('utf-8')
 
     passed = expected == output
     if passed:
