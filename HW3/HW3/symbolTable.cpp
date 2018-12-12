@@ -348,6 +348,18 @@ void symbolTable::addVariable(varPair v, int lineno){
     this->addVariable(v.type, v.id, lineno);
 }
 
+void symbolTable::checkReturn(string& type, int lineno){
+//    Get the function declaration
+//    The last entry in the global scope should be a function entry
+    FunctionEntry * funcDecl= dynamic_cast<FunctionEntry*>(global->getLastEntry());
+    assert(funcDecl != NULL);
+    if (!funcDecl->matchType(type)){
+        output::errorMismatch(lineno);
+        exit(0);
+    }
+
+}
+
 void Scope::addEntry(TableEntry * ent){
     this->entries.push_back(ent);
 }

@@ -141,7 +141,7 @@ public:
         }
         return true;
     }
-
+    bool matchType(string& type){return (this->type.compare(type) == 0);}
     bool operator==(const FunctionEntry& rhs) const {
         if (rhs.id.compare(this->id) != 0){
             return false;
@@ -183,6 +183,12 @@ public:
     bool isWhile(){return this->isWhile_;}
     bool isGlobal(){return this->isGlobal_;}
     void updateOffset(int newOffset){this->offset = newOffset;}
+    TableEntry * getLastEntry() {
+        if (entries.empty()){
+            return NULL;
+        }
+        return entries.back();
+    }
 };
 
 class symbolTable{
@@ -229,6 +235,7 @@ public:
     void isBreakAllowed(int lineno);
     void isContinueAllowed(int lineno);
     void validateByte(string& value);
+    void checkReturn(string& type, int lineno);
 
 //    Getters
     void getFreedom(){
