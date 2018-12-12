@@ -1,0 +1,9 @@
+int func() {
+	return 10;
+	return true;
+	return 25b;
+	rerturn;
+}
+
+void main() { print("I hate this course"); }
+

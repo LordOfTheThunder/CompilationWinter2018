@@ -1,0 +1,6 @@
+int Func() {
+	print("potato" + "tomato");
+}
+
+void main() { print("I hate this course"); }
+
