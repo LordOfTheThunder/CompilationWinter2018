@@ -61,7 +61,7 @@ Funcs: FuncDecl Funcs {
 	|	/*epsilon*/ ;
 
 FuncDecl: FuncDecl1 FuncDecl2 {
-	if ($2.ret_type != types_Undefined && $1.type != $2.ret_type) {
+	if ($2.ret_type != types_Undefined && !typesEqual(typeToString($1.type), typeToString($2.ret_type))) {
 		// return type is different from function type
 		errorMismatch($2.lineno);
 		exit(0);
