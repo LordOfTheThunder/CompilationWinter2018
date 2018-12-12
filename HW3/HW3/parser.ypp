@@ -86,13 +86,7 @@ Structs: StructsDecl Structs {
 
 	}
 
-StructsDecl: STRUCT ID LBRACE StructMemList RBRACE {
-		// Struct without ;
-		output::errorSyn($5.lineno);
-		exit(0);
-	}
-
-	| STRUCT ID LBRACE StructMemList RBRACE SC {
+StructsDecl: STRUCT ID LBRACE StructMemList RBRACE SC {
 		$$.str = string($2.str);
 		tables->addStruct($$.str, $4.func_info, $1.lineno);
 		$$.lineno = $1.lineno;
@@ -206,12 +200,6 @@ Statement: StartScope LBRACE Statements RBRACE {
 	| StructType ID SC {
 		tables->addVariable($1.str, $2.str, $1.lineno);
 		$$.lineno = $1.lineno;
-	}
-
-	| STRUCT ID LBRACE StructMemList RBRACE {
-		// Struct without ;
-		output::errorSyn($5.lineno);
-		exit(0);
 	}
 
 	| STRUCT ID LBRACE StructMemList RBRACE SC {
