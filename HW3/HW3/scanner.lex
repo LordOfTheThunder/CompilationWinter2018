@@ -54,7 +54,7 @@ continue					FLEX_MACRO(CONTINUE)
 \*|\/						FLEX_MACRO(BINOPMD)
 [a-zA-Z][a-zA-Z0-9]*		FLEX_MACRO(ID)
 0|[1-9][0-9]*				TYPE_FLEX_MACRO(NUM, types_Int)
-\"([^\n\r\"\\]|[rnt\"\\])+\"	TYPE_FLEX_MACRO(STRING, types_String)
+\"([^\n\r\"\\]|\\[rnt"\\])+\"	TYPE_FLEX_MACRO(STRING, types_String)
 [\ \t\r\n]+					;
 \/\/[^\r\n]*[\r|\n|\r\n]?	yylval.lineno = yylineno; tables->setLine(yylineno);
 .							output::errorLex(yylineno); exit(0);

@@ -235,7 +235,7 @@ public:
     void isBreakAllowed(int lineno);
     void isContinueAllowed(int lineno);
     void validateByte(string& value);
-    void checkReturn(string& type, int lineno);
+    void checkReturn(string type, int& lineno);
 
 //    Getters
     void getFreedom(){

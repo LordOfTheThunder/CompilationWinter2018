@@ -61,11 +61,6 @@ Funcs: FuncDecl Funcs {
 	|	/*epsilon*/ ;
 
 FuncDecl: FuncDecl1 FuncDecl2 {
-	if ($2.ret_type != types_Undefined && !typesEqual(typeToString($1.type), typeToString($2.ret_type))) {
-		// return type is different from function type
-		errorMismatch($2.lineno);
-		exit(0);
-	}
 	tables->popScope();
 }
 
@@ -76,7 +71,6 @@ FuncDecl1: RetType ID LPAREN Formals RPAREN {
 }
 
 FuncDecl2: LBRACE Statements RBRACE {
-	$$.ret_type = $2.ret_type;
 	$$.lineno = $2.lineno;
 }
 
@@ -165,16 +159,10 @@ StructMem: Type ID SC {
 }
 
 Statements: Statement {
-	if ($1.ret_type != types_Undefined) {
-		$$.ret_type = $1.ret_type;
-	}
 	$$.lineno = $1.lineno;
 	tables->setLine($$.lineno);
 }
 	| Statements Statement {
-		if ($2.ret_type != types_Undefined) {
-			$$.ret_type = $2.ret_type;
-		}
 		$$.lineno = $2.lineno;
 		tables->setLine($$.lineno);
 	}
@@ -285,13 +273,13 @@ Statement: StartScope LBRACE Statements RBRACE {
 	| RETURN SC {
 		$$.lineno = $1.lineno;
 		tables->setLine($$.lineno);
-		$$.ret_type = types_Void;
+		tables->checkReturn(typeToString(types_Void), $$.lineno);
 	}
 
 	| RETURN Exp SC {
-		$$.ret_type = $2.type;
 		$$.lineno = $1.lineno;
 		tables->setLine($$.lineno);
+		tables->checkReturn(typeToString($2.type), $$.lineno);
 	}
 
 	| If_Scope %prec IF {
@@ -299,6 +287,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 	}
 
 	| If_Scope ElseScope {
+
 	}
 
 	| StartWhileScope WHILE LPAREN While_If_Exp RPAREN Statement {
