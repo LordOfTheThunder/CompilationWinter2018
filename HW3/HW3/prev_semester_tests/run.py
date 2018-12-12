@@ -5,7 +5,6 @@ import subprocess
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-stop_on_fail', default='true')
 parser.add_argument('-diff', default='true')
 args = parser.parse_args()
 
@@ -16,27 +15,37 @@ for file in os.listdir('.'):
     if res:
         in_files.append(res.group(1))
 
+in_files = sorted(in_files)
 for test in in_files:
     test_name = test + '.in'
     print "Running " + test_name,
     output = Popen([r"./../hw3 < " + test_name], stdout=subprocess.PIPE, shell=True).stdout.read()
+    passed = False
     with open(test + '.out') as fp:
         expected = fp.read()
-        if expected == output:
-            print('PASSED')
-        else:
-            if args.diff == 'true':
-                print('FAILED')
-                print ("================= Your output =================")
-                print(output)
-                print("================================================")
-                print("================ Expected output ================ (" + test + ".out)")
-                print(expected)
-                print("================================================")
-                print ("================= In file =================")
-                print("================================================")
-                with open(test_name) as fp_in:
-                    print(fp_in.read())
 
-            if args.stop_on_fail == 'true':
-                break
+    passed = expected == output
+    if passed:
+        print('PASSED')
+    else:
+        print('FAILED <-----')
+        if args.diff == 'true':
+            print ("================= Your output =================")
+            print(output)
+            print("================================================")
+            print("================ Expected output ================ (" + test + ".out)")
+            print(expected)
+            print("================================================")
+            print ("================= In file =================")
+            with open(test_name) as fp_in:
+                print(fp_in.read())
+
+            print("================================================")
+            print("Enter a letter:")
+            print(" - x for exit     ")
+            print(" - any other letter for continue     ")
+            if 'x' == raw_input():
+                exit(0)
+            else:
+                continue
+
