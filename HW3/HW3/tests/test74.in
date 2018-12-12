@@ -1,0 +1,14 @@
+int ManyReturns() {
+	if (true) {
+		if (true) {
+			if (true) {
+				return 10;
+			}
+			return 35b;
+		}
+		return true;
+	}
+}
+
+void main() { print("I hate this course"); }
+
