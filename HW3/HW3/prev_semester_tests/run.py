@@ -8,6 +8,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-diff', default='true')
 args = parser.parse_args()
 
+failed_tests = []
+
 in_pattern = r'(.*).in'
 in_files = []
 for file in os.listdir('.'):
@@ -29,6 +31,7 @@ for test in in_files:
         print('PASSED')
     else:
         print('FAILED <-----')
+        failed_tests.append(test_name)
         if args.diff == 'true':
             print ("================= Your output =================")
             print(output)
@@ -49,3 +52,8 @@ for test in in_files:
             else:
                 continue
 
+
+if len(failed_tests) != 0:
+    print("Failed tests:")
+for failed_test in failed_tests:
+    print('- ' + failed_test)
