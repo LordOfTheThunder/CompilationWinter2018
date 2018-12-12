@@ -27,16 +27,14 @@ for test in in_files:
         else:
             if args.diff == 'true':
                 print('FAILED')
-                print ("Your output:\n")
-                print("=================")
+                print ("================= Your output =================")
                 print(output)
-                print("=================")
-                print("Expected output: (" + test + ".out)")
-                print("=================")
+                print("================================================")
+                print("================ Expected output ================ (" + test + ".out)")
                 print(expected)
-                print("=================")
-                print("In file:")
-                print("=================")
+                print("================================================")
+                print ("================= In file =================")
+                print("================================================")
                 with open(test_name) as fp_in:
                     print(fp_in.read())
 
