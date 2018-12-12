@@ -11,8 +11,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2b6a5383-20c6-47f8-99cd-7269f0f9f4ae" name="Default Changelist" comment="">
+    <list default="true" id="2b6a5383-20c6-47f8-99cd-7269f0f9f4ae" name="Default Changelist" comment="added field lineno to varPair">
+      <change afterPath="$PROJECT_DIR$/HW3/HW3/prev_semester_tests/run.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HW3/HW3/test.in" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,7 +23,6 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FavoritesManager">
     <favorites_list name="CompilationWinter2018" />
   </component>
@@ -30,68 +31,65 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="574">
-              <caret line="43" column="5" selection-start-line="43" selection-start-column="5" selection-end-line="43" selection-end-column="5" />
+            <state relative-caret-position="260">
+              <caret line="49" column="108" selection-start-line="49" selection-start-column="108" selection-end-line="49" selection-end-column="108" />
               <folding>
                 <element signature="e#115#297#0" />
                 <element signature="e#299#371#0" />
-                <element signature="e#592#1196#0" />
-                <element signature="e#1198#2383#0" />
-                <element signature="e#2385#2979#0" />
-                <element signature="e#2981#3273#0" />
-                <element signature="e#3275#3489#0" />
-                <element signature="e#3491#3542#0" />
-                <element signature="e#3544#3593#0" />
-                <element signature="e#3595#3646#0" />
-                <element signature="e#3648#3700#0" />
-                <element signature="e#3702#3918#0" />
-                <element signature="e#3920#4148#0" />
-                <element signature="e#4150#4418#0" />
-                <element signature="e#4420#4850#0" />
-                <element signature="e#4852#5088#0" />
-                <element signature="e#5090#5296#0" />
-                <element signature="e#5298#5588#0" />
-                <element signature="e#5590#5912#0" />
-                <element signature="e#5914#6025#0" />
-                <element signature="e#6027#6368#0" />
-                <element signature="e#6370#6700#0" />
-                <element signature="e#6702#7038#0" />
-                <element signature="e#7040#7160#0" />
-                <element signature="e#7162#8079#0" />
-                <element signature="e#8081#9004#0" />
-                <element signature="e#7297#7397#0" />
-                <element signature="e#7399#7474#0" />
-                <element signature="e#7476#7717#0" />
-                <element signature="e#7719#7860#0" />
-                <element signature="e#7862#7979#0" />
-                <element signature="e#7981#8231#0" />
-                <element signature="e#8233#8435#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/HW3/HW3/prev_semester_tests/run.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="638">
+              <caret line="29" column="37" selection-start-line="29" selection-start-column="37" selection-end-line="29" selection-end-column="37" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HW3/HW3/StackStructs.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="19" column="14" selection-start-line="19" selection-start-column="14" selection-end-line="19" selection-end-column="14" />
+              <folding>
+                <element signature="e#43#60#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="148">
-              <caret line="100" column="8" lean-forward="true" selection-start-line="100" selection-start-column="8" selection-end-line="100" selection-end-column="8" />
+            <state relative-caret-position="3723">
+              <caret line="219" column="50" selection-start-line="219" selection-start-column="50" selection-end-line="219" selection-end-column="50" />
               <folding>
-                <element signature="e#13#30#0" expanded="true" />
-                <element signature="e#98#373#1" />
-                <element signature="e#776#2356#1" />
-                <element signature="e#918#1211#0" />
-                <element signature="e#1257#1328#0" />
-                <element signature="e#1334#1728#0" />
-                <element signature="e#1734#1821#0" />
-                <element signature="e#1827#2057#0" />
-                <element signature="e#2062#2354#0" />
-                <element signature="e#2905#2999#0" />
-                <element signature="e#3005#3540#0" />
-                <element signature="e#3546#3942#0" />
-                <element signature="e#3948#4037#0" />
-                <element signature="e#4808#5126#0" />
-                <element signature="e#6186#6297#0" />
+                <element signature="e#119#394#1" />
+                <element signature="e#397#795#1" />
+                <element signature="e#610#793#0" />
+                <element signature="e#798#2378#1" />
+                <element signature="e#940#1233#0" />
+                <element signature="e#1279#1350#0" />
+                <element signature="e#1356#1750#0" />
+                <element signature="e#1756#1843#0" />
+                <element signature="e#1849#2079#0" />
+                <element signature="e#2084#2376#0" />
+                <element signature="e#2381#4242#1" />
+                <element signature="e#2515#2978#0" />
+                <element signature="e#3108#3202#0" />
+                <element signature="e#3208#3743#0" />
+                <element signature="e#3749#4145#0" />
+                <element signature="e#4151#4240#0" />
+                <element signature="e#4245#4954#1" />
+                <element signature="e#5075#5523#0" />
+                <element signature="e#6661#6772#0" />
               </folding>
             </state>
           </provider>
@@ -99,11 +97,15 @@
       </file>
     </leaf>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>getVariableSize</find>
-      <find>countSize</find>
-      <find>scope::sc</find>
       <find>IF</find>
       <find>lineno</find>
       <find>Scope</find>
@@ -124,6 +126,16 @@
       <find>fourth</find>
       <find>popscope</find>
       <find>addf</find>
+      <find>main</find>
+      <find>errorDef</find>
+      <find>structmem</find>
+      <find>structmemlist</find>
+      <find>addst</find>
+      <find>class var</find>
+      <find>addFunctionArgument</find>
+      <find>varpair</find>
+      <find>addVariable</find>
+      <find>errorMismatch</find>
     </findStrings>
     <replaceStrings>
       <replace>---end scope---</replace>
@@ -148,13 +160,16 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/HW3/HW3/eitan_tests/t1.in" />
         <option value="$PROJECT_DIR$/HW3/HW3/eitan_tests/t2.in" />
-        <option value="$PROJECT_DIR$/HW3/HW3/StackStructs.h" />
         <option value="$PROJECT_DIR$/HW3/HW3/eitan_tests/t2.out" />
-        <option value="$PROJECT_DIR$/HW3/HW3/symbolTable.cpp" />
         <option value="$PROJECT_DIR$/HW3/HW3/symbolTable.hpp" />
+        <option value="$PROJECT_DIR$/HW3/HW3/StackStructs.h" />
+        <option value="$PROJECT_DIR$/HW3/HW3/symbolTable.cpp" />
+        <option value="$PROJECT_DIR$/HW3/HW3/parser.ypp" />
+        <option value="$PROJECT_DIR$/HW3/HW3/prev_semester_tests/run.py" />
       </list>
     </option>
   </component>
+  <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="306" />
     <option name="y" value="167" />
@@ -190,7 +205,7 @@
               <item name="CompilationWinter2018" type="462c0819:PsiDirectoryNode" />
               <item name="HW3" type="462c0819:PsiDirectoryNode" />
               <item name="HW3" type="462c0819:PsiDirectoryNode" />
-              <item name="eitan_tests" type="462c0819:PsiDirectoryNode" />
+              <item name="prev_semester_tests" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -200,6 +215,11 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\eitan\TechnionProjects\CompilationWinter2018\HW3\HW3\eitan_tests" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -213,7 +233,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.CompilationWinter2018">
+  <component name="RunManager" selected="Python.run">
     <configuration name="Build All" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" CONFIG_NAME="Debug" EXPLICIT_BUILD_TARGET_NAME="all">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -224,10 +244,37 @@
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="CompilationWinter2018" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HW3/HW3/prev_semester_tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/HW3/HW3/prev_semester_tests/run.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Application.Build All" />
       <item itemvalue="Application.CompilationWinter2018" />
+      <item itemvalue="Python.run" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.run" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -249,6 +296,11 @@
       <workItem from="1544267288403" duration="293000" />
       <workItem from="1544267599722" duration="724000" />
       <workItem from="1544268423073" duration="22615000" />
+      <workItem from="1544367381054" duration="7862000" />
+      <workItem from="1544524346362" duration="719000" />
+      <workItem from="1544561938778" duration="1000" />
+      <workItem from="1544619507377" duration="181000" />
+      <workItem from="1544620716599" duration="2316000" />
     </task>
     <task id="LOCAL-00001" summary="fixed offsets and printing order">
       <created>1544278102242</created>
@@ -306,47 +358,47 @@
       <option name="project" value="LOCAL" />
       <updated>1544311177382</updated>
     </task>
-    <task id="LOCAL-00009" summary="added more implementations to symbolTable:&#10;- addVariable">
-      <created>1544092781332</created>
+    <task id="LOCAL-00009" summary="fixed order of prints in all scopes">
+      <created>1544367565211</created>
       <option name="number" value="00009" />
       <option name="presentableId" value="LOCAL-00009" />
       <option name="project" value="LOCAL" />
-      <updated>1544092781332</updated>
+      <updated>1544367565211</updated>
     </task>
-    <task id="LOCAL-00010" summary="fixed compilation errors">
-      <created>1544098967342</created>
+    <task id="LOCAL-00010" summary="added new test case t3">
+      <created>1544376532348</created>
       <option name="number" value="00010" />
       <option name="presentableId" value="LOCAL-00010" />
       <option name="project" value="LOCAL" />
-      <updated>1544098967342</updated>
+      <updated>1544376532348</updated>
     </task>
-    <task id="LOCAL-00011" summary="added lineno getter">
-      <created>1544099128776</created>
+    <task id="LOCAL-00011" summary="add doubly defined id in a struct">
+      <created>1544379994772</created>
       <option name="number" value="00011" />
       <option name="presentableId" value="LOCAL-00011" />
       <option name="project" value="LOCAL" />
-      <updated>1544099128776</updated>
+      <updated>1544379994772</updated>
     </task>
-    <task id="LOCAL-00012" summary="added lineno setter">
-      <created>1544099866128</created>
+    <task id="LOCAL-00012" summary="added field lineno to varPair">
+      <created>1544389468962</created>
       <option name="number" value="00012" />
       <option name="presentableId" value="LOCAL-00012" />
       <option name="project" value="LOCAL" />
-      <updated>1544099866128</updated>
+      <updated>1544389468962</updated>
     </task>
-    <task id="LOCAL-00013" summary="added isContinueAllowed()">
-      <created>1544101178416</created>
+    <task id="LOCAL-00013" summary="fixed lineno's to match those stored in varPair">
+      <created>1544389743039</created>
       <option name="number" value="00013" />
       <option name="presentableId" value="LOCAL-00013" />
       <option name="project" value="LOCAL" />
-      <updated>1544101178416</updated>
+      <updated>1544389743039</updated>
     </task>
-    <task id="LOCAL-00014" summary="added errors checks">
-      <created>1544102296433</created>
+    <task id="LOCAL-00014" summary="added t5, t6 (each one checks for double id in struct or function">
+      <created>1544390438567</created>
       <option name="number" value="00014" />
       <option name="presentableId" value="LOCAL-00014" />
       <option name="project" value="LOCAL" />
-      <updated>1544102296433</updated>
+      <updated>1544390438567</updated>
     </task>
     <task id="LOCAL-00015" summary="added destructors of symbolTable and Scope">
       <created>1544103334411</created>
@@ -558,17 +610,16 @@
       <option name="project" value="LOCAL" />
       <updated>1544267801953</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="22900000" />
+    <option name="totallyTimeSpent" value="33979000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49919224" visible="true" weight="0.16577825" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49919224" visible="true" weight="0.17377399" />
       <window_info id="Structure" order="1" sideWeight="0.50080776" side_tool="true" weight="0.09541578" />
       <window_info id="Favorites" order="2" sideWeight="0.50151974" side_tool="true" weight="0.09541578" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -633,12 +684,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="fixed default parameters passing to addFunction" />
-    <MESSAGE value="fixed function prints" />
-    <MESSAGE value="fixed uppercase types prints" />
-    <MESSAGE value="changed vector type of call function to varPair&#10;and&#10;implemented primitive type check" />
-    <MESSAGE value="added test" />
-    <MESSAGE value="fixed seg fault in addStruct" />
     <MESSAGE value="removed prints from addStruct" />
     <MESSAGE value="improved offset inspection" />
     <MESSAGE value="improved function argument offset inspection" />
@@ -658,7 +703,24 @@
     <MESSAGE value="more fixes to offset" />
     <MESSAGE value="fixed offsets of functions in global scope" />
     <MESSAGE value="fixed order of prints in global scope" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed order of prints in global scope" />
+    <MESSAGE value="fixed order of prints in all scopes" />
+    <MESSAGE value="added new test case t3" />
+    <MESSAGE value="add doubly defined id in a struct" />
+    <MESSAGE value="added field lineno to varPair" />
+    <MESSAGE value="fixed lineno's to match those stored in varPair" />
+    <MESSAGE value="added t5, t6 (each one checks for double id in struct or function" />
+    <option name="LAST_COMMIT_MESSAGE" value="added t5, t6 (each one checks for double id in struct or function" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/HW3/HW3/prev_semester_tests/run.py</url>
+          <line>7</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/HW3/HW3/facebook_tests/run.sh">
@@ -696,23 +758,6 @@
     <entry file="file://$PROJECT_DIR$/HW3/HW3/tests/test65.in">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/HW3/HW3/parser.ypp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="190" column="15" selection-start-line="190" selection-end-line="190" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HW3/HW3/StackStructs.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-          <folding>
-            <element signature="e#43#60#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/HW3/HW3/eitan_tests/t2.out">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="121">
@@ -741,68 +786,78 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/output.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="69" lean-forward="true" selection-start-line="69" selection-end-line="69" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/parser.ypp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="633">
+          <caret line="604" column="25" selection-start-line="604" selection-start-column="12" selection-end-line="604" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="574">
-          <caret line="43" column="5" selection-start-line="43" selection-start-column="5" selection-end-line="43" selection-end-column="5" />
+        <state relative-caret-position="260">
+          <caret line="49" column="108" selection-start-line="49" selection-start-column="108" selection-end-line="49" selection-end-column="108" />
           <folding>
             <element signature="e#115#297#0" />
             <element signature="e#299#371#0" />
-            <element signature="e#592#1196#0" />
-            <element signature="e#1198#2383#0" />
-            <element signature="e#2385#2979#0" />
-            <element signature="e#2981#3273#0" />
-            <element signature="e#3275#3489#0" />
-            <element signature="e#3491#3542#0" />
-            <element signature="e#3544#3593#0" />
-            <element signature="e#3595#3646#0" />
-            <element signature="e#3648#3700#0" />
-            <element signature="e#3702#3918#0" />
-            <element signature="e#3920#4148#0" />
-            <element signature="e#4150#4418#0" />
-            <element signature="e#4420#4850#0" />
-            <element signature="e#4852#5088#0" />
-            <element signature="e#5090#5296#0" />
-            <element signature="e#5298#5588#0" />
-            <element signature="e#5590#5912#0" />
-            <element signature="e#5914#6025#0" />
-            <element signature="e#6027#6368#0" />
-            <element signature="e#6370#6700#0" />
-            <element signature="e#6702#7038#0" />
-            <element signature="e#7040#7160#0" />
-            <element signature="e#7162#8079#0" />
-            <element signature="e#8081#9004#0" />
-            <element signature="e#7297#7397#0" />
-            <element signature="e#7399#7474#0" />
-            <element signature="e#7476#7717#0" />
-            <element signature="e#7719#7860#0" />
-            <element signature="e#7862#7979#0" />
-            <element signature="e#7981#8231#0" />
-            <element signature="e#8233#8435#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/StackStructs.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="19" column="14" selection-start-line="19" selection-start-column="14" selection-end-line="19" selection-end-column="14" />
+          <folding>
+            <element signature="e#43#60#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/HW3/HW3/symbolTable.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="148">
-          <caret line="100" column="8" lean-forward="true" selection-start-line="100" selection-start-column="8" selection-end-line="100" selection-end-column="8" />
+        <state relative-caret-position="3723">
+          <caret line="219" column="50" selection-start-line="219" selection-start-column="50" selection-end-line="219" selection-end-column="50" />
           <folding>
-            <element signature="e#13#30#0" expanded="true" />
-            <element signature="e#98#373#1" />
-            <element signature="e#776#2356#1" />
-            <element signature="e#918#1211#0" />
-            <element signature="e#1257#1328#0" />
-            <element signature="e#1334#1728#0" />
-            <element signature="e#1734#1821#0" />
-            <element signature="e#1827#2057#0" />
-            <element signature="e#2062#2354#0" />
-            <element signature="e#2905#2999#0" />
-            <element signature="e#3005#3540#0" />
-            <element signature="e#3546#3942#0" />
-            <element signature="e#3948#4037#0" />
-            <element signature="e#4808#5126#0" />
-            <element signature="e#6186#6297#0" />
+            <element signature="e#119#394#1" />
+            <element signature="e#397#795#1" />
+            <element signature="e#610#793#0" />
+            <element signature="e#798#2378#1" />
+            <element signature="e#940#1233#0" />
+            <element signature="e#1279#1350#0" />
+            <element signature="e#1356#1750#0" />
+            <element signature="e#1756#1843#0" />
+            <element signature="e#1849#2079#0" />
+            <element signature="e#2084#2376#0" />
+            <element signature="e#2381#4242#1" />
+            <element signature="e#2515#2978#0" />
+            <element signature="e#3108#3202#0" />
+            <element signature="e#3208#3743#0" />
+            <element signature="e#3749#4145#0" />
+            <element signature="e#4151#4240#0" />
+            <element signature="e#4245#4954#1" />
+            <element signature="e#5075#5523#0" />
+            <element signature="e#6661#6772#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HW3/HW3/prev_semester_tests/run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="638">
+          <caret line="29" column="37" selection-start-line="29" selection-start-column="37" selection-end-line="29" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
