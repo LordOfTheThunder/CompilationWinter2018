@@ -37,7 +37,7 @@ for test in in_files:
                 print("=================")
                 print("In file:")
                 print("=================")
-                with open(test + '.out') as fp_in:
+                with open(test_name) as fp_in:
                     print(fp_in.read())
 
             if args.stop_on_fail == 'true':
