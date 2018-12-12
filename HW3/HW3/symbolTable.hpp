@@ -130,18 +130,23 @@ public:
         }
 
         for (int i = 0; i < args.size(); i++){
-            if (formals[i] != rhs[i]){
-                if ((formals[i].type.compare(typeToString(types_Int)) == 0) &&
-                    (rhs[i].type.compare(typeToString(types_Byte)) == 0)){
-                    // Allowing byte to int casting
-                    continue;
-                }
+//            if (formals[i] != rhs[i]){
+//                if ((formals[i].type.compare(typeToString(types_Int)) == 0) &&
+//                    (rhs[i].type.compare(typeToString(types_Byte)) == 0)){
+//                     Allowing byte to int casting
+//                    continue;
+//                }
+//                return false;
+//            }
+            if (!typesEqual(formals[i].type, rhs[i].type)){
                 return false;
             }
         }
         return true;
     }
-    bool matchType(string& type){return (this->type.compare(type) == 0);}
+    bool matchType(string& type){
+        return typesEqual(this->type, type);
+    }
     bool operator==(const FunctionEntry& rhs) const {
         if (rhs.id.compare(this->id) != 0){
             return false;
@@ -235,7 +240,7 @@ public:
     void isBreakAllowed(int lineno);
     void isContinueAllowed(int lineno);
     void validateByte(string& value);
-    void checkReturn(string type, int& lineno);
+    void checkReturn(string type, int lineno);
 
 //    Getters
     void getFreedom(){
