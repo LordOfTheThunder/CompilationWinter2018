@@ -7,7 +7,8 @@ proc addMainForProc {file} {
 	if {![info exist res]} {
 		set fh [open $file "w+"]
 		puts $fh $text
-		puts $fh "void main() { print(\"Max is cool\"); }"
+		puts $fh "void main() { print(\"I hate this course\"); }"
+		puts $fh ""
 		close $fh
 		return
 	}
