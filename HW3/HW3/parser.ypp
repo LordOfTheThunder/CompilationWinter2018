@@ -290,7 +290,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 
 	}
 
-	| StartWhileScope WHILE LPAREN While_If_Exp RPAREN Statement {
+	| StartWhileScope WHILE LPAREN Exp RPAREN Statement {
 		tables->popScope();
 	}
 
@@ -302,14 +302,14 @@ Statement: StartScope LBRACE Statements RBRACE {
 		tables->isContinueAllowed($1.lineno);
 	}
 
-If_Scope: StartScope IF LPAREN While_If_Exp RPAREN Statement {
-	if ($4.type != types_Bool) {
-			errorMismatch($2.lineno);
-			exit(0);
-		}
+If_Scope: StartScope IF LPAREN Exp RPAREN Statement {
 	tables->popScope();
 	$$.lineno = $2.lineno;
 	tables->setLine($2.lineno);
+	if ($4.type != types_Bool) {
+		errorMismatch($2.lineno);
+		exit(0);
+	}
 }
 
 ElseScope: ELSE StartScope Statement {
@@ -362,13 +362,6 @@ Type: INT {
 
 StructType: STRUCT ID {
 	$$.str = $2.str;
-}
-
-While_If_Exp: Exp {
-	if ($1.type != types_Bool) {
-		errorMismatch($1.lineno);
-		exit(0);
-	}
 }
 
 Exp: Exp BINOPAS Exp {
