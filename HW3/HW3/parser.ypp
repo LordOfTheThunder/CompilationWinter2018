@@ -292,6 +292,10 @@ Statement: StartScope LBRACE Statements RBRACE {
 
 	| StartWhileScope WHILE LPAREN Exp RPAREN Statement {
 		tables->popScope();
+		if ($4.type != types_Bool) {
+			errorMismatch($2.lineno);
+			exit(0);
+		}
 	}
 
 	| BREAK SC {
