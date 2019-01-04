@@ -121,6 +121,8 @@ void allocateVar(register_type reg = no_reg) {
     }
 
     emit(s.str());
+    // After allocating variable from register, free the register
+    reg_alloc->freeRegister(reg);
 }
 
 void assignToVar(register_type to_assign) {
@@ -146,8 +148,8 @@ register_type loadToRegister(VariableEntry* var_entry) {
     #endif
     register_type res = reg_alloc->allocateRegister();
     stringstream s;
-    int offset = var_entry->getOffset();
-    s << "lw " << register_type_to_str(res) << ", " << -offset * 4 - 4 << "($fp)";
+    int offset = var_entry->getWordOffset();
+    s << "lw " << register_type_to_str(res) << ", " << -offset << "($fp)";
     emit(s.str());
 
     return res;

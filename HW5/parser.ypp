@@ -211,8 +211,11 @@ Statement: StartScope LBRACE Statements RBRACE {
 		if (reg == no_reg) {
 			// Exp is number. Need to load that number to register
 			reg = loadImmediateToRegister($4.str);
+			allocateVar(reg);
+		} else {
+			allocateVar(reg);
 		}
-		allocateVar(reg);
+		
 	}
 
 	| StructType ID ASSIGN Exp SC {
