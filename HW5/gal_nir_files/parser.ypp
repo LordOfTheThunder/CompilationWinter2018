@@ -1,0 +1,887 @@
+%{
+	#include "attributes.h"
+	#include "symbolTable.hpp"
+	#include <iostream>
+	#include <cstdlib>
+	#include <cassert>
+	#include "wellsee.hpp"
+	using namespace std;
+
+	extern int yylex();
+
+	extern int yylineno;
+
+	void yyerror(const char *);
+
+	symbolTable* tables = NULL;
+
+	bool canBeAssignedBool(types t1, types t2){
+		return (t1 == t2 || (t1 == IntType && t2 == ByteType));
+	}
+
+	void inline canBeAssigned(types t1, types t2){
+		bool b = canBeAssignedBool(t1,t2);
+		if(!b){
+			errorMismatch(tables->lineno);
+			exit(0);
+		}
+	}
+
+	bool canBeAssignedBool(typeStruct t1, typeStruct t2){
+		return canBeAssignedBool(t1.type, t2.type) && (t1 == t2 || (t1.arr_size == 0 && t2.arr_size == 0) );
+	}
+
+	void inline canBeAssigned(typeStruct t1, typeStruct t2){
+		canBeAssigned(t1.type, t2.type);
+		if((t1.arr_size || t2.arr_size) && t1 != t2){
+			errorMismatch(tables->lineno);
+			exit(0);
+		}
+	}
+
+	void isNum(typeStruct t1){
+		if(t1.arr_size > 0 || (t1.type != IntType && t1.type != ByteType)){
+			errorMismatch(tables->lineno);
+			exit(0);
+		}
+	}
+
+	void isArr(typeStruct t){
+		if(t.arr_size == 0){
+			errorMismatch(tables->lineno);
+			exit(0);
+		}
+	}
+
+	types BinopType(typeStruct t1, typeStruct t2){
+		if( t1.type == IntType || t2.type == IntType){
+			return IntType;
+		}
+		return ByteType;
+	}
+
+	void compareVectors(const string& id, const vector<typeStruct>& v1, const vector<typeStruct>& v2 ){
+		if(v1.size() == v2.size()){
+			int i = 0;
+			for(i = 0; i < v1.size(); i++){
+				if(!canBeAssignedBool(v1[i],v2[i])/*v1[i] != v2[i]*/){
+					break;
+				}
+			}
+			if(i == v1.size())
+				return;
+		}
+		vector<string> tvec;
+		for(int i = 0; i < v1.size(); i++){
+			if (v1[i].arr_size == 0)
+            	tvec.push_back(typeToStr(v1[i].type));
+        	else
+            	tvec.push_back(makeArrayType(typeToStr(v1[i].type), v1[i].arr_size));
+		}
+		errorPrototypeMismatch(tables->lineno, id, tvec);
+		exit(0);
+	}
+
+	void isBool(typeStruct t){
+		if(t.type != BoolType || t.arr_size > 0){
+			errorMismatch(tables->lineno);
+			exit(0);
+		}
+	}
+
+	void isValidSize(const string& id, int size){
+		if (size <= 0 || size >= 256){
+			errorInvalidArraySize(tables->lineno, id);
+			exit(0);
+		}
+	}
+
+%}
+
+%token VOID
+%token INT
+%token BYTE
+%token B
+%token BOOL
+%left OR
+%left AND
+%token TRUE
+%token FALSE
+%token RETURN
+%token IF
+%token ELSE
+%token WHILE
+%token BREAK
+%token SC
+%token COMMA
+%token LPAREN
+%token RPAREN
+%token LBRACE
+%token RBRACE
+%token LBRACK
+%token RBRACK
+%token ASSIGN
+%nonassoc RELOPNQ
+%nonassoc RELOPQ
+%left BINOPPM
+%left BINOPMD
+%right NOT
+%token ID
+%token NUM
+%token STRING
+
+
+%%
+
+Program:	Funcs 
+;
+
+Funcs:	FuncDecl Funcs
+
+	|	/*epsilon*/
+;
+
+FuncDecl: FuncDeclFirst FuncDeclSecond {
+	 	tables->removeTable();
+	 }
+;
+
+FuncDeclFirst: RetType ID LPAREN Formals RPAREN {
+	$$ = $1;
+	tables->addFunc($2.str, $1.type, $4.vec_types);
+	tables->addTable(false);
+	assert($4.vec_ids.size() == $4.vec_types.size());
+	for(int i = 0; i < $4.vec_ids.size(); i++){
+		tables->addVarArgs($4.vec_ids[i], $4.vec_types[i] );
+	}
+	tables->retType = $1.type;
+	tables->lineno = $$.lineno = $5.lineno;
+	addFunction($2.str);
+}
+
+;
+FuncDeclSecond: LBRACE Statements RBRACE {
+		$$ = $3;
+		tables->lineno = $$.lineno;
+		bpatch($2.getNextlist(), genLabel());
+		endFunction();			
+	}
+;
+RetType: Type { $$ = $1; tables->lineno = $$.lineno; }
+
+	| VOID { $$ = $1; tables->lineno = $$.lineno; }
+;
+
+Formals: Formalslist { $$ = $1; }
+
+	| /*epsilon*/ { $$ = Stype(); }
+;
+
+Formalslist: FormalDecl {
+	$$ = $1;
+	assert($$.vec_ids.size() == $$.vec_types.size());
+	}
+
+	| FormalDecl COMMA Formalslist {
+		$$ = $1;
+		assert($3.vec_ids.size() == $3.vec_types.size());
+		assert($$.vec_ids.size() == $$.vec_types.size());		
+		$$.vec_ids.insert($$.vec_ids.end(), $3.vec_ids.begin(), $3.vec_ids.end());
+		$$.vec_types.insert($$.vec_types.end(), $3.vec_types.begin(), $3.vec_types.end());
+		assert($$.vec_ids.size() == $$.vec_types.size());
+		$$.lineno = $3.lineno;
+	}
+;
+
+FormalDecl: Type ID {
+	$$ = $2;
+	$$.type = $1.type;
+	$$.vec_ids.push_back($2.str);
+	$$.vec_types.push_back($1.type);
+	tables->lineno = $$.lineno;
+	assert($$.vec_ids.size() == $$.vec_types.size());
+}
+
+	| Type ID LBRACK Num RBRACK {
+		$$ = $2;
+		$$.vec_ids.push_back($2.str);
+		int n = atoi($4.str.c_str());
+		$$.vec_types.push_back(typeStruct($1.type, n));
+		$$.type = $1.type;
+		$$.arr_size = n;
+		tables->lineno = $4.lineno;
+		isValidSize($2.str, n);
+		tables->lineno = $5.lineno;
+	}
+;
+
+Statements: Statement {
+		$$ = $1;
+	}
+
+	| Statements MMarker Statement {
+		$$ = $3;
+		bpatch($1.getNextlist(), $2.str);
+		$$.getBreaklist() = merge($1.getBreaklist(), $3.getBreaklist());
+	}
+;
+
+Statement: StartScope LBRACE Statements RBRACE {
+		$$ = $3;
+		tables->lineno = $$.lineno = $4.lineno;
+		fixStack(tables->getOffsetDelta());
+		tables->removeTable();
+	}
+
+	| Type ID SC
+	{
+		$$ = Stype();
+		tables->lineno = $2.lineno;
+		tables->addVar($2.str, $1.type);
+		$$.lineno = tables->lineno = $3.lineno;
+		createVar();
+	}
+
+	| Type ID ASSIGN Exp SC
+	{
+		$$ = Stype();
+		tables->lineno = $2.lineno;
+		tables->addVar($2.str, $1.type);
+		tables->lineno = $4.lineno;
+		canBeAssigned($1.type, $4.type);
+		$$.lineno = tables->lineno = $5.lineno;
+		if($1.type == BoolType){
+			initBool($4.getTruelist(), $4.getFalselist());
+		} else {
+			createVarInit($4.temp);
+		}
+		tempDone($4.temp);
+	}
+
+	| Type ID LBRACK Num RBRACK SC
+	{
+		$$ = Stype();
+		tables->lineno = $2.lineno;
+		int n = atoi($4.str.c_str());
+		tables->addVar($2.str, typeStruct($1.type, n));
+		tables->lineno = $4.lineno;
+		isValidSize($2.str, n);
+		$$.lineno = tables->lineno = $6.lineno;
+		createArray(n);
+	}
+
+	| ID ASSIGN Exp SC
+	{
+		$$ = Stype();
+		tables->lineno = $1.lineno;
+		typeStruct t = tables->getVar($1.str);
+		tables->lineno = $3.lineno;
+		canBeAssigned(t, $3.getTypeStruct());
+		$$.lineno = tables->lineno = $4.lineno;
+		if(t.arr_size == 0){
+			if(t.type == BoolType){
+				assignBool(t, $3.getTruelist(), $3.getFalselist());
+			} else {
+				loadToVar(t, $3.temp);
+			}
+		} else {
+			loadToVarArray(t, $3.offset);
+		}
+		tempDone($3.temp);
+	}
+
+	| ID LBRACK Exp RBRACK ASSIGN Exp SC {
+		$$ = Stype();
+		tables->lineno = $1.lineno;
+		typeStruct t = tables->getVar($1.str);
+		isArr(t);
+		tables->lineno = $3.lineno;
+		isNum($3.getTypeStruct());
+		tables->lineno = $6.lineno;
+		canBeAssigned(t.type, $6.getTypeStruct());
+		$$.lineno = tables->lineno = $7.lineno;
+		if(t.type == BoolType){
+			assignBoolArray(t, $3.temp, $6.getTruelist(), $6.getFalselist());
+		} else {
+			loadToArray(t, $3.temp, $6.temp);
+		}
+		tempDone($3.temp);
+		tempDone($6.temp);
+	}
+
+	| Call SC {
+		$$ = Stype();
+		$$.lineno = tables->lineno = $2.lineno;
+	}
+
+	| RETURN SC {
+		$$ = Stype();
+		$$.lineno = tables->lineno = $2.lineno;
+		canBeAssigned(tables->retType, VoidType);
+		endFunction();
+	}
+
+	| RETURN Exp SC {
+		$$ = Stype();
+		tables->lineno = $2.lineno;		
+		canBeAssigned(tables->retType, $2.getTypeStruct());
+		if(tables->retType == VoidType) {
+			errorMismatch(tables->lineno);
+			exit(0);
+		}
+		$$.lineno = tables->lineno = $3.lineno;
+		if($2.type == BoolType){
+			returnBool($2.getTruelist(), $2.getFalselist());
+		} else {
+			returnFunction($2.type, $2.temp);
+		}
+		tempDone($2.temp);
+	}
+
+	| IfScope MMarker Statement {
+		$$ = Stype();
+		$$.lineno = tables->lineno = $3.lineno;
+		fixStack(tables->getOffsetDelta());		
+		tables->removeTable();
+		bpatch($1.getTruelist(), $2.str);
+		$$.getNextlist() = merge($1.getFalselist(), $3.getNextlist());
+		$$.getBreaklist() = $3.getBreaklist();
+	}
+
+	| IfScope MMarker Statement_Before_Else NMarker ElseScope MMarker Statement
+	{
+		$$ = Stype();
+		$$.lineno = tables->lineno = $7.lineno;
+		fixStack(tables->getOffsetDelta());		
+		tables->removeTable();
+		bpatch($1.getTruelist(), $2.str);
+		bpatch($1.getFalselist(), $6.str);
+		$$.getNextlist() = merge(merge($3.getNextlist(), $4.getNextlist()),$7.getNextlist());
+		$$.getBreaklist() = merge($3.getBreaklist(), $7.getBreaklist());
+	}
+
+	| WhileScope MMarker Statement NMarker {
+		$$ = Stype();
+		$$.lineno = tables->lineno = $2.lineno;
+		fixStack(tables->getOffsetDelta());		
+		tables->removeTable();
+		bpatch($1.getTruelist(), $2.str);
+		bpatch($3.getNextlist(), $1.str);
+		bpatch($4.getNextlist(), $1.str);
+		$$.getNextlist() = merge($1.getFalselist(), $3.getBreaklist());
+	}
+
+	| BREAK SC
+	{
+		$$ = Stype();
+		tables->lineno = $1.lineno;
+		if(!tables->isInLoop()){
+			errorUnexpectedBreak(tables->lineno);
+			exit(0);
+		}
+		$$ = $1;
+		$$.lineno = tables->lineno = $2.lineno;
+		fixStack(tables->getOffsetDeltaLoop());
+		$$.getBreaklist() = makelist(emit("j "));;
+	}
+;
+
+Statement_Before_Else: StartScope LBRACE Statements RBRACE {
+		$$ = $3;
+		tables->lineno = $$.lineno = $4.lineno;
+		fixStack(tables->getOffsetDelta());		
+		tables->removeTable();
+	}
+
+	| Type ID SC
+	{
+		$$ = Stype();		
+		tables->lineno = $2.lineno;
+		tables->addVar($2.str, $1.type);
+		$$.lineno = tables->lineno = $3.lineno;
+		createVar();
+	}
+
+	| Type ID ASSIGN Exp SC
+	{
+		$$ = Stype();
+		tables->lineno = $2.lineno;
+		tables->addVar($2.str, $1.type);
+		tables->lineno = $4.lineno;
+		canBeAssigned($1.type, $4.type);
+		$$.lineno = tables->lineno = $5.lineno;
+		if($1.type == BoolType){
+			initBool($4.getTruelist(), $4.getFalselist());
+		} else {
+			createVarInit($4.temp);
+		}
+		tempDone($4.temp);
+	}
+
+	| Type ID LBRACK Num RBRACK SC
+	{
+		$$ = Stype();
+		tables->lineno = $2.lineno;
+		int n = atoi($4.str.c_str());
+		tables->addVar($2.str, typeStruct($1.type, n));
+		tables->lineno = $4.lineno;
+		isValidSize($2.str, n);
+		$$.lineno = tables->lineno = $6.lineno;
+		createArray(n);
+	}
+
+	| ID ASSIGN Exp SC
+	{
+		$$ = Stype();
+		tables->lineno = $1.lineno;
+		typeStruct t = tables->getVar($1.str);
+		tables->lineno = $3.lineno;
+		canBeAssigned(t, $3.getTypeStruct());
+		$$.lineno = tables->lineno = $4.lineno;
+		if(t.arr_size == 0){
+			if(t.type == BoolType){
+				assignBool(t, $3.getTruelist(), $3.getFalselist());
+			} else {
+				loadToVar(t, $3.temp);
+			}
+		} else {
+			loadToVarArray(t, $3.offset);
+		}
+		tempDone($3.temp);
+	}
+
+	| ID LBRACK Exp RBRACK ASSIGN Exp SC {
+		$$ = Stype();
+		tables->lineno = $1.lineno;
+		typeStruct t = tables->getVar($1.str);
+		isArr(t);
+		tables->lineno = $3.lineno;
+		isNum($3.getTypeStruct());
+		tables->lineno = $6.lineno;
+		canBeAssigned(t.type, $6.getTypeStruct());
+		$$.lineno = tables->lineno = $7.lineno;
+		if(t.type == BoolType){
+			assignBoolArray(t, $3.temp, $6.getTruelist(), $6.getFalselist());
+		} else {
+			loadToArray(t, $3.temp, $6.temp);
+		}
+		tempDone($3.temp);
+		tempDone($6.temp);
+	}
+
+	| Call SC { 
+		$$ = Stype();
+		$$.lineno = tables->lineno = $2.lineno;
+	}
+
+	| RETURN SC {
+		$$ = Stype();
+		$$.lineno = tables->lineno = $2.lineno;
+		canBeAssigned(tables->retType, VoidType);
+		endFunction();
+	}
+
+	| RETURN Exp SC {
+		$$ = Stype();
+		tables->lineno = $2.lineno;		
+		canBeAssigned(tables->retType, $2.getTypeStruct());
+		if(tables->retType == VoidType) {
+			errorMismatch(tables->lineno);
+			exit(0);
+		}
+		$$.lineno = tables->lineno = $3.lineno;
+		if($2.type == BoolType){
+			returnBool($2.getTruelist(), $2.getFalselist());
+		} else {
+			returnFunction($2.type, $2.temp);
+		}
+		tempDone($2.temp);
+	}
+
+	| IfScope MMarker Statement_Before_Else NMarker ElseScope MMarker Statement_Before_Else
+	{
+		$$ = Stype();
+		$$.lineno = tables->lineno = $7.lineno;
+		fixStack(tables->getOffsetDelta());		
+		tables->removeTable();
+		bpatch($1.getTruelist(), $2.str);
+		bpatch($1.getFalselist(), $6.str);
+		$$.getNextlist() = merge(merge($3.getNextlist(), $4.getNextlist()),$7.getNextlist());
+		$$.getBreaklist() = merge($3.getBreaklist(), $7.getBreaklist());
+	}
+
+	| WhileScope MMarker Statement_Before_Else NMarker {
+		$$ = Stype();
+		$$.lineno = tables->lineno = $2.lineno;
+		fixStack(tables->getOffsetDelta());		
+		tables->removeTable();
+		bpatch($1.getTruelist(), $2.str);
+		bpatch($3.getNextlist(), $1.str);
+		bpatch($4.getNextlist(), $1.str);
+		$$.getNextlist() = merge($1.getFalselist(), $3.getBreaklist());
+	}
+
+	| BREAK SC
+	{
+		$$ = Stype();
+		tables->lineno = $1.lineno;
+		if(!tables->isInLoop()){
+			errorUnexpectedBreak(tables->lineno);
+			exit(0);
+		}
+		$$ = $1;
+		$$.lineno = tables->lineno = $2.lineno;
+		fixStack(tables->getOffsetDeltaLoop());
+		$$.getBreaklist() = makelist(emit("j "));;
+	}
+;
+
+Call: CallFirst LPAREN Explist RPAREN {
+		$$ = $1;
+		tables->lineno = $1.lineno;
+		TableEntryFunc* t = tables->getFunc($1.str);
+		$$.type = t->getType();
+		compareVectors($1.str, t->getTypesVec(), $3.vec_types);
+		$$.lineno = tables->lineno = $4.lineno;
+		callFunction($$.str);
+		int s  = 0;
+		for(int i = 0; i < t->getTypesVec().size(); i++){
+			if(t->getTypesVec()[i].arr_size == 0){
+				s += 4;
+			} else {
+				s += 4*t->getTypesVec()[i].arr_size;
+			}
+		}
+		releaseArgs(s);
+		restoreAfterFunction();
+	}
+
+	| CallFirst LPAREN RPAREN {
+		$$ = $1;
+		tables->lineno = $1.lineno;
+		TableEntryFunc* t = tables->getFunc($1.str);
+		$$.type = t->getType();
+		compareVectors($1.str, t->getTypesVec(), vector<typeStruct>());
+		$$.lineno = tables->lineno = $3.lineno;
+		callFunction($$.str);
+		restoreAfterFunction();
+	}
+;
+
+CallFirst: ID {
+	$$ = $1;
+	backupBeforeFunction();	
+};
+
+Explist: Exp2 {
+		$$ = $1;
+		$$.vec_types.push_back($$.getTypeStruct());
+		tables->lineno = $$.lineno;
+		if($$.arr_size == 0){
+			//if($1.type == BoolType){
+			//	initBool($1.getTruelist(), $1.getFalselist());
+			//} else {
+				createVarInit($$.temp);
+			//}
+		} else {
+			createArgsArray($$.type, $$.offset, $$.arr_size);
+		}
+		tempDone($1.temp);		
+	}
+
+	| Exp2 MMarker COMMA Explist{
+		$$ = $1;
+		$$.vec_types.push_back($$.getTypeStruct());
+		$$.vec_types.insert($$.vec_types.end(), $4.vec_types.begin(), $4.vec_types.end());
+		tables->lineno = $$.lineno = $4.lineno;
+		if($$.arr_size == 0){
+			//if($1.type == BoolType){
+			//	$1.temp = getTemp();
+			//	initBoolArgs($2.str , $1.temp, $1.getTruelist(), $1.getFalselist());
+			//} else {
+				createVarInit($$.temp);
+			//}
+		} else {
+			createArgsArray($1.type, $1.offset, $1.arr_size);
+		}
+		tempDone($1.temp);
+	}
+;
+
+Exp2: Exp {
+	$$ = $1;
+	if($$.type == BoolType){
+		$$.temp = getTemp();
+		boolToTemp($$.temp, $$.getTruelist(), $$.getFalselist());
+	}
+}
+
+Type: INT { $$ = $1; tables->lineno = $$.lineno; }
+
+	| BYTE { $$ = $1; tables->lineno = $$.lineno; }
+
+	| BOOL { $$ = $1; tables->lineno = $$.lineno; }
+;
+
+Exp: LPAREN Exp RPAREN { 
+		$$ = $2;
+		tables->lineno = $$.lineno = $3.lineno;
+	}
+
+	| ID LBRACK Exp RBRACK {
+		$$ = $1;
+		tables->lineno = $1.lineno;
+		typeStruct t = tables->getVar($1.str);
+		tables->lineno = $3.lineno;
+		isNum($3.getTypeStruct());
+		if(t.arr_size == 0){
+			errorMismatch(tables->lineno);
+			exit(0);
+		}
+		$$.type = t.type;
+		$$.lineno = tables->lineno = $4.lineno;
+		$$.temp = $3.temp;
+		if(t.type == BoolType){
+			accessBoolArray(t, $3.temp, $$.getTruelist(), $$.getFalselist());
+			tempDone($3.temp);
+			$$.temp = NO_TEMP;
+		} else {
+			accessArray(t, $3.temp, $$.temp);
+		}
+	}
+
+	| Exp BINOPPM Exp {
+		$$ = $3;
+		typeStruct t1 = $1.getTypeStruct();
+		typeStruct t2 = $3.getTypeStruct();
+		tables->lineno = $1.lineno;
+		isNum(t1);
+		tables->lineno = $3.lineno;
+		isNum(t2);
+		$$.type = BinopType(t1,t2);
+		$$.temp = $1.temp;
+		arithmetics($$.type, $2.str, $$.temp, $1.temp, $3.temp);
+		tempDone($3.temp);
+	}
+
+	| Exp BINOPMD Exp {
+		$$ = $3;
+		typeStruct t1 = $1.getTypeStruct();
+		typeStruct t2 = $3.getTypeStruct();
+		tables->lineno = $1.lineno;
+		isNum(t1);
+		tables->lineno = $3.lineno;
+		isNum(t2);
+		$$.type = BinopType(t1,t2);		
+		$$.temp = $1.temp;
+		arithmetics($$.type, $2.str, $$.temp, $1.temp, $3.temp);
+		tempDone($3.temp);
+	}
+
+	| ID {
+		$$ = $1;
+		tables->lineno = $$.lineno;
+		typeStruct t = tables->getVar($1.str);
+		$$.type = t.type;
+		$$.arr_size = t.arr_size;
+		$$.offset = t.offset;
+		$$.temp = NO_TEMP;
+		if(t.arr_size == 0){
+			if(t.type == BoolType){
+				accessBool(t, $$.getTruelist(), $$.getFalselist());
+			} else {
+				$$.temp = getTemp();
+				accessVar(t, $$.temp);
+			}
+		} else {
+			$$.temp = NO_TEMP;
+		}
+	}
+
+	| Call {
+		$$ = $1;
+		$$.temp = NO_TEMP;		
+		tables->lineno = $$.lineno;
+		if($$.type != VoidType && $$.type != BoolType){
+			$$.temp = getTemp();
+			returnToTemp($$.temp);
+		} else if ($$.type == BoolType){
+			returnToBoolExp($$.getTruelist(), $$.getFalselist());
+		}
+	}
+
+	| Num {
+		$$ = $1;
+		tables->lineno = $$.lineno;
+		$$.temp = getTemp();
+		loadNumToTemp($$.str, $$.temp);
+	}
+
+	| STRING {
+		$$ = $1;
+		tables->lineno = $$.lineno;
+		$$.temp = getTemp();
+		createString($1.str, $$.temp);
+	}
+
+	| NMarker TRUE {
+		$$ = $2;
+		$$.type = BoolType;
+		$$.lineno = tables->lineno = $2.lineno;
+		$$.getTruelist() = $1.getNextlist();
+		$$.temp = NO_TEMP;		
+	}
+
+	| NMarker FALSE { 
+		$$ = $2;
+		$$.type = BoolType;
+		$$.lineno = tables->lineno = $2.lineno;
+		$$.getFalselist() = $1.getNextlist();
+		$$.temp = NO_TEMP;			
+	}
+
+	| NOT Exp {
+		$$ = $2;
+		//$$.type = BoolType;
+		tables->lineno = $2.lineno;
+		isBool($2.getTypeStruct());
+		$$.getTruelist() = $2.getFalselist();
+		$$.getFalselist() = $2.getTruelist();
+		$$.temp = NO_TEMP;		
+	}
+
+	| Exp AND MMarker Exp {
+		$$ = $4;
+		//$$.type = BoolType;
+		tables->lineno = $1.lineno;
+		isBool($1.getTypeStruct());
+		tables->lineno = $4.lineno;
+		isBool($4.getTypeStruct());
+		bpatch($1.getTruelist(), $3.str);
+		$$.getFalselist() = merge($1.getFalselist(), $4.getFalselist());
+		//truelist copied at the first line
+		$$.temp = NO_TEMP;		
+	}
+
+	| Exp OR MMarker Exp {
+		$$ = $4;
+		//$$.type = BoolType;
+		tables->lineno = $1.lineno;
+		isBool($1.getTypeStruct());
+		tables->lineno = $4.lineno;
+		isBool($4.getTypeStruct());
+		bpatch($1.getFalselist(), $3.str);
+		$$.getTruelist() = merge($1.getTruelist(), $4.getTruelist());
+		$$.temp = NO_TEMP;		
+	}
+
+	| Exp RELOPQ Exp {
+		$$ = $3;
+		$$.type = BoolType;
+		tables->lineno = $1.lineno;
+		isNum($1.getTypeStruct());
+		tables->lineno = $3.lineno;
+		isNum($3.getTypeStruct());
+		logicalRelops($2.str, $1.temp, $3.temp, $$.getTruelist(), $$.getFalselist());
+		tempDone($1.temp);
+		tempDone($3.temp);
+		$$.temp = NO_TEMP;
+	}
+
+	| Exp RELOPNQ Exp {
+		$$ = $3;
+		$$.type = BoolType;
+		tables->lineno = $1.lineno;
+		isNum($1.getTypeStruct());
+		tables->lineno = $3.lineno;
+		isNum($3.getTypeStruct());
+		logicalRelops($2.str, $1.temp, $3.temp, $$.getTruelist(), $$.getFalselist());
+		tempDone($1.temp);
+		tempDone($3.temp);
+		$$.temp = NO_TEMP;		
+	}
+;
+
+
+Num: NUM { 
+	$$ = $1;
+	tables->lineno = $$.lineno;
+	}
+
+	| NUM B
+	{
+		$$ = $1;
+		$$.type = ByteType;
+		int n = atoi($$.str.c_str());
+		if(n < 0 || n > 255){
+			errorByteTooLarge(tables->lineno, $$.str);
+			exit(0);
+		}
+		$$.lineno = tables->lineno = $2.lineno;
+	}
+;
+
+StartScope:  /*epsilon*/ { $$ = Stype(); tables->addTable(false); }
+;
+
+IfScope: IF LPAREN Exp RPAREN {
+	$$ = $3;
+	tables->lineno = $3.lineno;
+	isBool($3.getTypeStruct());
+	$$.lineno = $4.lineno;
+	tables->lineno = $$.lineno;
+	tables->addTable(false);
+	}
+;
+
+ElseScope: ELSE {
+	$$ = $1;
+	tables->lineno = $$.lineno;
+	fixStack(tables->getOffsetDelta());
+	tables->removeTable();
+	tables->addTable(false);
+}
+;
+
+WhileScope: WHILE LPAREN MMarker Exp RPAREN {
+	tables->lineno = $4.lineno;
+	isBool($4.getTypeStruct());
+	$$ = $4;
+	$$.lineno = $5.lineno;
+	tables->lineno = $$.lineno;
+	tables->addTable(true);
+	$$.str = $3.str;
+}
+
+MMarker: {
+	$$ = Stype();
+	$$.str = genLabel();
+}
+
+NMarker: {
+	$$ = Stype();
+	$$.getNextlist() = makelist(emit("j "));
+}
+
+;
+%%
+
+int main()
+{
+	init_text_area();
+	tables = new symbolTable();
+	yyparse();
+	tables->checkMain();
+	tables->removeTable();
+	delete tables;
+	CodeBuffer::instance().printDataBuffer();
+	CodeBuffer::instance().printCodeBuffer();
+	return 0;
+}
+
+void yyerror(const char *)
+{
+	//errorSyn(tables->lineno);
+	errorSyn(yylineno);
+	exit(0);
+}
