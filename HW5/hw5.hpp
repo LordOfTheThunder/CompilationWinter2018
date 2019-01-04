@@ -147,10 +147,18 @@ register_type loadToRegister(VariableEntry* var_entry) {
     register_type res = reg_alloc->allocateRegister();
     stringstream s;
     int offset = var_entry->getOffset();
-    s << "lw " << register_type_to_str(res) << ", " << -offset * 4 << "($fp)";
+    s << "lw " << register_type_to_str(res) << ", " << -offset * 4 - 4 << "($fp)";
     emit(s.str());
 
     return res;
+}
+
+register_type loadImmediateToRegister(string num) {
+    stringstream s;
+    register_type reg = reg_alloc->allocateRegister();
+    s << "li " << register_type_to_str(reg) << ", " << num;
+    emit(s.str());
+    return reg;
 }
 
 #endif
