@@ -17,6 +17,7 @@ extern symbolTable* tables;
 							 return token;
 #define FLEX_MACRO(token)		yylval = StackType(); REST_OF_MACRO(token)
 #define TYPE_FLEX_MACRO(token, type)		yylval = StackType(type); REST_OF_MACRO(token)
+#define OP_MACRO(token, _op)		yylval = StackType(); yylval.op = _op; REST_OF_MACRO(token)
 
 %}
 
@@ -50,10 +51,10 @@ continue					FLEX_MACRO(CONTINUE)
 \}							FLEX_MACRO(RBRACE)
 =							FLEX_MACRO(ASSIGN)
 ==|!=|<|>|<=|>=				FLEX_MACRO(RELOP)
-\+							FLEX_MACRO(BINOPAS); yylval.op = add_op;
-\-							FLEX_MACRO(BINOPAS); yylval.op = sub_op;
-\*							FLEX_MACRO(BINOPMD); yylval.op = mul_op;
-\/							FLEX_MACRO(BINOPMD); yylval.op = div_op;
+\+							OP_MACRO(BINOPAS, add_op);
+\-							OP_MACRO(BINOPAS, sub_op);
+\*							OP_MACRO(BINOPMD, mul_op);
+\/							OP_MACRO(BINOPMD, div_op);
 [a-zA-Z][a-zA-Z0-9]*		FLEX_MACRO(ID)
 0|[1-9][0-9]*				TYPE_FLEX_MACRO(NUM, types_Int)
 \"([^\n\r\"\\]|\\[rnt"\\])+\"	TYPE_FLEX_MACRO(STRING, types_String)
