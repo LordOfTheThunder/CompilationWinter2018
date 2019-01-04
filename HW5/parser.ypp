@@ -215,7 +215,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 		} else {
 			allocateVar(reg);
 		}
-		
+
 	}
 
 	| StructType ID ASSIGN Exp SC {
@@ -416,6 +416,7 @@ Exp: Exp BINOPAS Exp {
 		}
 		$$.lineno = $1.lineno;
 		// MAX TODO: Do arithmetic check here
+		checkDivisionByZero($3.reg);
 		register_type reg1 = $1.reg;
 		register_type reg3 = $3.reg;
 		if (reg1 == no_reg) {
@@ -595,6 +596,7 @@ Exp: Exp BINOPAS Exp {
 int main() {
 	tables = new symbolTable();
 	reg_alloc = new RegisterAllocation();
+	init_text();
 	yyparse();
 	tables->existsMain();
 	delete tables;

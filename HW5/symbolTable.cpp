@@ -81,7 +81,10 @@ void symbolTable::addFunction(string retval, string id, vector<varPair> formals,
     }
 
     // Add function for registers
-    id = id + ":";
+    if (id == "print" || id == "printi") {
+        return;
+    }
+    id = "__" + id + ":";
     emit(id);
     emit("move $fp, $sp");
 }

@@ -13,6 +13,7 @@
 #define DEBUG
 #define DEBUG_API
 #define emit(s) CodeBuffer::instance().emit(s)
+#define emitData(s) CodeBuffer::instance().emitData(s)
 #define print_code_buffer CodeBuffer::instance().printCodeBuffer()
 
 string register_type_to_str(register_type type) {
@@ -161,6 +162,35 @@ register_type loadImmediateToRegister(string num) {
     s << "li " << register_type_to_str(reg) << ", " << num;
     emit(s.str());
     return reg;
+}
+
+void checkDivisionByZero(register_type reg) {
+    stringstream s;
+    s << "beq " << register_type_to_str(reg) << ", 0, DivisionByZero";
+    emit(s.str());
+}
+
+void init_text() {
+    emit(".globl     main");
+    emit(".ent     main");
+    emit("main:");
+    emit("subu $sp, $sp, 4");
+    emit("sw $ra, ($sp)");
+    emit("jal __main");
+    emit("ExitCode: li $v0, 10");
+    emit("syscall");
+    emit("__print:");
+    emit("lw $a0, 0($sp)");
+    emit("li $v0, 4");
+    emit("syscall");
+    emit("jr $ra");
+    emit("__printi:");
+    emit("lw $a0, 0($sp)");
+    emit("li $v0, 1");
+    emit("syscall");
+    emit("jr $ra");
+    emit("DivisionByZero: .asciiz \"Error division by zero\\n\"");
+    emit("j ExitCode");
 }
 
 #endif
