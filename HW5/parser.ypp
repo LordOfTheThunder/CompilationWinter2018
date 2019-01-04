@@ -15,7 +15,6 @@ using namespace output;
 int yylex();
 void yyerror(const char *);
 symbolTable* tables = NULL;
-RegisterAllocation *reg_alloc;
 void CheckCorrectTypes(string _type1, string id2, string _type2);
 
 %}
@@ -207,6 +206,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 			CheckCorrectTypes(typeToString($1.type), $4.str, typeToString($4.type));
 		}
 		tables->addVariable(typeToString($1.type), $2.str, $4.lineno);
+		assignToVar($4.reg);
 	}
 
 	| StructType ID ASSIGN Exp SC {
@@ -233,6 +233,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 		} else {
 			CheckCorrectTypes((tables->getVariable($1.str))->getType(), $3.str, typeToString($3.type));
 		}
+		assignToVar($3.reg);
 	}
 
 	| ID PERIOD ID ASSIGN Exp SC {
@@ -383,8 +384,6 @@ Exp: Exp BINOPAS Exp {
 		$$.type = types_Byte;
 	}
 	// MAX TODO: Do arithmetic check here
-	reg_alloc->freeRegister($1.reg);
-	reg_alloc->freeRegister($3.reg);
 }	| Exp BINOPMD Exp {
 		if (($1.type != types_Int && $1.type != types_Byte) || ($3.type != types_Int && $3.type != types_Byte)) {
 			// Both must be numbers
@@ -398,8 +397,6 @@ Exp: Exp BINOPAS Exp {
 		}
 		$$.lineno = $1.lineno;
 		// MAX TODO: Do arithmetic check here
-		reg_alloc->freeRegister($1.reg);
-		reg_alloc->freeRegister($3.reg);
 	}
 
 	| ID {
@@ -413,7 +410,6 @@ Exp: Exp BINOPAS Exp {
 		else if (tables->getVariable($1.str) != NULL) {
 			$$.type = stringToType((tables->getVariable($1.str))->getType());
 			// Allocate register
-			$$.reg = reg_alloc->allocateRegister();
 		}
 		else {
 			// Not defined ...
@@ -458,7 +454,6 @@ Exp: Exp BINOPAS Exp {
 		$$.type = stringToType(struct_entry->getTypeOfVar($3.str));
 		$$.str = string($1.str + "." + $3.str);
 		// Allocate register
-		$$.reg = reg_alloc->allocateRegister();
 	}
 
 	| Call {

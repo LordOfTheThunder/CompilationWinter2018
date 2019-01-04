@@ -2,12 +2,15 @@
 #define __HW5__
 
 #include "StackStructs.h"
+#include "bp.hpp"
 #include <cassert>
 #include <algorithm>
 #include <set>
+#include <sstream>
 
 
 #define DEBUG
+#define emit(s) CodeBuffer::instance().emit(s)
 
 string register_type_to_str(register_type type) {
     switch (type) {
@@ -53,6 +56,26 @@ string register_type_to_str(register_type type) {
     return "";
 }
 
+enum arithmetic_op {
+    add_op,
+    sub_op,
+    mul_op,
+    div_op
+};
+
+string op_to_string(arithmetic_op op) {
+    switch(op) {
+        case add_op:
+        return "addu";
+        case sub_op:
+        return "subu";
+        case mul_op:
+        return "mul";
+        case div_op:
+        return "div";
+    }
+}
+
 class RegisterAllocation {
     vector<register_type> available;
     set<register_type> used;
@@ -75,7 +98,7 @@ public:
     }
 
     void freeRegister(register_type reg) {
-        if (std::find(used.begin(), used.end(), reg) != used.end()) {
+        if (std::find(used.begin(), used.end(), reg) == used.end()) {
             return;
         }
         assert(used.count(reg) == 1);
@@ -86,5 +109,24 @@ public:
         #endif
     }
 };
+
+RegisterAllocation *reg_alloc;
+
+void allocateVar(register_type reg) {
+    emit("subu $sp, $sp, 4");
+    stringstream s;
+    s << "sw " << register_type_to_str(reg) << ", ($sp)";
+    emit(s.str());
+}
+
+void assignToVar(register_type to_assign) {
+	register_type reg = reg_alloc->allocateRegister();
+	// MAX TODO: do assignment code
+	reg_alloc->freeRegister(reg);
+}
+
+void arithmetic_op_between_regs(register_type first, register_type second, arithmetic_op op) {
+    string op_str = op_to_string(op);
+}
 
 #endif
