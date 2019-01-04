@@ -184,6 +184,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 	| Type ID SC {
 	tables->addVariable(typeToString($1.type), $2.str, $1.lineno);
 	$$.lineno = $1.lineno;
+	allocateVar();
 }
 
 	| StructType ID SC {
@@ -412,7 +413,7 @@ Exp: Exp BINOPAS Exp {
 		else if (tables->getVariable($1.str) != NULL) {
 			$$.type = stringToType((tables->getVariable($1.str))->getType());
 			// Allocate register
-			$$.reg = reg_alloc->allocateRegister();
+			$$.reg = loadToRegister(tables->getVariable($1.str));
 		}
 		else {
 			// Not defined ...

@@ -3,6 +3,7 @@
 
 #include "StackStructs.h"
 #include "bp.hpp"
+#include "symbolTable.hpp"
 #include <cassert>
 #include <algorithm>
 #include <set>
@@ -87,7 +88,7 @@ public:
         used.insert(res);
         available.erase(available.begin());
         #ifdef DEBUG
-            cout << "Allocated register " << register_type_to_str(res) << endl;
+            cout << "-I- Allocated register " << register_type_to_str(res) << endl;
         #endif
         return res;
     }
@@ -100,20 +101,25 @@ public:
         used.erase(std::find(used.begin(), used.end(), reg));
         available.push_back(reg);
         #ifdef DEBUG
-            cout << "Freed register " << register_type_to_str(reg) << endl;
+            cout << "-I- Freed register " << register_type_to_str(reg) << endl;
         #endif
     }
 };
 
 RegisterAllocation *reg_alloc;
 
-void allocateVar(register_type reg) {
+void allocateVar(register_type reg = no_reg) {
     #ifdef DEBUG_API
-        cout << "Running allocateVar" << endl;
+        cout << "-API- Running allocateVar" << endl;
     #endif
     emit("subu $sp, $sp, 4");
     stringstream s;
-    s << "sw " << register_type_to_str(reg) << ", ($sp)";
+    if (reg == no_reg) {
+        s << "sw " << "$0" << ", ($sp)";
+    } else {
+        s << "sw " << register_type_to_str(reg) << ", ($sp)";
+    }
+
     emit(s.str());
 }
 
@@ -125,13 +131,26 @@ void assignToVar(register_type to_assign) {
 
 void arithmetic_op_between_regs(register_type first, register_type second, arithmetic_op op) {
     #ifdef DEBUG_API
-        cout << "Running arithmetic_op_between_regs" << endl;
+        cout << "-API- Running arithmetic_op_between_regs" << endl;
     #endif
     string op_str = op_to_string(op);
     stringstream s;
     s << op_str << " " << register_type_to_str(first) << ", " << register_type_to_str(first) << ", " << register_type_to_str(second);
     reg_alloc->freeRegister(second);
     emit(s.str());
+}
+
+register_type loadToRegister(VariableEntry* var_entry) {
+    #ifdef DEBUG_API
+        cout << "-API- Running loadToRegister" << endl;
+    #endif
+    register_type res = reg_alloc->allocateRegister();
+    stringstream s;
+    int offset = var_entry->getOffset();
+    s << "lw " << register_type_to_str(res) << ", " << -offset * 4 << "($fp)";
+    emit(s.str());
+
+    return res;
 }
 
 #endif

@@ -3,6 +3,7 @@
 #include <assert.h>
 #include "output.hpp"
 #include <stdlib.h>
+
 template <class T>
 void clearVectorOfPointers(vector<T>& v){
     for (typename vector<T>::iterator it = v.begin(); it != v.end(); ++it){
@@ -78,6 +79,11 @@ void symbolTable::addFunction(string retval, string id, vector<varPair> formals,
             this->addFunctionArgument((*it).type, (*it).id, argOffset, (*it).lineno);
         }
     }
+
+    // Add function for registers
+    id = id + ":";
+    emit(id);
+    emit("move $fp, $sp");
 }
 
 void symbolTable::addFunctionArgument(string& type, string& id, int offset, int lineno){

@@ -3,8 +3,10 @@
 #include <vector>
 #include "StackStructs.h"
 #include "output.hpp"
+#include "bp.hpp"
 
 #define DEBUGGING 0
+#define emit(s) CodeBuffer::instance().emit(s)
 
 class TableEntry{
 
