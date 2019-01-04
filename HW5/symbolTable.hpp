@@ -7,6 +7,7 @@
 
 #define DEBUGGING 0
 #define emit(s) CodeBuffer::instance().emit(s)
+#define WORD_SIZE 4
 
 class TableEntry{
 
@@ -18,6 +19,7 @@ public:
     TableEntry(string& id, int offset) : id(id), offset(offset) {}
     string& getId(){return this->id;}
     int getOffset(){return this->offset;}
+    int getWordOffset(){return (this->offset + 1) * WORD_SIZE;}
     virtual void print() {}
     virtual ~TableEntry() {}
 };
