@@ -17,6 +17,28 @@ enum types {
 	types_Undefined
 };
 
+enum register_type {
+	no_reg,
+    t0,
+    t1,
+    t2,
+    t3,
+    t4,
+    t5,
+    t6,
+    t7,
+    s0,
+    s1,
+    s2,
+    s3,
+    s4,
+    s5,
+    s6,
+    s7,
+    t8,
+    t9
+}
+
 class varPair{
 public:
     string type;
@@ -78,8 +100,9 @@ struct StackType {
 	types type;
 	vector<varPair> func_info;
 	string struct_type;
+	register_type reg;
 	StackType(types type = types_Undefined, string str = "") : type(type), str(str), lineno(1),
-		func_info(), struct_type("") {
+		func_info(), struct_type(""), reg(no_reg) {
 	}
 };
 

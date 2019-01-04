@@ -1,27 +1,7 @@
-#include <vector>
 #include <cassert>
-using std::vector;
+#include "StackStructs.h"
 
-enum register_type {
-    t0,
-    t1,
-    t2,
-    t3,
-    t4,
-    t5,
-    t6,
-    t7,
-    s0,
-    s1,
-    s2,
-    s3,
-    s4,
-    s5,
-    s6,
-    s7,
-    t8,
-    t9
-}
+#define DEBUG
 
 string register_type_to_str(register_type type) {
     switch (type) {
@@ -70,7 +50,7 @@ string register_type_to_str(register_type type) {
 class RegisterAllocation {
     vector<register_type> available;
     vector<register_type> used;
-
+public:
     RegisterAllocation() {
         for (int i = t0; i < t9; ++i) {
             available.push_back(i);
@@ -82,6 +62,9 @@ class RegisterAllocation {
         register_type res = available[0];
         used.push_back(res);
         available.erase(available.begin());
+        #ifdef DEBUG
+            cout << "Allocated register " << register_type_to_str(res) << endl;
+        #endif
         return res;
     }
 
@@ -92,5 +75,8 @@ class RegisterAllocation {
         assert(used.count(reg) == 1);
         used.erase(used.find(reg));
         available.push_back(reg);
+        #ifdef DEBUG
+            cout << "Freed register " << register_type_to_str(reg) << endl;
+        #endif
     }
 }

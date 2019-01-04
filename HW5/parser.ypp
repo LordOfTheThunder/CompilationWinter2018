@@ -9,11 +9,13 @@ using namespace std;
 #include "StackStructs.h"
 #include "output.hpp"
 #include "symbolTable.hpp"
+#include "hw5.hpp"
 using namespace output;
 
 int yylex();
 void yyerror(const char *);
 symbolTable* tables = NULL;
+RegisterAllocation *reg_alloc;
 void CheckCorrectTypes(string _type1, string id2, string _type2);
 
 %}
@@ -380,6 +382,9 @@ Exp: Exp BINOPAS Exp {
 	} else {
 		$$.type = types_Byte;
 	}
+	// MAX TODO: Do arithmetic check here
+	reg_alloc->freeRegister($1.reg);
+	reg_alloc->freeRegister($3.reg);
 }	| Exp BINOPMD Exp {
 		if (($1.type != types_Int && $1.type != types_Byte) || ($3.type != types_Int && $3.type != types_Byte)) {
 			// Both must be numbers
@@ -392,6 +397,9 @@ Exp: Exp BINOPAS Exp {
 			$$.type = types_Byte;
 		}
 		$$.lineno = $1.lineno;
+		// MAX TODO: Do arithmetic check here
+		reg_alloc->freeRegister($1.reg);
+		reg_alloc->freeRegister($3.reg);
 	}
 
 	| ID {
@@ -404,6 +412,8 @@ Exp: Exp BINOPAS Exp {
 		// Check if variable
 		else if (tables->getVariable($1.str) != NULL) {
 			$$.type = stringToType((tables->getVariable($1.str))->getType());
+			// Allocate register
+			$$.reg = reg_alloc->allocateRegister();
 		}
 		else {
 			// Not defined ...
@@ -420,6 +430,8 @@ Exp: Exp BINOPAS Exp {
 				exit(0);
 			}
 			$$.struct_type = struct_type->getId();
+			// Allocate registers for struct
+			// MAX TODO: fill this somehow later
 		}
 	}
 
@@ -445,6 +457,8 @@ Exp: Exp BINOPAS Exp {
 		}
 		$$.type = stringToType(struct_entry->getTypeOfVar($3.str));
 		$$.str = string($1.str + "." + $3.str);
+		// Allocate register
+		reg_alloc->allocateRegister();
 	}
 
 	| Call {
@@ -555,9 +569,11 @@ Exp: Exp BINOPAS Exp {
 
 int main() {
 	tables = new symbolTable();
+	reg_alloc = new RegisterAllocation();
 	yyparse();
 	tables->existsMain();
 	delete tables;
+	delete reg_alloc;
 	return 0;
 }
 
