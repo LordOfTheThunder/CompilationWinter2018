@@ -10,7 +10,9 @@
 
 
 #define DEBUG
+#define DEBUG_API
 #define emit(s) CodeBuffer::instance().emit(s)
+#define print_code_buffer CodeBuffer::instance().printCodeBuffer()
 
 string register_type_to_str(register_type type) {
     switch (type) {
@@ -55,13 +57,6 @@ string register_type_to_str(register_type type) {
     }
     return "";
 }
-
-enum arithmetic_op {
-    add_op,
-    sub_op,
-    mul_op,
-    div_op
-};
 
 string op_to_string(arithmetic_op op) {
     switch(op) {
@@ -113,6 +108,9 @@ public:
 RegisterAllocation *reg_alloc;
 
 void allocateVar(register_type reg) {
+    #ifdef DEBUG_API
+        cout << "Running allocateVar" << endl;
+    #endif
     emit("subu $sp, $sp, 4");
     stringstream s;
     s << "sw " << register_type_to_str(reg) << ", ($sp)";
@@ -126,7 +124,14 @@ void assignToVar(register_type to_assign) {
 }
 
 void arithmetic_op_between_regs(register_type first, register_type second, arithmetic_op op) {
+    #ifdef DEBUG_API
+        cout << "Running arithmetic_op_between_regs" << endl;
+    #endif
     string op_str = op_to_string(op);
+    stringstream s;
+    s << op_str << " " << register_type_to_str(first) << ", " << register_type_to_str(first) << ", " << register_type_to_str(second);
+    reg_alloc->freeRegister(second);
+    emit(s.str());
 }
 
 #endif

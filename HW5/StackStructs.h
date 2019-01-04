@@ -39,6 +39,13 @@ enum register_type {
     t9
 };
 
+enum arithmetic_op {
+    add_op,
+    sub_op,
+    mul_op,
+    div_op
+};
+
 class varPair{
 public:
     string type;
@@ -101,6 +108,7 @@ struct StackType {
 	vector<varPair> func_info;
 	string struct_type;
 	register_type reg;
+	arithmetic_op op;
 	StackType(types type = types_Undefined, string str = "") : type(type), str(str), lineno(1),
 		func_info(), struct_type(""), reg(no_reg) {
 	}

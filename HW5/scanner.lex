@@ -50,8 +50,10 @@ continue					FLEX_MACRO(CONTINUE)
 \}							FLEX_MACRO(RBRACE)
 =							FLEX_MACRO(ASSIGN)
 ==|!=|<|>|<=|>=				FLEX_MACRO(RELOP)
-\+|\-						FLEX_MACRO(BINOPAS)
-\*|\/						FLEX_MACRO(BINOPMD)
+\+							FLEX_MACRO(BINOPAS); yylval.op = add_op;
+\-							FLEX_MACRO(BINOPAS); yylval.op = sub_op;
+\*							FLEX_MACRO(BINOPMD); yylval.op = mul_op;
+\/							FLEX_MACRO(BINOPMD); yylval.op = div_op;
 [a-zA-Z][a-zA-Z0-9]*		FLEX_MACRO(ID)
 0|[1-9][0-9]*				TYPE_FLEX_MACRO(NUM, types_Int)
 \"([^\n\r\"\\]|\\[rnt"\\])+\"	TYPE_FLEX_MACRO(STRING, types_String)

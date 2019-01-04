@@ -206,7 +206,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 			CheckCorrectTypes(typeToString($1.type), $4.str, typeToString($4.type));
 		}
 		tables->addVariable(typeToString($1.type), $2.str, $4.lineno);
-		assignToVar($4.reg);
+		allocateVar($4.reg);
 	}
 
 	| StructType ID ASSIGN Exp SC {
@@ -384,6 +384,7 @@ Exp: Exp BINOPAS Exp {
 		$$.type = types_Byte;
 	}
 	// MAX TODO: Do arithmetic check here
+	arithmetic_op_between_regs($1.reg, $3.reg, $2.op);
 }	| Exp BINOPMD Exp {
 		if (($1.type != types_Int && $1.type != types_Byte) || ($3.type != types_Int && $3.type != types_Byte)) {
 			// Both must be numbers
@@ -397,6 +398,7 @@ Exp: Exp BINOPAS Exp {
 		}
 		$$.lineno = $1.lineno;
 		// MAX TODO: Do arithmetic check here
+		arithmetic_op_between_regs($1.reg, $3.reg, $2.op);
 	}
 
 	| ID {
@@ -410,6 +412,7 @@ Exp: Exp BINOPAS Exp {
 		else if (tables->getVariable($1.str) != NULL) {
 			$$.type = stringToType((tables->getVariable($1.str))->getType());
 			// Allocate register
+			$$.reg = reg_alloc->allocateRegister();
 		}
 		else {
 			// Not defined ...
@@ -569,6 +572,7 @@ int main() {
 	tables->existsMain();
 	delete tables;
 	delete reg_alloc;
+	print_code_buffer;
 	return 0;
 }
 
