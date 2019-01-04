@@ -6,11 +6,11 @@
 #include <string>
 using namespace std;
 
-#include "StackStructs.h"
 #include "output.hpp"
 #include "symbolTable.hpp"
-#include "hw5.hpp"
 using namespace output;
+#include "StackStructs.h"
+#include "hw5.hpp"
 
 int yylex();
 void yyerror(const char *);
@@ -458,7 +458,7 @@ Exp: Exp BINOPAS Exp {
 		$$.type = stringToType(struct_entry->getTypeOfVar($3.str));
 		$$.str = string($1.str + "." + $3.str);
 		// Allocate register
-		reg_alloc->allocateRegister();
+		$$.reg = reg_alloc->allocateRegister();
 	}
 
 	| Call {

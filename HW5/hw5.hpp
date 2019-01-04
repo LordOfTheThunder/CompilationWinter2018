@@ -1,5 +1,11 @@
-#include <cassert>
+#ifndef __HW5__
+#define __HW5__
+
 #include "StackStructs.h"
+#include <cassert>
+#include <algorithm>
+#include <set>
+
 
 #define DEBUG
 
@@ -49,18 +55,18 @@ string register_type_to_str(register_type type) {
 
 class RegisterAllocation {
     vector<register_type> available;
-    vector<register_type> used;
+    set<register_type> used;
 public:
     RegisterAllocation() {
         for (int i = t0; i < t9; ++i) {
-            available.push_back(i);
+            available.push_back((register_type)i);
         }
     }
 
     register_type allocateRegister() {
         assert(!available.empty());
         register_type res = available[0];
-        used.push_back(res);
+        used.insert(res);
         available.erase(available.begin());
         #ifdef DEBUG
             cout << "Allocated register " << register_type_to_str(res) << endl;
@@ -69,14 +75,16 @@ public:
     }
 
     void freeRegister(register_type reg) {
-        if (used.find(reg) != used.end()) {
+        if (std::find(used.begin(), used.end(), reg) != used.end()) {
             return;
         }
         assert(used.count(reg) == 1);
-        used.erase(used.find(reg));
+        used.erase(std::find(used.begin(), used.end(), reg));
         available.push_back(reg);
         #ifdef DEBUG
             cout << "Freed register " << register_type_to_str(reg) << endl;
         #endif
     }
-}
+};
+
+#endif

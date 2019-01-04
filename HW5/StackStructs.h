@@ -37,7 +37,7 @@ enum register_type {
     s7,
     t8,
     t9
-}
+};
 
 class varPair{
 public:
