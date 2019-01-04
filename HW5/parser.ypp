@@ -45,8 +45,8 @@ void CheckCorrectTypes(string _type1, string id2, string _type2);
 %token RBRACE
 %left ASSIGN
 %nonassoc RELOP
-%left BINOPMD
 %left BINOPAS
+%left BINOPMD
 %token ID
 %token NUM
 %token STRING
@@ -393,7 +393,16 @@ Exp: Exp BINOPAS Exp {
 		$$.type = types_Byte;
 	}
 	// MAX TODO: Do arithmetic check here
-	arithmetic_op_between_regs($1.reg, $3.reg, $2.op);
+	register_type reg1 = $1.reg;
+	register_type reg3 = $3.reg;
+	if (reg1 == no_reg) {
+		reg1 = loadImmediateToRegister($1.str);
+	}
+	if (reg3 == no_reg) {
+		reg3 = loadImmediateToRegister($3.str);
+	}
+	arithmetic_op_between_regs(reg1, reg3, $2.op);
+	$$.reg = reg1;
 }	| Exp BINOPMD Exp {
 		if (($1.type != types_Int && $1.type != types_Byte) || ($3.type != types_Int && $3.type != types_Byte)) {
 			// Both must be numbers
@@ -407,7 +416,16 @@ Exp: Exp BINOPAS Exp {
 		}
 		$$.lineno = $1.lineno;
 		// MAX TODO: Do arithmetic check here
-		arithmetic_op_between_regs($1.reg, $3.reg, $2.op);
+		register_type reg1 = $1.reg;
+		register_type reg3 = $3.reg;
+		if (reg1 == no_reg) {
+			reg1 = loadImmediateToRegister($1.str);
+		}
+		if (reg3 == no_reg) {
+			reg3 = loadImmediateToRegister($3.str);
+		}
+		arithmetic_op_between_regs(reg1, reg3, $2.op);
+		$$.reg = reg1;
 	}
 
 	| ID {
