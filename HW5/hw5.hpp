@@ -111,17 +111,25 @@ public:
 
 RegisterAllocation *reg_alloc;
 
-void allocateVar(register_type reg = no_reg) {
+void allocateVar(StackType st = StackType()) {
     #ifdef DEBUG_API
         cout << "-API- Running allocateVar" << endl;
     #endif
+
     emit("subu $sp, $sp, 4");
-    stringstream s;
-    if (reg == no_reg) {
-        s << "sw " << "$0" << ", ($sp)";
-    } else {
-        s << "sw " << register_type_to_str(reg) << ", ($sp)";
+    if (st.type == types_Undefined) {
+        // allocate var without copying data
+        emit("sw $0, ($sp)");
+        return;
     }
+
+    register_type reg = st.reg;
+    stringstream s;
+
+    if (reg == no_reg) {
+        reg = loadImmediateToRegister(st.str);
+    }
+    s << "sw " << register_type_to_str(reg) << ", ($sp)";
 
     emit(s.str());
     // After allocating variable from register, free the register

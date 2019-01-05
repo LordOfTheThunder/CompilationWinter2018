@@ -207,15 +207,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 			CheckCorrectTypes(typeToString($1.type), $4.str, typeToString($4.type));
 		}
 		tables->addVariable(typeToString($1.type), $2.str, $4.lineno);
-		register_type reg = $4.reg;
-		if (reg == no_reg) {
-			// Exp is number. Need to load that number to register
-			reg = loadImmediateToRegister($4.str);
-			allocateVar(reg);
-		} else {
-			allocateVar(reg);
-		}
-
+		allocateVar($4);
 	}
 
 	| StructType ID ASSIGN Exp SC {
