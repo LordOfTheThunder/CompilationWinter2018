@@ -55,6 +55,7 @@ public:
             types.push_back((*it).type);
             names.push_back((*it).id);
         }
+        cout << "struct id is: " << this->id << endl;
     }
 
     int getMemberWordOffset(string& id){
@@ -271,8 +272,9 @@ public:
     int countSize(vector<varPair>& types);
     int getVariableSize(string& type);
     int getStructMemberWordOffset(string& structId, string& memId){
+        string structName = getVariable(structId)->getType();
         int base = getVariable(structId)->getWordOffset();
-        int offset = getStruct(structId)->getMemberWordOffset(memId);
+        int offset = getStruct(structName)->getMemberWordOffset(memId);
         return base + offset;
     }
 
