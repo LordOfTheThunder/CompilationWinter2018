@@ -132,15 +132,18 @@ void assignToVar(register_type to_assign) {
 	reg_alloc->freeRegister(reg);
 }
 
-void arithmetic_op_between_regs(register_type first, register_type second, arithmetic_op op) {
+void arithmetic_op_between_regs(register_type first, register_type second, arithmetic_op op, bool truncate_result = false) {
     #ifdef DEBUG_API
         cout << "-API- Running arithmetic_op_between_regs" << endl;
     #endif
     string op_str = op_to_string(op);
     stringstream s;
     s << op_str << " " << register_type_to_str(first) << ", " << register_type_to_str(first) << ", " << register_type_to_str(second);
-    reg_alloc->freeRegister(second);
+    if (truncate_result) {
+        s << endl << "and " << register_type_to_str(first) << ", " << "255";
+    }
     emit(s.str());
+    reg_alloc->freeRegister(second);
 }
 
 register_type loadToRegister(VariableEntry* var_entry) {
