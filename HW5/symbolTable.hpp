@@ -39,6 +39,7 @@ public:
             output::printID(id, offset, "struct " + type);
         }
     }
+
 };
 
 class StructEntry : public TableEntry{
@@ -54,6 +55,17 @@ public:
             types.push_back((*it).type);
             names.push_back((*it).id);
         }
+    }
+
+    int getMemberWordOffset(string& id){
+        int i = 0;
+        for (vector<string>::iterator it = names.begin(); it != names.end(); ++it){
+            if ((*it).compare(id) == 0){
+                return i * WORD_SIZE;
+            }
+            i++;
+        }
+        return -1;
     }
 
     int size(){return members.size();}
@@ -258,6 +270,11 @@ public:
     int getLine(){return this->lineno;}
     int countSize(vector<varPair>& types);
     int getVariableSize(string& type);
+    int getStuckMemberWordOffset(string& structId, string& memId){
+        int base = getVariable(structId)->getWordOffset();
+        int offset = getStruct(structId)->getMemberWordOffset(memId);
+        return base + offset;
+    }
 
 //    Strange API utils
     void callFunction(string& id, vector<varPair>& args, int lineno);
