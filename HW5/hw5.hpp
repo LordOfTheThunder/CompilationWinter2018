@@ -15,6 +15,7 @@
 #define emit(s) CodeBuffer::instance().emit(s)
 #define emitData(s) CodeBuffer::instance().emitData(s)
 #define print_code_buffer CodeBuffer::instance().printCodeBuffer()
+#define print_data_buffer CodeBuffer::instance().printDataBuffer()
 
 register_type loadImmediateToRegister(string num);
 
@@ -136,9 +137,58 @@ void allocateVar(StackType st = StackType()) {
     reg_alloc->freeRegister(reg);
 }
 
-void assignToVar(VariableEntry* var_entry, StackType st) {
+void assignToStruct(StructEntry* st_type) {
+    #ifdef DEBUG_API
+        cout << "-API- Running assignToStruct" << endl;
+    #endif
     stringstream s;
-    int offset = var_entry->getWordOffset();
+    int size = st_type->size();
+    // otherwise we copy data from one struct to another struct
+    int offset = size * 4 - 4;
+    int orig_offset = st_type->getWordOffset();
+    register_type reg = reg_alloc->allocateRegister();
+    for (int i = 0; i < size; ++i) {
+        s << "lw " << register_type_to_str(reg) << ", " << -orig_offset << "($fp)" << endl;
+        s << "sw " << register_type_to_str(reg) << ", " << offset << "($sp)";
+        if (i < size - 1) {
+            s << endl;
+        }
+        offset -= 4;
+        orig_offset += 4;
+    }
+    reg_alloc->freeRegister(reg);
+    emit(s.str());
+}
+
+void allocateStruct(StructEntry* st_type, bool assign = false) {
+    #ifdef DEBUG_API
+        cout << "-API- Running allocateStruct" << endl;
+    #endif
+
+    int size = st_type->size();
+    stringstream s;
+    s << "subu $sp, $sp, " << size * 4;
+    emit(s.str());
+    s.clear();
+    s.str(std::string());
+    if (!assign) {
+        // allocate struct without copying data
+        for (int i = 0; i < size; ++i) {
+            int curr_offset = -i * 4;
+            s << "sw $0, " << curr_offset << "($sp)";
+            if (i < size - 1) {
+                s << endl;
+            }
+        }
+        emit(s.str());
+        return;
+    }
+
+    assignToStruct(st_type);
+}
+
+void assignToVar(int offset, StackType st) {
+    stringstream s;
     register_type reg = st.reg;
     if (reg == no_reg) {
         reg = loadImmediateToRegister(st.str);
@@ -168,7 +218,7 @@ register_type arithmetic_op(StackType s1, StackType s3, arithmetic_op op) {
 	}
 
     bool truncate_result = false;
-    if (s1.type == types_Byte || s3.type == types_Byte) {
+    if (s1.type == types_Byte && s3.type == types_Byte) {
 		truncate_result = true;
 	}
 
@@ -230,7 +280,7 @@ void init_text() {
     emit("li $v0, 1");
     emit("syscall");
     emit("jr $ra");
-    emit("DivisionByZero: .asciiz \"Error division by zero\\n\"");
+    emitData("DivisionByZero: .asciiz \"Error division by zero\\n\"");
     emit("j ExitCode");
 }
 

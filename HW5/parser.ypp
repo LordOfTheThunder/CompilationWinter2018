@@ -190,6 +190,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 	| StructType ID SC {
 		tables->addVariable($1.str, $2.str, $1.lineno);
 		$$.lineno = $1.lineno;
+		allocateStruct(tables->getStruct($1.str));
 	}
 
 	| STRUCT ID LBRACE StructMemList RBRACE SC {
@@ -213,11 +214,12 @@ Statement: StartScope LBRACE Statements RBRACE {
 	| StructType ID ASSIGN Exp SC {
 		if ($4.type == types_Undefined) {
 			// We have a struct type
-			CheckCorrectTypes($1.struct_type, $4.str, $4.struct_type);
+			CheckCorrectTypes($1.str, $4.str, $4.struct_type);
 		} else {
-			CheckCorrectTypes($1.struct_type, $4.str, typeToString($4.type));
+			CheckCorrectTypes($1.str, $4.str, typeToString($4.type));
 		}
 		tables->addVariable($1.str, $2.str, $1.lineno);
+		allocateStruct(tables->getStruct($1.str), true);
 	}
 
 	| ID ASSIGN Exp SC {
@@ -234,7 +236,13 @@ Statement: StartScope LBRACE Statements RBRACE {
 		} else {
 			CheckCorrectTypes((tables->getVariable($1.str))->getType(), $3.str, typeToString($3.type));
 		}
-		assignToVar(tables->getVariable($1.str), $3);
+		StructEntry* st_entry = tables->getStruct((tables->getVariable($1.str))->getType());
+		if (st_entry != NULL) {
+			// We copy structs
+			assignToStruct(st_entry);
+		} else {
+			assignToVar((tables->getVariable($1.str))->getWordOffset(), $3);
+		}
 	}
 
 	| ID PERIOD ID ASSIGN Exp SC {
@@ -267,6 +275,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 			errorMismatch(tables->getLine());
 			exit(0);
 		}
+		assignToVar(tables->getStructMemberWordOffset($1.str, $3.str), $5);
 	}
 
 	| Call SC {
@@ -413,7 +422,10 @@ Exp: Exp BINOPAS Exp {
 		else if (tables->getVariable($1.str) != NULL) {
 			$$.type = stringToType((tables->getVariable($1.str))->getType());
 			// Allocate register
-			$$.reg = loadToRegister(tables->getVariable($1.str));
+			// no allocation if we copy structs
+			if (tables->getStruct((tables->getVariable($1.str))->getType()) == NULL) {
+				$$.reg = loadToRegister(tables->getVariable($1.str));
+			}
 		}
 		else {
 			// Not defined ...
@@ -574,6 +586,7 @@ int main() {
 	tables->existsMain();
 	delete tables;
 	delete reg_alloc;
+	print_data_buffer;
 	print_code_buffer;
 	return 0;
 }
@@ -599,7 +612,6 @@ void CheckCorrectTypes(string type1, string id2, string type2) {
 			// This is a function. Treat it as a function
 			type2 = (tables->getFunction(id2))->getType();
 		}
-
 		if (!typesEqual(type1, type2)) {
 			errorMismatch(tables->getLine());
 			exit(0);
