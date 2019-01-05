@@ -16,7 +16,6 @@ int yylex();
 void yyerror(const char *);
 symbolTable* tables = NULL;
 void CheckCorrectTypes(string _type1, string id2, string _type2);
-register_type ArithmeticOp(StackType s1, StackType s3, arithmetic_op op);
 
 %}
 
@@ -243,7 +242,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 		} else {
 			CheckCorrectTypes((tables->getVariable($1.str))->getType(), $3.str, typeToString($3.type));
 		}
-		assignToVar($3.reg);
+		assignToVar(tables->getVariable($1.str), $3);
 	}
 
 	| ID PERIOD ID ASSIGN Exp SC {
@@ -393,7 +392,7 @@ Exp: Exp BINOPAS Exp {
 	} else {
 		$$.type = types_Byte;
 	}
-	$$.reg = ArithmeticOp($1, $3, $2.op);
+	$$.reg = arithmetic_op($1, $3, $2.op);
 
 }	| Exp BINOPMD Exp {
 		if (($1.type != types_Int && $1.type != types_Byte) || ($3.type != types_Int && $3.type != types_Byte)) {
@@ -408,7 +407,7 @@ Exp: Exp BINOPAS Exp {
 		}
 		$$.lineno = $1.lineno;
 		checkDivisionByZero($3.reg);
-		$$.reg = ArithmeticOp($1, $3, $2.op);
+		$$.reg = arithmetic_op($1, $3, $2.op);
 	}
 
 	| ID {
@@ -613,28 +612,4 @@ void CheckCorrectTypes(string type1, string id2, string type2) {
 			errorMismatch(tables->getLine());
 			exit(0);
 		}
-}
-
-register_type ArithmeticOp(StackType s1, StackType s3, arithmetic_op op) {
-	register_type reg1 = s1.reg;
-	register_type reg3 = s3.reg;
-	string reg1_str = s1.str;
-	string reg3_str = s3.str;
-
-	// MAX TODO : check for struct types later too....
-
-	if (reg1 == no_reg) {
-		reg1 = loadImmediateToRegister(reg1_str);
-	}
-	if (reg3 == no_reg) {
-		reg3 = loadImmediateToRegister(reg3_str);
-	}
-
-	if (s1.type == types_Byte || s3.type == types_Byte) {
-		arithmetic_op_between_regs(reg1, reg3, op, true);
-		return reg1;
-	}
-
-	arithmetic_op_between_regs(reg1, reg3, op);
-	return reg1;
 }

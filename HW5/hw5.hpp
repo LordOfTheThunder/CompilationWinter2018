@@ -16,6 +16,8 @@
 #define emitData(s) CodeBuffer::instance().emitData(s)
 #define print_code_buffer CodeBuffer::instance().printCodeBuffer()
 
+register_type loadImmediateToRegister(string num);
+
 string register_type_to_str(register_type type) {
     switch (type) {
         case t0:
@@ -126,24 +128,52 @@ void allocateVar(register_type reg = no_reg) {
     reg_alloc->freeRegister(reg);
 }
 
-void assignToVar(register_type to_assign) {
-	register_type reg = reg_alloc->allocateRegister();
-	// MAX TODO: do assignment code
-	reg_alloc->freeRegister(reg);
+void assignToVar(VariableEntry* var_entry, StackType st) {
+    stringstream s;
+    int offset = var_entry->getWordOffset();
+    register_type reg = st.reg;
+    if (reg == no_reg) {
+        reg = loadImmediateToRegister(st.str);
+    }
+    s << "sw " << register_type_to_str(reg) << ", " << -offset << "($fp)";
+    emit(s.str());
+    reg_alloc->freeRegister(reg);
 }
 
-void arithmetic_op_between_regs(register_type first, register_type second, arithmetic_op op, bool truncate_result = false) {
+register_type arithmetic_op(StackType s1, StackType s3, arithmetic_op op) {
     #ifdef DEBUG_API
-        cout << "-API- Running arithmetic_op_between_regs" << endl;
+        cout << "-API- Running arithmetic_op" << endl;
     #endif
+
+    register_type reg1 = s1.reg;
+	register_type reg3 = s3.reg;
+	string reg1_str = s1.str;
+	string reg3_str = s3.str;
+
+	// MAX TODO : check for struct types later too....
+
+	if (reg1 == no_reg) {
+		reg1 = loadImmediateToRegister(reg1_str);
+	}
+	if (reg3 == no_reg) {
+		reg3 = loadImmediateToRegister(reg3_str);
+	}
+
+    bool truncate_result = false;
+    if (s1.type == types_Byte || s3.type == types_Byte) {
+		truncate_result = true;
+	}
+
     string op_str = op_to_string(op);
     stringstream s;
-    s << op_str << " " << register_type_to_str(first) << ", " << register_type_to_str(first) << ", " << register_type_to_str(second);
+    s << op_str << " " << register_type_to_str(reg1) << ", " << register_type_to_str(reg1) << ", " << register_type_to_str(reg3);
     if (truncate_result) {
-        s << endl << "and " << register_type_to_str(first) << ", " << "255";
+        s << endl << "and " << register_type_to_str(reg1) << ", " << "255";
     }
     emit(s.str());
-    reg_alloc->freeRegister(second);
+    reg_alloc->freeRegister(reg3);
+
+    return reg1;
 }
 
 register_type loadToRegister(VariableEntry* var_entry) {
