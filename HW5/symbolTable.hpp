@@ -270,7 +270,7 @@ public:
     int getLine(){return this->lineno;}
     int countSize(vector<varPair>& types);
     int getVariableSize(string& type);
-    int getStuckMemberWordOffset(string& structId, string& memId){
+    int getStructMemberWordOffset(string& structId, string& memId){
         int base = getVariable(structId)->getWordOffset();
         int offset = getStruct(structId)->getMemberWordOffset(memId);
         return base + offset;
