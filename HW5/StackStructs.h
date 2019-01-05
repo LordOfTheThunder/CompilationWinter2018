@@ -100,6 +100,9 @@ static bool typesEqual(string type1, string type2) {
 }
 
 struct StackType {
+	// For back-patching "+_+
+	vector<int> true_list;
+	vector<int> false_list;
 	// For error reports
 	int lineno;
 	// Information in the stack
