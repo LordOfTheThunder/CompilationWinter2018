@@ -295,12 +295,18 @@ Statement: StartScope LBRACE Statements RBRACE {
 		tables->checkReturn(typeToString($2.type), $$.lineno);
 	}
 
-	| If_Scope %prec IF {
-
+	| If_Scope MMarker %prec IF {
+        BPATCH($1.getNextList(), $2.str);
+        BPATCH($1.getFalseList(), $2.str);
+        $$.getNextList() = $1.getFalseList();
+        $$.getBreakList() = $1.getBreakList();
 	}
 
-	| If_Scope ElseScope {
-
+	| If_Scope MMarker ElseScope MMarker {
+        BPATCH($1.getNextList(), $4.str);
+        BPATCH($1.getFalseList(), $2.str);
+        $$.getNextList() = MERGE($1.getNextList(), $3.getNextList());
+        $$.getBreakList() = MERGE($1.getBreakList(), $3.getBreakList());
 	}
 
 	| StartWhileScope WHILE LPAREN Exp RPAREN Statement {
@@ -319,7 +325,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 		tables->isContinueAllowed($1.lineno);
 	}
 
-If_Scope: StartScope IF LPAREN Exp RPAREN Statement {
+If_Scope: StartScope IF LPAREN Exp RPAREN MMarker Statement NMarker{
 	tables->popScope();
 	$$.lineno = $2.lineno;
 	tables->setLine($2.lineno);
@@ -327,6 +333,11 @@ If_Scope: StartScope IF LPAREN Exp RPAREN Statement {
 		errorMismatch($2.lineno);
 		exit(0);
 	}
+
+    BPATCH($4.getTrueList(), $6.str);
+    $$.getNextList() = MERGE($7.getNextList(), $8.getNextList());
+    $$.getFalseList() = $4.getFalseList();
+    $$.getBreakList() = $7.getBreakList();
 }
 
 ElseScope: ELSE StartScope Statement {
@@ -509,16 +520,22 @@ Exp: Exp BINOPAS Exp {
 		tables->setLine($$.lineno);
 	}
 
-	| TRUE {
+	| NMarker TRUE {
 		$$.str = $1.str;
 		$$.type = types_Bool;
 		$$.lineno = $1.lineno;
+
+        $$.getTrueList() = $1.getNextList();
+        $$.reg = no_reg;
 	}
 
-	| FALSE {
+	| NMarker FALSE {
 		$$.str = $1.str;
 		$$.type = types_Bool;
 		$$.lineno = $1.lineno;
+
+		$$.getFalseList() = $1.getNextList();
+        $$.reg = no_reg;
 	}
 
 	| NOT Exp {
@@ -529,9 +546,13 @@ Exp: Exp BINOPAS Exp {
 		}
 		$$.type = types_Bool;
 		$$.lineno = $2.lineno;
+
+		$$.getTrueList() = $2.getFalseList();
+		$$.getFalseList() = $2.getTrueList();
+        $$.reg = no_reg;
 	}
 
-	| Exp AND Exp {
+	| Exp AND MMarker Exp {
 		if ($1.type != types_Bool) {
 			// And can only be used on booleans
 			errorMismatch($1.lineno);
@@ -544,6 +565,10 @@ Exp: Exp BINOPAS Exp {
 		}
 		$$.lineno = $1.lineno;
 		$$.type = types_Bool;
+
+		BPATCH($1.getFalseList(), $3.str);
+		$$.getTrueList() = MERGE($1.getTrueList(), $3.getTrueList());
+		$$.reg = no_reg;
 	}
 
 	| Exp OR Exp {
@@ -575,6 +600,17 @@ Exp: Exp BINOPAS Exp {
 		$$.type = types_Bool;
 		$$.lineno = $1.lineno;
 	}
+
+MMarker: {
+	$$ = StackType();
+	$$.str = GEN_LABEL();
+}
+
+NMarker: {
+	$$ = StackType();
+	$$.getNextList() = MAKE_LIST(emit("j "));
+}
+
 
 %%
 

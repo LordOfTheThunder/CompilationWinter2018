@@ -103,6 +103,8 @@ struct StackType {
 	// For back-patching "+_+
 	vector<int> true_list;
 	vector<int> false_list;
+	vector<int> next_list;
+	vector<int> break_list;
 	// For error reports
 	int lineno;
 	// Information in the stack
@@ -115,6 +117,11 @@ struct StackType {
 	StackType(types type = types_Undefined, string str = "") : type(type), str(str), lineno(1),
 		func_info(), struct_type(""), reg(no_reg) {
 	}
+
+	vector<int>& getNextList(){return this->next_list;}
+	vector<int>& getFalseList(){return this->false_list;}
+	vector<int>& getTrueList(){return this->true_list;}
+	vector<int>& getBreakList(){return this->break_list;}
 };
 
 #define YYSTYPE StackType
