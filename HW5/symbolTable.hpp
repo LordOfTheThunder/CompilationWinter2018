@@ -7,7 +7,13 @@
 
 #define DEBUGGING 0
 #define emit(s) CodeBuffer::instance().emit(s)
+#define GEN_LABEL() CodeBuffer::instance().genLabelemit()
+#define BPATCH(list, address) CodeBuffer::instance().bpatch(list, address)
+#define MAKE_LIST(litem) CodeBuffer::instance().makelist(litem)
+#define MERGE(l1, l2) CodeBuffer::instance().merge(l1, l2)
+
 #define WORD_SIZE 4
+
 
 class TableEntry{
 
