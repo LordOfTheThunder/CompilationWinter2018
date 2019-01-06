@@ -575,19 +575,24 @@ Exp: Exp BINOPAS Exp {
 		$$.reg = no_reg;
 	}
 
-	| Exp OR Exp {
+	| Exp OR MMarker Exp {
 		if ($1.type != types_Bool) {
 			// And can only be used on booleans
 			errorMismatch($1.lineno);
 			exit(0);
 		}
-		if ($3.type != types_Bool) {
+		if ($4.type != types_Bool) {
 			// And can only be used on booleans
-			errorMismatch($3.lineno);
+			errorMismatch($4.lineno);
 			exit(0);
 		}
 		$$.lineno = $1.lineno;
 		$$.type = types_Bool;
+
+		BPATCH($1.getFalseList(), $3.str);
+        $$.getTrueList() = MERGE($1.getTrueList(), $4.getTrueList());
+        $$.getFalseList() = $4.getFalseList();
+        $$.reg = no_reg;
 	}
 
 	| Exp RELOP Exp {
