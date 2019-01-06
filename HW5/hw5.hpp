@@ -16,7 +16,7 @@
 #define emitData(s) CodeBuffer::instance().emitData(s)
 #define print_code_buffer CodeBuffer::instance().printCodeBuffer()
 #define print_data_buffer CodeBuffer::instance().printDataBuffer()
-
+symbolTable* tables = NULL;
 register_type loadImmediateToRegister(string num);
 
 string register_type_to_str(register_type type) {
@@ -259,6 +259,127 @@ void checkDivisionByZero(register_type reg) {
     stringstream s;
     s << "beq " << register_type_to_str(reg) << ", 0, DivisionByZero";
     emit(s.str());
+}
+
+void defFunction(string func_name) {
+    emit("__" + func_name + ":");
+    emit("move $fp, $sp");
+}
+
+bool isImmediate(string name) {
+    if (name == "true" || name == "false") {
+        return true;
+    }
+    if (name[0] <= '9' && name[0] >= '0') {
+        return true;
+    }
+    return false;
+}
+
+void addVarToFunc(string var_name) {
+    VariableEntry* var_entry = tables->getVariable(var_name);
+    int offset = var_entry->getWordOffset();
+    emit("subu $sp, $sp, 4");
+    register_type reg = reg_alloc->allocateRegister();
+    stringstream s;
+    s << "lw " << register_type_to_str(reg) << ", " << -offset << "($fp)" << endl;
+    s << "sw " << register_type_to_str(reg) << ", " << "($sp)";
+    emit(s.str());
+    reg_alloc->freeRegister(reg);
+}
+
+void addImmediateToFunc(string imm_value) {
+    emit("subu $sp, $sp, 4");
+    register_type reg = reg_alloc->allocateRegister();
+    stringstream s;
+    if (imm_value == "true") {
+        imm_value = "1";
+    }
+    else if (imm_value == "false") {
+        imm_value = "0";
+    }
+    else if (imm_value[imm_value.size() - 1] == 'b') {
+        imm_value = imm_value.substr(0, imm_value.size() - 1);
+    }
+    s << "li " << register_type_to_str(reg) << ", " << imm_value << endl;
+    s << "sw " << register_type_to_str(reg) << ", " << "($sp)";
+    emit(s.str());
+    reg_alloc->freeRegister(reg);
+}
+
+void addStructTypeToFunc(string var_name) {
+    VariableEntry* var_entry = tables->getVariable(var_name);
+    string type = var_entry->getType();
+    StructEntry* struct_entry = tables->getStruct(type);
+    int offset = var_entry->getWordOffset();
+
+    register_type reg = reg_alloc->allocateRegister();
+    stringstream s;
+    emit("subu $sp, $sp, " + 4 * struct_entry->size());
+    for (int i = 1; i <= struct_entry->size(); ++i) {
+        int curr_write_loc = 4 * (struct_entry->size() - i);
+        s << "lw " << register_type_to_str(reg) << ", " << -offset << "($fp)" << endl;
+        s << "sw " << register_type_to_str(reg) << ", " << -curr_write_loc << "($sp)";
+        if (i < struct_entry->size()) {
+            s << endl;
+        }
+        offset += 4 * i;
+    }
+    emit(s.str());
+    reg_alloc->freeRegister(reg);
+}
+
+int calculateParamSize(StackType st) {
+    int size = 0;
+    vector<varPair> params = st.func_info;
+    for (int i = 0; i < params.size(); ++i) {
+        if (st.struct_type != "") {
+            // we have a struct type
+            VariableEntry* var_entry = tables->getVariable(params[i].id);
+            string type = var_entry->getType();
+            StructEntry* struct_entry = tables->getStruct(type);
+            size += 4 * struct_entry->size();
+        } else {
+            size += 4;
+        }
+    }
+    return size;
+}
+
+void returnFromFunc(StackType st) {
+    int size = calculateParamSize(st);
+    if (size > 0) {
+        stringstream s;
+        s << "addu $sp, $sp, " << size;
+        emit(s.str());
+    }
+    emit("lw $ra, ($sp)");
+    emit("lw $fp, 4($sp)");
+    emit("addu $sp, $sp, 8");
+    emit("move $sp, $fp");
+}
+
+void callFunction(string func_name, StackType st = StackType()) {
+    #ifdef DEBUG_API
+        cout << "-API- Running callFunction" << endl;
+    #endif
+    vector<varPair> params = st.func_info;
+    emit("subu $sp, $sp, 8");
+    emit("sw $ra, ($sp)");
+    emit("sw $fp, -4($sp)");
+    for (int i = 0; i < params.size(); ++i) {
+        if (st.struct_type != "") {
+            // we have a struct type
+        } else if (isImmediate(params[i].id)) {
+            // we have an integer, a byte or a boolean as immediate
+            addImmediateToFunc(params[i].id);
+        } else {
+            // we have variable type
+            addVarToFunc(params[i].id);
+        }
+    }
+    emit("jal __" + func_name);
+    returnFromFunc(st);
 }
 
 void init_text() {

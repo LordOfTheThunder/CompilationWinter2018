@@ -14,7 +14,6 @@ using namespace output;
 
 int yylex();
 void yyerror(const char *);
-symbolTable* tables = NULL;
 void CheckCorrectTypes(string _type1, string id2, string _type2);
 
 %}
@@ -63,12 +62,14 @@ Funcs: FuncDecl Funcs {
 
 FuncDecl: FuncDecl1 FuncDecl2 {
 	tables->popScope();
+	emit("jr $ra");
 }
 
 FuncDecl1: RetType ID LPAREN Formals RPAREN {
 	tables->addFunction(typeToString($1.type), $2.str, $4.func_info, $1.lineno);
 	$$.type = $1.type;
 	$$.lineno = $1.lineno;
+	defFunction($2.str);
 }
 
 FuncDecl2: LBRACE Statements RBRACE {
@@ -338,11 +339,13 @@ ElseScope: ELSE StartScope Statement {
 Call: ID LPAREN ExpList RPAREN {
 	$$.str = $1.str;
 	tables->callFunction($1.str, $3.func_info, $1.lineno);
+	callFunction($1.str, $3);
 }
 	| ID LPAREN RPAREN {
 		$$.str = $1.str;
 		vector<varPair> t;
 		tables->callFunction($1.str, t, $1.lineno);
+		callFunction($1.str);
 	}
 
 ExpList: Exp {
