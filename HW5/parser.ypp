@@ -298,7 +298,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 	| If_Scope MMarker %prec IF {
         BPATCH($1.getNextList(), $2.str);
         BPATCH($1.getFalseList(), $2.str);
-        $$.getNextList() = $1.getFalseList();
+        $$.getNextList() = $1.getNextList();
         $$.getBreakList() = $1.getBreakList();
 	}
 
@@ -335,7 +335,7 @@ If_Scope: StartScope IF LPAREN Exp RPAREN MMarker Statement NMarker{
 	}
 
     BPATCH($4.getTrueList(), $6.str);
-    $$.getNextList() = MERGE($7.getNextList(), $8.getNextList());
+    $$.getNextList() = $8.getNextList();
     $$.getFalseList() = $4.getFalseList();
     $$.getBreakList() = $7.getBreakList();
 }
@@ -558,16 +558,17 @@ Exp: Exp BINOPAS Exp {
 			errorMismatch($1.lineno);
 			exit(0);
 		}
-		if ($3.type != types_Bool) {
+		if ($4.type != types_Bool) {
 			// And can only be used on booleans
-			errorMismatch($3.lineno);
+			errorMismatch($4.lineno);
 			exit(0);
 		}
 		$$.lineno = $1.lineno;
 		$$.type = types_Bool;
 
-		BPATCH($1.getFalseList(), $3.str);
-		$$.getTrueList() = MERGE($1.getTrueList(), $3.getTrueList());
+		BPATCH($1.getTrueList(), $3.str);
+		$$.getFalseList() = MERGE($1.getFalseList(), $4.getFalseList());
+		$$.getTrueList() = $4.getTrueList();
 		$$.reg = no_reg;
 	}
 
