@@ -280,7 +280,6 @@ register_type loadStructMemberToRegister(string struct_name, string member) {
     int offset = tables->getStructMemberWordOffset(struct_name, member);
     s << "lw " << register_type_to_str(reg) << ", " << -offset << "($fp)";
     emit(s.str());
-
     return reg;
 }
 
@@ -305,9 +304,21 @@ bool isImmediate(string name) {
     return false;
 }
 
+int getOffsetFromStructVar(string var_name) {
+    string struct_type = var_name.substr(0, var_name.find("."));
+    string member = var_name.substr(var_name.find(".") + 1, var_name.size() - var_name.find("."));
+    return tables->getStructMemberWordOffset(struct_type, member);
+}
+
 void addVarToFunc(string var_name) {
     VariableEntry* var_entry = tables->getVariable(var_name);
-    int offset = var_entry->getWordOffset();
+    int offset;
+    if (var_entry == NULL) {
+        // We probably have a variable of a struct
+        offset = getOffsetFromStructVar(var_name);
+    } else {
+        offset = var_entry->getWordOffset();
+    }
     emit("subu $sp, $sp, 4");
     register_type reg = reg_alloc->allocateRegister();
     stringstream s;
@@ -361,8 +372,10 @@ void addImmediateToFunc(string imm_value) {
 
 void addStructTypeToFunc(string var_name) {
     VariableEntry* var_entry = tables->getVariable(var_name);
+    assert(var_entry != NULL);
     string type = var_entry->getType();
     StructEntry* struct_entry = tables->getStruct(type);
+    assert(struct_entry != NULL);
     int offset = var_entry->getWordOffset();
 
     register_type reg = reg_alloc->allocateRegister();
@@ -388,8 +401,14 @@ int calculateParamSize(StackType st) {
         if (st.struct_type != "") {
             // we have a struct type
             VariableEntry* var_entry = tables->getVariable(params[i].id);
+            if (var_entry == NULL) {
+                // we have struct variable such as t.x
+                size += 4;
+                continue;
+            }
             string type = var_entry->getType();
             StructEntry* struct_entry = tables->getStruct(type);
+            assert(struct_entry != NULL);
             size += 4 * struct_entry->size();
         } else {
             size += 4;
@@ -444,7 +463,7 @@ void callFunction(string func_name, StackType st = StackType()) {
     }
 
     for (int i = 0; i < params.size(); ++i) {
-        if (st.struct_type != "") {
+        if (isStructType(params[i].type)) {
             // we have a struct type
             addStructTypeToFunc(params[i].id);
         } else if (isImmediate(params[i].id)) {

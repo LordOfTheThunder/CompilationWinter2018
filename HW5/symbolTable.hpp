@@ -61,7 +61,6 @@ public:
             types.push_back((*it).type);
             names.push_back((*it).id);
         }
-        cout << "struct id is: " << this->id << endl;
     }
 
     int getMemberWordOffset(string& id){

@@ -92,6 +92,10 @@ static types stringToType(string type){
 	return types_Undefined;
 }
 
+static bool isStructType(string type) {
+    return (stringToType(type) == types_Undefined);
+}
+
 static bool typesEqual(string type1, string type2) {
 	if (type1 == typeToString(types_Int) && type2 == typeToString(types_Byte)) {
 		return true;
