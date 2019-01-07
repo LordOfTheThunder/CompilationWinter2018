@@ -484,7 +484,8 @@ Exp: Exp BINOPAS Exp {
 		}
 		$$.type = stringToType(struct_entry->getTypeOfVar($3.str));
 		$$.str = string($1.str + "." + $3.str);
-		// Allocate register
+		// TODO: Allocate register
+		loadStructMemberToRegister($1.str, $3.str);
 	}
 
 	| Call {
@@ -503,6 +504,7 @@ Exp: Exp BINOPAS Exp {
 		tables->setLine($$.lineno);
 		$$.type = types_Int;
 		$$.lineno = $1.lineno;
+		$$.reg = loadImmediateToRegister($1.str);
 	}
 
 	| NUM B {
@@ -515,6 +517,7 @@ Exp: Exp BINOPAS Exp {
 		}
 		$$.type = types_Byte;
 		$$.lineno = $1.lineno;
+		$$.reg = loadImmediateToRegister($1.str);
 	}
 
 	| STRING {

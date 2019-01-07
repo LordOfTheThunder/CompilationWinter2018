@@ -255,6 +255,16 @@ register_type loadImmediateToRegister(string num) {
     return reg;
 }
 
+register_type loadStructMemberToRegister(string struct_name, string member) {
+    stringstream s;
+    register_type reg = reg_alloc->allocateRegister();
+    int offset = tables->getStructMemberWordOffset(struct_name, member);
+    s << "lw " << register_type_to_str(reg) << ", " << -offset << "($fp)";
+    emit(s.str());
+
+    return reg;
+}
+
 void checkDivisionByZero(register_type reg) {
     stringstream s;
     s << "beq " << register_type_to_str(reg) << ", 0, TerminateZero";
@@ -382,14 +392,39 @@ void returnFromFunc(StackType st) {
     emit("move $sp, $fp");
 }
 
+register_type createString(string str) {
+    register_type reg = reg_alloc->allocateRegister();
+    static int counter = 0;
+    stringstream s;
+    s << "string_label" << counter++;
+    string str_label = s.str();
+    s << ": .asciiz " << str;
+    emitData(s.str());
+    emit("la " + register_type_to_str(reg) + ", " + str_label);
+    return reg;
+}
+
 void callFunction(string func_name, StackType st = StackType()) {
     #ifdef DEBUG_API
         cout << "-API- Running callFunction" << endl;
     #endif
+
     vector<varPair> params = st.func_info;
     emit("subu $sp, $sp, 8");
     emit("sw $ra, ($sp)");
     emit("sw $fp, -4($sp)");
+
+    if (func_name == "print") {
+        // Special case for print function
+        register_type reg = createString(st.str);
+        st.reg = reg;
+        allocateVar(st);
+        reg_alloc->freeRegister(reg);
+        emit("jal __" + func_name);
+        returnFromFunc(st);
+        return;
+    }
+
     for (int i = 0; i < params.size(); ++i) {
         if (st.struct_type != "") {
             // we have a struct type
