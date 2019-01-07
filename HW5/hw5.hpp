@@ -412,7 +412,7 @@ void callFunction(string func_name, StackType st = StackType()) {
     vector<varPair> params = st.func_info;
     emit("subu $sp, $sp, 8");
     emit("sw $ra, ($sp)");
-    emit("sw $fp, -4($sp)");
+    emit("sw $fp, 4($sp)");
 
     if (func_name == "print") {
         // Special case for print function
@@ -428,6 +428,7 @@ void callFunction(string func_name, StackType st = StackType()) {
     for (int i = 0; i < params.size(); ++i) {
         if (st.struct_type != "") {
             // we have a struct type
+            addStructTypeToFunc(params[i].id);
         } else if (isImmediate(params[i].id)) {
             // we have an integer, a byte or a boolean as immediate
             addImmediateToFunc(params[i].id);

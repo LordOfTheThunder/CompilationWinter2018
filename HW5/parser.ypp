@@ -504,7 +504,6 @@ Exp: Exp BINOPAS Exp {
 		tables->setLine($$.lineno);
 		$$.type = types_Int;
 		$$.lineno = $1.lineno;
-		$$.reg = loadImmediateToRegister($1.str);
 	}
 
 	| NUM B {
@@ -517,7 +516,6 @@ Exp: Exp BINOPAS Exp {
 		}
 		$$.type = types_Byte;
 		$$.lineno = $1.lineno;
-		$$.reg = loadImmediateToRegister($1.str);
 	}
 
 	| STRING {
