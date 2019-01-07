@@ -10,8 +10,8 @@
 #include <sstream>
 
 
-#define DEBUG
-#define DEBUG_API
+//#define DEBUG
+//#define DEBUG_API
 #define emit(s) CodeBuffer::instance().emit(s)
 #define emitData(s) CodeBuffer::instance().emitData(s)
 #define print_code_buffer CodeBuffer::instance().printCodeBuffer()
@@ -288,17 +288,40 @@ void addVarToFunc(string var_name) {
     reg_alloc->freeRegister(reg);
 }
 
+string boolImmediateToString(string imm_value) {
+    // get right output in case imm_value is bool
+    if (imm_value == "true") {
+        return "1";
+    }
+    else if (imm_value == "false") {
+        return "0";
+    }
+    return imm_value;
+}
+
+void returnValueFromFunction(string name) {
+    if (isImmediate(name)) {
+        // we return immediate
+        // If number : returns the number as string
+        // If bool, returns 0 or 1
+        emit("li $v0, " + boolImmediateToString(name));
+        return;
+    }
+    // We return a value.
+    stringstream s;
+    VariableEntry* var_entry = tables->getVariable(name);
+    assert(var_entry != NULL);
+    int offset = var_entry->getWordOffset();
+    s << "lw $v0, " << -offset << "($fp)";
+    emit(s.str());
+}
+
 void addImmediateToFunc(string imm_value) {
     emit("subu $sp, $sp, 4");
     register_type reg = reg_alloc->allocateRegister();
     stringstream s;
-    if (imm_value == "true") {
-        imm_value = "1";
-    }
-    else if (imm_value == "false") {
-        imm_value = "0";
-    }
-    else if (imm_value[imm_value.size() - 1] == 'b') {
+    imm_value = boolImmediateToString(imm_value);
+    if (imm_value[imm_value.size() - 1] == 'b') {
         imm_value = imm_value.substr(0, imm_value.size() - 1);
     }
     s << "li " << register_type_to_str(reg) << ", " << imm_value << endl;

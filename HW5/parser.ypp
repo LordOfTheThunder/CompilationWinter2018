@@ -294,6 +294,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 		$$.lineno = $1.lineno;
 		tables->setLine($$.lineno);
 		tables->checkReturn(typeToString($2.type), $$.lineno);
+		returnValueFromFunction($2.str);
 	}
 
 	| If_Scope MMarker %prec IF {

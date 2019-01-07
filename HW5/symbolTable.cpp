@@ -18,8 +18,9 @@ symbolTable::~symbolTable() {
 }
 
 Scope::~Scope(){
+    // SILENCE! I DON'T NEED YOU ANYMORE!
+    /*
     output::endScope();
-
     for (vector<TableEntry*>::iterator it = this->entries.begin(); it != this->entries.end(); ++it){
         StructEntry * res = dynamic_cast<StructEntry*>(*it);
         if (!res){
@@ -32,7 +33,7 @@ Scope::~Scope(){
             (*it)->print();
         }
     }
-
+    */
     clearVectorOfPointers(this->entries);
 }
 
