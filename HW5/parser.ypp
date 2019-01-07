@@ -62,6 +62,7 @@ Funcs: FuncDecl Funcs {
 
 FuncDecl: FuncDecl1 FuncDecl2 {
 	tables->popScope();
+    emit("move $sp, $fp");
 	emit("jr $ra");
 }
 

@@ -389,7 +389,6 @@ void returnFromFunc(StackType st) {
     emit("lw $ra, ($sp)");
     emit("lw $fp, 4($sp)");
     emit("addu $sp, $sp, 8");
-    emit("move $sp, $fp");
 }
 
 register_type createString(string str) {
