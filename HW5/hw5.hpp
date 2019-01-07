@@ -257,7 +257,7 @@ register_type loadImmediateToRegister(string num) {
 
 void checkDivisionByZero(register_type reg) {
     stringstream s;
-    s << "beq " << register_type_to_str(reg) << ", 0, DivisionByZero";
+    s << "beq " << register_type_to_str(reg) << ", 0, TerminateZero";
     emit(s.str());
 }
 
@@ -425,6 +425,10 @@ void init_text() {
     emit("syscall");
     emit("jr $ra");
     emitData("DivisionByZero: .asciiz \"Error division by zero\\n\"");
+    emit("j ExitCode");
+    emit("TerminateZero: la $a0, DivisionByZero");
+    emit("li $v0, 4");
+    emit("syscall");
     emit("j ExitCode");
 }
 
