@@ -160,6 +160,25 @@ void assignToStruct(StructEntry* st_type) {
     emit(s.str());
 }
 
+void logicalRelops(const string& rop_str, register_type t1, register_type t2, vector<int>& true_list, vector<int>& false_list){
+    string rop = "";
+    if(rop_str == "=="){
+        rop = "beq ";
+    } else if(rop_str == "!="){
+        rop = "bne ";
+    } else if(rop_str == "<"){
+        rop = "blt ";
+    } else if(rop_str == ">"){
+        rop = "bgt ";
+    } else if(rop_str == "<="){
+        rop = "ble ";
+    } else {
+        rop = "bge ";
+    }
+    true_list = MAKE_LIST(emit(rop + register_type_to_str(t1) + ", " + register_type_to_str(t2) + ", " ));
+    false_list = MAKE_LIST(emit("j "));
+}
+
 void allocateStruct(StructEntry* st_type, bool assign = false) {
     #ifdef DEBUG_API
         cout << "-API- Running allocateStruct" << endl;

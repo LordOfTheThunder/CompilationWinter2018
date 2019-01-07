@@ -164,6 +164,8 @@ StructMem: Type ID SC {
 Statements: Statement {
 	$$.lineno = $1.lineno;
 	tables->setLine($$.lineno);
+
+	$$ = $1;
 }
 	| Statements Statement {
 		$$.lineno = $2.lineno;
@@ -311,21 +313,26 @@ Statement: StartScope LBRACE Statements RBRACE {
         $$.getNextList() = MERGE($1.getNextList(), $3.getNextList());
         $$.getBreakList() = MERGE($1.getBreakList(), $3.getBreakList());
 	}
-
-	| StartWhileScope WHILE LPAREN Exp RPAREN Statement {
+    //      1           2     3       4     5    6      7         8        9
+	| StartWhileScope WHILE LPAREN MMarker Exp RPAREN MMarker Statement NMarker {
 		tables->popScope();
-		if ($4.type != types_Bool) {
+		if ($5.type != types_Bool) {
 			errorMismatch($2.lineno);
 			exit(0);
 		}
+		BPATCH($5.getTrueList(), $7.str);
+		BPATCH($9.getNextList(), $4.str);
+		$$.getNextList() = MERGE($5.getFalseList(), $8.getBreakList());
 	}
 
-	| BREAK SC {
-		tables->isBreakAllowed($1.lineno);
+	| NMarker BREAK SC {
+		tables->isBreakAllowed($2.lineno);
+		$$.getBreakList() = $1.getNextList();
 	}
 
-	| CONTINUE SC {
+	| NMarker CONTINUE SC {
 		tables->isContinueAllowed($1.lineno);
+		$$.getNextList() = $1.getNextList();
 	}
 
 If_Scope: StartScope IF LPAREN Exp RPAREN MMarker Statement NMarker{
@@ -611,6 +618,26 @@ Exp: Exp BINOPAS Exp {
 		}
 		$$.type = types_Bool;
 		$$.lineno = $1.lineno;
+
+		int r1 = 0;
+		int r2 = 0;
+		if ($1.reg == no_reg) {
+            $1.reg = loadImmediateToRegister($1.str);
+            r1 = 1;
+        }
+        if ($3.reg == no_reg) {
+            $3.reg = loadImmediateToRegister($3.str);
+            r2 = 1;
+        }
+
+        logicalRelops($2.str, $1.reg, $3.reg, $$.getTrueList(), $$.getFalseList());
+        if (r1){
+            reg_alloc->freeRegister($1.reg);
+        }
+        if (r2){
+            reg_alloc->freeRegister($3.reg);
+        }
+        $$.reg = no_reg;
 	}
 
 MMarker: {
