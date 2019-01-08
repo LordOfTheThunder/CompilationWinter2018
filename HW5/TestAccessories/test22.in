@@ -1,0 +1,21 @@
+struct potato {
+	int x;
+	int y;
+	byte t;
+};
+void maxTestsArithmeticsBetweenVarStruct() {
+	struct potato t;
+	t.x = 3;
+	t.y = 25;
+	t.t = 13b;
+	int x = t.x + t.y - t.t / 3;
+	printi(x);
+	print("\n");
+	x = x - t.x + t.y * t.t;
+	printi(x);
+}
+
+void main() {
+     maxTestsArithmeticsBetweenVarStruct();
+     print("\nI hate this course\n");
+}
