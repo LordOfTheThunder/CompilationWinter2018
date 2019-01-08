@@ -1,0 +1,22 @@
+struct potato {
+	int x;
+	int y;
+	byte t;
+};
+void maxTestsAssignVarStruct() {
+	int x = 3;
+	struct potato t;
+	t.x = x;
+	t.y = 77;
+	x = t.t;
+	printi(t.x);
+	print("\n");
+	printi(t.y);
+	print("\n");
+	printi(x);
+}
+
+void main() {
+     maxTestsAssignVarStruct();
+     print("\nI hate this course\n");
+}

@@ -1,0 +1,26 @@
+struct potato {
+	int x;
+	int y;
+	byte t;
+};
+
+void maxTestsAssignStructMemToStructMem() {
+	struct potato t;
+	struct potato s;
+	t.x = 33;
+	t.y = 666;
+	t.t = 134b;
+	s.x = t.y;
+	s.y = t.t;
+	s.t = t.t;
+	printi(s.x);
+	print("\n");
+	printi(s.y);
+	print("\n");
+	printi(s.t);
+}
+
+void main() {
+     maxTestsAssignStructMemToStructMem();
+     print("\nI hate this course\n");
+}

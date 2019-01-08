@@ -1,0 +1,24 @@
+struct potato {
+	int x;
+	int y;
+	byte t;
+};
+
+void maxTestsAssignStructToStruct() {
+	struct potato t;
+	struct potato s;
+	t.x = 33;
+	t.y = 95;
+	t.t = 93b;
+	s = t;
+	printi(s.x);
+	print("\n");
+	printi(s.y);
+	print("\n");
+	printi(s.t);
+}
+
+void main() {
+     maxTestsAssignStructToStruct();
+     print("\nI hate this course\n");
+}
