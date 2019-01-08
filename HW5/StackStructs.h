@@ -19,6 +19,7 @@ enum types {
 
 enum register_type {
 	no_reg,
+    v0,
     t0,
     t1,
     t2,

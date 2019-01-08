@@ -294,6 +294,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 	| Call SC {
 		$$.lineno = $2.lineno;
 		tables->setLine($$.lineno);
+		$$.reg = v0;
 	}
 
 	| RETURN SC {
@@ -510,7 +511,7 @@ Exp: Exp BINOPAS Exp {
 		$$.type = stringToType(struct_entry->getTypeOfVar($3.str));
 		$$.str = string($1.str + "." + $3.str);
 		// TODO: Allocate register
-		loadStructMemberToRegister($1.str, $3.str);
+		$$.reg = loadStructMemberToRegister($1.str, $3.str);
 	}
 
 	| Call {
@@ -522,6 +523,7 @@ Exp: Exp BINOPAS Exp {
 			exit(0);
 		}
 		$$.type = stringToType(func_entry->getType());
+		$$.reg = v0;
 	}
 
 	| NUM {

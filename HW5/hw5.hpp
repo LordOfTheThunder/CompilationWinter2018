@@ -57,6 +57,8 @@ string register_type_to_str(register_type type) {
         return "$t8";
         case t9:
         return "$t9";
+        case v0:
+        return "$v0";
         default:
         return "";
     }
