@@ -448,7 +448,9 @@ Exp: Exp BINOPAS Exp {
 			$$.type = types_Byte;
 		}
 		$$.lineno = $1.lineno;
-		checkDivisionByZero($3.reg);
+		if ($2.op == div_op) {
+			checkDivisionByZero($3);
+		}
 		$$.reg = arithmetic_op($1, $3, $2.op);
 	}
 

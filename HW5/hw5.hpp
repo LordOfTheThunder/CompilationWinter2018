@@ -285,9 +285,12 @@ register_type loadStructMemberToRegister(string struct_name, string member) {
     return reg;
 }
 
-void checkDivisionByZero(register_type reg) {
+void checkDivisionByZero(StackType st) {
     stringstream s;
-    s << "beq " << register_type_to_str(reg) << ", 0, TerminateZero";
+    if (st.reg == no_reg) {
+        st.reg = loadImmediateToRegister(st.str);
+    }
+    s << "beq " << register_type_to_str(st.reg) << ", 0, TerminateZero";
     emit(s.str());
 }
 
