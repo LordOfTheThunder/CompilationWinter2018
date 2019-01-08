@@ -52,9 +52,10 @@ public:
     string type;
     string id;
     int lineno;
+    register_type reg;
 
     varPair(){}
-    varPair(string type, string id, int lineno = 0) : type(type), id(id), lineno(lineno) {}
+    varPair(string type, string id, int lineno = 0, register_type reg = no_reg) : type(type), id(id), lineno(lineno), reg(reg) {}
 
     bool operator==(const varPair & rhs) const {
         return ((this->type.compare(rhs.type)) == 0);

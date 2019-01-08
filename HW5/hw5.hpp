@@ -315,6 +315,12 @@ int getOffsetFromStructVar(string var_name) {
     return tables->getStructMemberWordOffset(struct_type, member);
 }
 
+void addRegisterToFunc(register_type reg) {
+    emit("subu $sp, $sp, 4");
+    emit("sw " + register_type_to_str(reg) + ", ($sp)");
+    reg_alloc->freeRegister(reg);
+}
+
 void addVarToFunc(string var_name) {
     VariableEntry* var_entry = tables->getVariable(var_name);
     int offset;
@@ -468,7 +474,10 @@ void callFunction(string func_name, StackType st = StackType()) {
     }
 
     for (int i = 0; i < params.size(); ++i) {
-        if (isStructType(params[i].type)) {
+        if (params[i].reg != no_reg) {
+            // We have some kind of binop/relop result saved in register
+            addRegisterToFunc(params[i].reg);
+        } else if (isStructType(params[i].type)) {
             // we have a struct type
             addStructTypeToFunc(params[i].id);
         } else if (isImmediate(params[i].id)) {
