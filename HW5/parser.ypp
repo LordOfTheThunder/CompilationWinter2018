@@ -169,7 +169,7 @@ Statements: Statement {
 	$$ = $1;
     }
 	| Statements MMarker Statement {
-		$$.lineno = $2.lineno;
+		$$.lineno = $3.lineno;
 		tables->setLine($$.lineno);
 
 		$$ = $3;
@@ -338,12 +338,12 @@ Statement: StartScope LBRACE Statements RBRACE {
 	}
 
 	| BREAK SC NMarker {
-		tables->isBreakAllowed($2.lineno); // TODO: which token's line?
+		tables->isBreakAllowed($1.lineno);
 		$$.getBreakList() = $3.getNextList();
 	}
 
 	| CONTINUE SC NMarker {
-		tables->isContinueAllowed($1.lineno); // TODO: which token's line?
+		tables->isContinueAllowed($1.lineno);
 		$$.getContinueList() = $3.getNextList();
 	}
 
@@ -365,7 +365,7 @@ If_Scope: StartScope IF LPAREN Exp RPAREN MMarker Statement {
 
 ElseScope: ELSE NMarker MMarker StartScope Statement {
 	tables->popScope();
-	$$.lineno = $3.lineno;
+	$$.lineno = $5.lineno;
 	tables->setLine($$.lineno);
 	$$.getBreakList() = $5.getBreakList();
 	$$.getContinueList() = $5.getContinueList();
@@ -551,18 +551,18 @@ Exp: Exp BINOPAS Exp {
 	}
 
 	| NMarker TRUE {
-		$$.str = $1.str;
+		$$.str = $2.str;
 		$$.type = types_Bool;
-		$$.lineno = $1.lineno;
+		$$.lineno = $2.lineno;
 
         $$.getTrueList() = $1.getNextList();
         $$.reg = no_reg;
 	}
 
 	| NMarker FALSE {
-		$$.str = $1.str;
+		$$.str = $2.str;
 		$$.type = types_Bool;
-		$$.lineno = $1.lineno;
+		$$.lineno = $2.lineno;
 
 		$$.getFalseList() = $1.getNextList();
         $$.reg = no_reg;
