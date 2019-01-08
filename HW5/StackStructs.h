@@ -104,11 +104,11 @@ static bool typesEqual(string type1, string type2) {
 }
 
 struct StackType {
-	// For back-patching "+_+
 	vector<int> true_list;
-	vector<int> false_list;
-	vector<int> next_list;
-	vector<int> break_list;
+	vector<int> continue_list;
+    vector<int> break_list;
+    vector<int> false_list;
+    vector<int> next_list;
 	// For error reports
 	int lineno;
 	// Information in the stack
@@ -122,10 +122,11 @@ struct StackType {
 		func_info(), struct_type(""), reg(no_reg) {
 	}
 
-	vector<int>& getNextList(){return this->next_list;}
-	vector<int>& getFalseList(){return this->false_list;}
-	vector<int>& getTrueList(){return this->true_list;}
-	vector<int>& getBreakList(){return this->break_list;}
+    vector<int>& getBreakList(){return this->break_list;}
+    vector<int>& getNextList(){return this->next_list;}
+    vector<int>& getFalseList(){return this->false_list;}
+    vector<int>& getTrueList(){return this->true_list;}
+    vector<int>& getContinueList(){return this->true_list;}
 };
 
 #define YYSTYPE StackType

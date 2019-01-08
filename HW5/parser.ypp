@@ -74,7 +74,9 @@ FuncDecl1: RetType ID LPAREN Formals RPAREN {
 }
 
 FuncDecl2: LBRACE Statements RBRACE {
+    cout << "func!" << endl;
 	$$.lineno = $2.lineno;
+	BPATCH($2.getNextList(), GEN_LABEL());
 }
 
 Structs: StructsDecl Structs {
@@ -164,12 +166,25 @@ StructMem: Type ID SC {
 Statements: Statement {
 	$$.lineno = $1.lineno;
 	tables->setLine($$.lineno);
+    cout << "statements 1" << endl;
 
 	$$ = $1;
-}
-	| Statements Statement {
+    }
+	| Statements MMarker Statement {
 		$$.lineno = $2.lineno;
 		tables->setLine($$.lineno);
+
+		$$ = $3;
+		BPATCH($1.getNextList(), $2.str);
+		$$.getBreakList() = MERGE($1.getBreakList(), $3.getBreakList());
+		$$.getContinueList() = MERGE($1.getContinueList(), $3.getContinueList());
+		cout << "statements 2" << endl;
+
+		cout << "===========continuelist: " << endl;
+        for (vector<int>::iterator it = $$.getContinueList().begin(); it != $$.getContinueList().end(); ++it){
+            cout << *it << endl;
+        }
+        cout << "===========endlist" << endl;
 	}
 
 StartScope: /*epsilon*/ {
@@ -182,25 +197,36 @@ StartWhileScope: /*epsilon*/ {
 
 Statement: StartScope LBRACE Statements RBRACE {
 	tables->popScope();
+    cout << "statement 1" << endl;
+	$$ = $3;
 	$$.lineno = $2.lineno;
+
+    cout << "===========continuelist: " << endl;
+    for (vector<int>::iterator it = $3.getContinueList().begin(); it != $3.getContinueList().end(); ++it){
+        cout << *it << endl;
+    }
+    cout << "===========endlist" << endl;
 }
 
 	| Type ID SC {
 	tables->addVariable(typeToString($1.type), $2.str, $1.lineno);
 	$$.lineno = $1.lineno;
 	allocateVar();
+	cout << "statement 2" << endl;
 }
 
 	| StructType ID SC {
 		tables->addVariable($1.str, $2.str, $1.lineno);
 		$$.lineno = $1.lineno;
 		allocateStruct(tables->getStruct($1.str));
+		cout << "statement 3" << endl;
 	}
 
 	| STRUCT ID LBRACE StructMemList RBRACE SC {
 		$$.str = string($2.str);
 		tables->addStruct($$.str, $4.func_info, $1.lineno);
 		$$.lineno = $1.lineno;
+		cout << "statement 4" << endl;
 	}
 
 	| Type ID ASSIGN Exp SC {
@@ -213,6 +239,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 		}
 		tables->addVariable(typeToString($1.type), $2.str, $4.lineno);
 		allocateVar($4);
+		cout << "statement 5" << endl;
 	}
 
 	| StructType ID ASSIGN Exp SC {
@@ -247,6 +274,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 		} else {
 			assignToVar((tables->getVariable($1.str))->getWordOffset(), $3);
 		}
+		cout << "statement 6" << endl;
 	}
 
 	| ID PERIOD ID ASSIGN Exp SC {
@@ -300,42 +328,57 @@ Statement: StartScope LBRACE Statements RBRACE {
 		returnValueFromFunction($2.str);
 	}
 
-	| If_Scope MMarker %prec IF {
-        BPATCH($1.getNextList(), $2.str);
-        BPATCH($1.getFalseList(), $2.str);
-        $$.getNextList() = $1.getNextList();
+	| If_Scope %prec IF {
         $$.getBreakList() = $1.getBreakList();
+        $$.getNextList() = MERGE($1.getNextList(), $1.getFalseList());
+        $$.getContinueList() = $1.getContinueList();
+        cout << "statement 7" << endl;
 	}
 
-	| If_Scope MMarker ElseScope MMarker {
-        BPATCH($1.getNextList(), $4.str);
+	| If_Scope ElseScope {
         BPATCH($1.getFalseList(), $2.str);
-        $$.getNextList() = MERGE($1.getNextList(), $3.getNextList());
-        $$.getBreakList() = MERGE($1.getBreakList(), $3.getBreakList());
+        $$.getNextList() = MERGE($1.getNextList(), $2.getNextList());
+        $$.getBreakList() = MERGE($1.getBreakList(), $2.getBreakList());
+        $$.getContinueList() = MERGE($1.getContinueList(), $2.getContinueList());
+        cout << "statement 8" << endl;
 	}
     //      1           2     3       4     5    6      7         8        9
-	| StartWhileScope WHILE LPAREN MMarker Exp RPAREN MMarker Statement NMarker {
+	| StartWhileScope WHILE LPAREN MMarker Exp RPAREN MMarker Statement NMarker{
 		tables->popScope();
 		if ($5.type != types_Bool) {
 			errorMismatch($2.lineno);
 			exit(0);
 		}
-		BPATCH($5.getTrueList(), $7.str);
+
+		cout << "nextlist: " << endl;
+		for (vector<int>::iterator it = $8.getNextList().begin(); it != $8.getNextList().end(); ++it){
+		    cout << *it << endl;
+		}
+		cout << "continuelist: " << endl;
+        for (vector<int>::iterator it = $8.getContinueList().begin(); it != $8.getContinueList().end(); ++it){
+            cout << *it << endl;
+        }
+
+		BPATCH($8.getContinueList(), $4.str);
 		BPATCH($9.getNextList(), $4.str);
+		BPATCH($5.getTrueList(), $7.str);
 		$$.getNextList() = MERGE($5.getFalseList(), $8.getBreakList());
+
+		cout << "statement 9" << endl;
 	}
 
-	| NMarker BREAK SC {
-		tables->isBreakAllowed($2.lineno);
-		$$.getBreakList() = $1.getNextList();
+	| BREAK SC NMarker {
+		tables->isBreakAllowed($2.lineno); // TODO: which token's line?
+		$$.getBreakList() = $3.getNextList();
 	}
 
-	| NMarker CONTINUE SC {
-		tables->isContinueAllowed($1.lineno);
-		$$.getNextList() = $1.getNextList();
+	| CONTINUE SC NMarker {
+		tables->isContinueAllowed($1.lineno); // TODO: which token's line?
+		$$.getContinueList() = $3.getNextList();
+		cout << "cont" << endl;
 	}
 
-If_Scope: StartScope IF LPAREN Exp RPAREN MMarker Statement NMarker{
+If_Scope: StartScope IF LPAREN Exp RPAREN MMarker Statement {
 	tables->popScope();
 	$$.lineno = $2.lineno;
 	tables->setLine($2.lineno);
@@ -345,15 +388,21 @@ If_Scope: StartScope IF LPAREN Exp RPAREN MMarker Statement NMarker{
 	}
 
     BPATCH($4.getTrueList(), $6.str);
-    $$.getNextList() = $8.getNextList();
+    $$.getNextList() = $7.getNextList();
     $$.getFalseList() = $4.getFalseList();
     $$.getBreakList() = $7.getBreakList();
+    $$.getContinueList() = $7.getContinueList();
+    cout << "if scope" << endl;
 }
 
-ElseScope: ELSE StartScope Statement {
+ElseScope: ELSE NMarker MMarker StartScope Statement {
 	tables->popScope();
 	$$.lineno = $3.lineno;
 	tables->setLine($$.lineno);
+	$$.getBreakList() = $5.getBreakList();
+	$$.getContinueList() = $5.getContinueList();
+	$$.getNextList() = MERGE($2.getNextList(), $5.getNextList());
+	$$.str = $3.str; // beginning label of the else scope
 }
 
 Call: ID LPAREN ExpList RPAREN {
