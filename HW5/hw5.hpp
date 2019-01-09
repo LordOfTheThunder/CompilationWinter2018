@@ -473,7 +473,7 @@ void callFunction(string func_name, StackType st = StackType()) {
         return;
     }
 
-    for (int i = 0; i < params.size(); ++i) {
+    for (int i = params.size() - 1; i >= 0; --i) {
         if (params[i].reg != no_reg) {
             // We have some kind of binop/relop result saved in register
             addRegisterToFunc(params[i].reg);
