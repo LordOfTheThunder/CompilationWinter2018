@@ -391,15 +391,18 @@ void addStructTypeToFunc(string var_name) {
 
     register_type reg = reg_alloc->allocateRegister();
     stringstream s;
-    emit("subu $sp, $sp, " + 4 * struct_entry->size());
+    s << "subu $sp, $sp, " << 4 * struct_entry->size();
+    emit(s.str());
+    s.clear();
+    s.str(std::string());
     for (int i = 1; i <= struct_entry->size(); ++i) {
         int curr_write_loc = 4 * (struct_entry->size() - i);
         s << "lw " << register_type_to_str(reg) << ", " << -offset << "($fp)" << endl;
-        s << "sw " << register_type_to_str(reg) << ", " << -curr_write_loc << "($sp)";
+        s << "sw " << register_type_to_str(reg) << ", " << curr_write_loc << "($sp)";
         if (i < struct_entry->size()) {
             s << endl;
         }
-        offset += 4 * i;
+        offset += 4;
     }
     emit(s.str());
     reg_alloc->freeRegister(reg);
