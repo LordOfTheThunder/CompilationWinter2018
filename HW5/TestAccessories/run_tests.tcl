@@ -14,13 +14,23 @@ set test_files [glob test*.in]
 set num_tests [llength $test_files]
 exec make
 source add_main_to_tests.tcl
+set crashed_tests ""
 foreach file $test_files {
 	puts "-I- sourcing $file"
 	set res_file [lindex [split $file .] 0].res
 	set out_file [lindex [split $file .] 0].out
 	set asm_file [lindex [split $file .] 0].asm
-	exec ./hw5 < $file > $asm_file
-	exec ./spim -file $asm_file > $res_file
+	catch {exec ./hw5 < $file > $asm_file} err
+	if {$err ne ""} {
+		# we have a problem! not good at all!
+		lappend crashed_tests $file
+		continue
+	}
+	catch {exec ./spim -file $asm_file > $res_file} err
+	if {$err ne ""} {
+		lappend crashed_tests $file
+		continue
+	}
 	if {[comp_file $out_file $res_file]} {
 		incr num_tests -1
 		puts "Test $file clean"
@@ -41,5 +51,9 @@ if {$num_tests == 0} {
 	puts "To check results run the following commands"
 	foreach file $res_files {
 		puts "diff [lindex [split $file .] 0].out $file"
+	}
+	puts "The following tests have crashed... This is very sad..."
+	foreach file $crashed_tests {
+		puts $file	
 	}
 }
