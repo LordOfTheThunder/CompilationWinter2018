@@ -1,0 +1,70 @@
+// Test 51
+struct rectangle {
+	byte height;
+	byte width;
+};
+
+struct triangle {
+	byte base;
+	byte height;
+};
+
+byte byteArea(byte dim1, byte dim2, bool isRect) {
+	if (isRect) {
+		byte area = dim1 * dim2;
+		return area;
+	} else {
+		byte area = dim1 * dim2 / 2b;
+		return area;
+	}
+}
+
+int intArea(int dim1, int dim2, bool isRect) {
+	int area = dim1 * dim2;
+	if (not isRect)
+		area = area / 2;
+	return area;
+}
+
+bool isGreater(struct rectangle rec, struct triangle tri) {
+	byte recArea = byteArea(rec.height, rec.width, true);
+	int triArea = intArea(tri.base, tri.height, false);
+	return recArea > triArea;
+}
+
+void main() {
+	struct rectangle rec1;
+	struct triangle tri1;
+	rec1.height = 5b;
+	rec1.width = 7b;
+	tri1.base = 6b;
+	tri1.height = 10b;
+	int rectangleIntArea = intArea(rec1.height, rec1.width, true);
+	byte rectangleByteArea = byteArea(rec1.height, rec1.width, true);
+	int triangleIntArea = intArea(tri1.base, tri1.height, false);
+	byte triangleByteArea = byteArea(tri1.height, tri1.base, false);
+	byte i = 0b;
+	while (i < 9) {
+		print("\n----------\n");
+		printi(i);
+		print("\n----------\n");
+		if(isGreater(rec1, tri1)) {
+			
+			print("The rectangle is greater than the triangle, this has been checked with byte and int comparison \ndecreasing rec1.width by i\n");
+			printi(rec1.width);
+			print("\t");
+			printi(rec1.width - i);
+			print("\n");
+			rec1.width = rec1.width - i;
+			print("ciao\n");
+		} else {
+			print("The rectangle is not greater than the triangle, this has been checked with byte and int comparison \n increasing rec1.width by i\n");
+			printi(rec1.width);
+			print("\t");
+			printi(rec1.width + i);
+			print("\n");
+			rec1.width = rec1.width + i;
+		}
+		i = i + 1b;
+	}
+}

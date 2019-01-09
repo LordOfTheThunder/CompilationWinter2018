@@ -1,0 +1,19 @@
+bool Func() {
+	return 2 < 1;
+}
+bool Func2() {
+	return 1 < 2;
+}
+void maxTestsCheckCorrectRelopBoolReturn() {
+	if (not Func()) {
+		print("There is only one thing that makes a dream impossible to achieve: the fear of failure. ― Paulo Coelho\n");
+	}
+	if (Func2()) {
+		print("It’s not whether you get knocked down. It’s whether you get up. – Vince Lombardi");
+	}
+}
+
+void main() {
+     maxTestsCheckCorrectRelopBoolReturn();
+     print("\nI hate this course\n");
+}
