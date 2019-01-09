@@ -62,8 +62,7 @@ Funcs: FuncDecl Funcs {
 
 FuncDecl: FuncDecl1 FuncDecl2 {
 	tables->popScope();
-    emit("move $sp, $fp");
-	emit("jr $ra");
+    callReturnFunc();
 }
 
 FuncDecl1: RetType ID LPAREN Formals RPAREN {
@@ -307,6 +306,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 		$$.lineno = $1.lineno;
 		tables->setLine($$.lineno);
 		tables->checkReturn(typeToString(types_Void), $$.lineno);
+		callReturnFunc();
 	}
 
 	| RETURN Exp SC {
@@ -314,6 +314,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 		tables->setLine($$.lineno);
 		tables->checkReturn(typeToString($2.type), $$.lineno);
 		returnValueFromFunction($2);
+		callReturnFunc();
 	}
 
 	| If_Scope %prec IF {

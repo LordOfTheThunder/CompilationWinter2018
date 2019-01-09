@@ -310,6 +310,11 @@ bool isImmediate(string name) {
     return false;
 }
 
+void callReturnFunc() {
+    emit("move $sp, $fp");
+    emit("jr $ra");
+}
+
 int getOffsetFromStructVar(string var_name) {
     string struct_type = var_name.substr(0, var_name.find("."));
     string member = var_name.substr(var_name.find(".") + 1, var_name.size() - var_name.find("."));
@@ -416,34 +421,7 @@ void addStructTypeToFunc(string var_name) {
     reg_alloc->freeRegister(reg);
 }
 
-int calculateParamSize(StackType st) {
-    int size = 0;
-    vector<varPair> params = st.func_info;
-    for (int i = 0; i < params.size(); ++i) {
-        VariableEntry* var_entry = tables->getVariable(params[i].id);
-        if (var_entry == NULL) {
-            // We have an immediate or a t.x or something
-            size += 4;
-            continue;
-        }
-        StructEntry* struct_entry = tables->getStruct(var_entry->getType());
-        if (struct_entry != NULL) {
-            // We have a struct
-            size += 4 * struct_entry->size();
-        } else {
-            size += 4;
-        }
-    }
-    return size;
-}
-
 void returnFromFunc(StackType st) {
-    int size = calculateParamSize(st);
-    if (size > 0) {
-        stringstream s;
-        s << "addu $sp, $sp, " << size;
-        emit(s.str());
-    }
     emit("lw $ra, ($sp)");
     emit("lw $fp, 4($sp)");
     emit("addu $sp, $sp, 8");
@@ -478,26 +456,36 @@ void callFunction(string func_name, StackType st = StackType()) {
         allocateVar(st);
         reg_alloc->freeRegister(reg);
         emit("jal __" + func_name);
+        emit("addu $sp, $sp, 4");
         returnFromFunc(st);
         return;
     }
 
+    int size = 0;
     for (int i = params.size() - 1; i >= 0; --i) {
         if (params[i].reg != no_reg) {
             // We have some kind of binop/relop result saved in register
             addRegisterToFunc(params[i].reg);
+            size += 4;
         } else if (isStructType(params[i].type)) {
             // we have a struct type
             addStructTypeToFunc(params[i].id);
+            StructEntry* struct_entry = tables->getStruct(params[i].type);
+            size += 4 * struct_entry->size();
         } else if (isImmediate(params[i].id)) {
             // we have an integer, a byte or a boolean as immediate
             addImmediateToFunc(params[i].id);
+            size += 4;
         } else {
             // we have variable type
             addVarToFunc(params[i].id);
+            size += 4;
         }
     }
     emit("jal __" + func_name);
+    stringstream s;
+    s << "addu $sp, $sp, " << size;
+    emit(s.str());
     returnFromFunc(st);
 }
 
