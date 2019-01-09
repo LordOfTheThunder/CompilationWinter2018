@@ -412,17 +412,15 @@ int calculateParamSize(StackType st) {
     int size = 0;
     vector<varPair> params = st.func_info;
     for (int i = 0; i < params.size(); ++i) {
-        if (st.struct_type != "") {
-            // we have a struct type
-            VariableEntry* var_entry = tables->getVariable(params[i].id);
-            if (var_entry == NULL) {
-                // we have struct variable such as t.x
-                size += 4;
-                continue;
-            }
-            string type = var_entry->getType();
-            StructEntry* struct_entry = tables->getStruct(type);
-            assert(struct_entry != NULL);
+        VariableEntry* var_entry = tables->getVariable(params[i].id);
+        if (var_entry == NULL) {
+            // We have an immediate or a t.x or something
+            size += 4;
+            continue;
+        }
+        StructEntry* struct_entry = tables->getStruct(var_entry->getType());
+        if (struct_entry != NULL) {
+            // We have a struct
             size += 4 * struct_entry->size();
         } else {
             size += 4;
