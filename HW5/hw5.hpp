@@ -350,7 +350,14 @@ string boolImmediateToString(string imm_value) {
     return imm_value;
 }
 
-void returnValueFromFunction(string name) {
+void returnValueFromFunction(StackType st) {
+    if (st.reg != no_reg) {
+        // we have result stored in register
+        emit("move $v0, " + register_type_to_str(st.reg));
+        reg_alloc->freeRegister(st.reg);
+        return;
+    }
+    string name = st.str;
     if (isImmediate(name)) {
         // we return immediate
         // If number : returns the number as string
