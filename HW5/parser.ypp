@@ -202,7 +202,8 @@ Statement: StartScope LBRACE Statements RBRACE {
 	| StructType ID SC {
 		tables->addVariable($1.str, $2.str, $1.lineno);
 		$$.lineno = $1.lineno;
-		allocateStruct(tables->getStruct($1.str));
+		//allocateStruct(tables->getStruct($1.str));
+		allocateStruct(tables->getStruct($1.str), $2.str);
 	}
 
 	| STRUCT ID LBRACE StructMemList RBRACE SC {
@@ -233,7 +234,8 @@ Statement: StartScope LBRACE Statements RBRACE {
 			CheckCorrectTypes($1.str, $4.str, typeToString($4.type));
 		}
 		tables->addVariable($1.str, $2.str, $1.lineno);
-		allocateStruct(tables->getStruct($1.str), true);
+		//allocateStruct(tables->getStruct($1.str), true);
+		allocateStruct(tables->getStruct($1.str), $2.str, true);
 	}
 
 	| ID ASSIGN Exp SC {
@@ -253,7 +255,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 		StructEntry* st_entry = tables->getStruct((tables->getVariable($1.str))->getType());
 		if (st_entry != NULL) {
 			// We copy structs
-			assignToStruct(st_entry);
+			assignToStruct($1.str);
 		} else {
 			assignToVar((tables->getVariable($1.str))->getWordOffset(), $3);
 		}

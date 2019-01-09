@@ -140,15 +140,21 @@ void allocateVar(StackType st = StackType()) {
     reg_alloc->freeRegister(reg);
 }
 
-void assignToStruct(StructEntry* st_type) {
+void assignToStruct(string var_name) {
     #ifdef DEBUG_API
         cout << "-API- Running assignToStruct" << endl;
     #endif
     stringstream s;
+    VariableEntry* var_entry = tables->getVariable(var_name);
+    assert(var_entry != NULL);
+
+    StructEntry* st_type = tables->getStruct(var_entry->getType());
+    assert(st_type != NULL);
+
     int size = st_type->size();
     // otherwise we copy data from one struct to another struct
     int offset = size * 4 - 4;
-    int orig_offset = st_type->getWordOffset();
+    int orig_offset = var_entry->getWordOffset() - size * 4;
     register_type reg = reg_alloc->allocateRegister();
     for (int i = 0; i < size; ++i) {
         s << "lw " << register_type_to_str(reg) << ", " << -orig_offset << "($fp)" << endl;
@@ -182,7 +188,7 @@ void logicalRelops(const string& rop_str, register_type t1, register_type t2, ve
     false_list = MAKE_LIST(emit("j "));
 }
 
-void allocateStruct(StructEntry* st_type, bool assign = false) {
+void allocateStruct(StructEntry* st_type, string var_name, bool assign = false) {
     #ifdef DEBUG_API
         cout << "-API- Running allocateStruct" << endl;
     #endif
@@ -206,7 +212,7 @@ void allocateStruct(StructEntry* st_type, bool assign = false) {
         return;
     }
 
-    assignToStruct(st_type);
+    assignToStruct(var_name);
 }
 
 void assignToVar(int offset, StackType st) {
