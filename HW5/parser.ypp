@@ -317,6 +317,8 @@ Statement: StartScope LBRACE Statements RBRACE {
 		tables->checkReturn(typeToString($2.type), $$.lineno);
 		returnValueFromFunction($2);
 		callReturnFunc();
+		$$.str = GEN_LABEL();
+		BPATCH($2.getNextList(), $$.str);
 	}
 
 	| If_Scope %prec IF {
