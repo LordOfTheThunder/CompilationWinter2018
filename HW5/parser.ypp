@@ -222,6 +222,8 @@ Statement: StartScope LBRACE Statements RBRACE {
 		}
 		tables->addVariable(typeToString($1.type), $2.str, $4.lineno);
 		allocateVar($4);
+		$$.str = GEN_LABEL();
+		BPATCH($4.getNextList(), $$.str);
 	}
 
 	| StructType ID ASSIGN Exp SC {
@@ -256,6 +258,8 @@ Statement: StartScope LBRACE Statements RBRACE {
 		} else {
 			assignToVar((tables->getVariable($1.str))->getWordOffset(), $3);
 		}
+		$$.str = GEN_LABEL();
+		BPATCH($3.getNextList(), $$.str);
 	}
 
 	| ID PERIOD ID ASSIGN Exp SC {
@@ -289,6 +293,8 @@ Statement: StartScope LBRACE Statements RBRACE {
 			exit(0);
 		}
 		assignToVar(tables->getStructMemberWordOffset($1.str, $3.str), $5);
+		$$.str = GEN_LABEL();
+		BPATCH($5.getNextList(), $$.str);
 	}
 
 	| Call SC {
@@ -394,6 +400,8 @@ ExpList: Exp {
 	}
 	$$.type = $1.type;
 	$$.str = $1.str;
+	string str = GEN_LABEL();
+	BPATCH($1.getNextList(), str);
 }
 	| Exp COMMA ExpList {
 		$$.func_info = $3.func_info;
@@ -403,7 +411,8 @@ ExpList: Exp {
 		} else {
 			$$.func_info.insert($$.func_info.begin(), varPair(typeToString($1.type), $1.str, $1.lineno, $1.reg));
 		}
-
+		string str = GEN_LABEL();
+		BPATCH($1.getNextList(), str);
 	}
 
 Type: INT {

@@ -18,6 +18,7 @@
 #define print_data_buffer CodeBuffer::instance().printDataBuffer()
 symbolTable* tables = NULL;
 register_type loadImmediateToRegister(string num);
+string boolImmediateToString(string imm_value);
 
 string register_type_to_str(register_type type) {
     switch (type) {
@@ -271,7 +272,7 @@ register_type loadToRegister(VariableEntry* var_entry) {
 register_type loadImmediateToRegister(string num) {
     stringstream s;
     register_type reg = reg_alloc->allocateRegister();
-    s << "li " << register_type_to_str(reg) << ", " << num;
+    s << "li " << register_type_to_str(reg) << ", " << boolImmediateToString(num);
     emit(s.str());
     return reg;
 }
@@ -382,7 +383,7 @@ void addImmediateToFunc(string imm_value) {
     if (imm_value[imm_value.size() - 1] == 'b') {
         imm_value = imm_value.substr(0, imm_value.size() - 1);
     }
-    s << "li " << register_type_to_str(reg) << ", " << imm_value << endl;
+    s << "li " << register_type_to_str(reg) << ", " << boolImmediateToString(imm_value) << endl;
     s << "sw " << register_type_to_str(reg) << ", " << "($sp)";
     emit(s.str());
     reg_alloc->freeRegister(reg);
