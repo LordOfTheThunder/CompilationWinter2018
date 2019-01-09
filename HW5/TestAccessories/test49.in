@@ -1,0 +1,22 @@
+struct potato {
+	int x;
+	int y;
+	byte t;
+};
+void maxTestsTestComplexStructWhile() {
+	struct potato t;
+	t.x = 3;
+	t.y = 25;
+	t.t = 19b;
+	while (t.x < 20 and t.y > 15) {
+		t.t = t.t - 1b;
+		t.x = t.x + 1;
+		t.y = t.y - 1;
+	}
+	printi(t.t);
+}
+
+void main() {
+     maxTestsTestComplexStructWhile();
+     print("\nI hate this course\n");
+}

@@ -1,0 +1,33 @@
+struct potato {
+	int x;
+	int y;
+	byte t;
+};
+void Func(struct potato t) {
+	struct potato s;
+	s = t;
+	printi(s.x);
+	print("\n");
+	printi(s.y);
+	print("\n");
+	printi(s.t);	
+}
+void maxTestsTestPassStructToFuncAndGetParamsRight() {
+	struct potato t;
+	t.x = 13;
+	t.y = 412;
+	t.t = 115b;
+	Func(t);
+	print("\n");
+	struct potato s = t;
+	printi(s.x);
+	print("\n");
+	printi(s.y);
+	print("\n");
+	printi(s.t);
+}
+
+void main() {
+     maxTestsTestPassStructToFuncAndGetParamsRight();
+     print("\nI hate this course\n");
+}

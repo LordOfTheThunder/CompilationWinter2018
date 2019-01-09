@@ -1,0 +1,15 @@
+struct potato {
+	bool a;
+};
+void maxTestsTestBooleansBasic() {
+	struct potato t;
+	t.a = true;
+	if (true) print("Happiness exists for those who wish for it\n");
+}
+
+void main() {
+     maxTestsTestBooleansBasic();
+     print("\nI hate this course\n");
+}
+
+

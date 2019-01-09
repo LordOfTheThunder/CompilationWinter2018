@@ -1,0 +1,26 @@
+struct potato {
+	int x;
+	int y;
+	byte t;
+};
+void Func(int i, int k, byte c) {
+	printi(i);
+	print("\n");
+	printi(k);
+	print("\n");
+	printi(c);
+}
+void maxTestsPassMultipleParametersToFunc() {
+	struct potato t;
+	t.x = 33;
+	t.y = 101;
+	t.t = 3b;
+	Func(8 + t.x, t.y + 1 - t.x, 33b - t.t * 3b);
+	print("\n");
+	Func(t.x * t.y, t.x / t.y, 0b - t.t);
+}
+
+void main() {
+     maxTestsPassMultipleParametersToFunc();
+     print("\nI hate this course\n");
+}

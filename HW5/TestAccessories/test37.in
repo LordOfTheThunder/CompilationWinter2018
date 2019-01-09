@@ -1,0 +1,36 @@
+struct potato {
+	int x;
+	int y;
+	byte t;
+};
+int Func(struct potato t) {
+	return t.x + t.y + t.t;
+}
+void printStructAndSum(struct potato t) {
+	printi(t.x);
+	print("\n");
+	printi(t.y);
+	print("\n");
+	printi(t.t);
+	print("\n");
+	printi(Func(t));
+}
+void maxTestsCallFuncAsParameter() {
+	struct potato t;
+	t.x = 101;
+	t.y = 202;
+	t.t = 33b;
+	struct potato s;
+	s = t;
+	s.x = s.y - 100;
+	s.y = s.x * t.t;
+	s.t = t.t / 100b;
+	printStructAndSum(t);
+	print("\n");
+	printStructAndSum(s);
+}	
+
+void main() {
+     maxTestsCallFuncAsParameter();
+     print("\nI hate this course\n");
+}

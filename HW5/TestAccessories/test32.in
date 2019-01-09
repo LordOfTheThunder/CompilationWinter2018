@@ -1,0 +1,23 @@
+void maxTestsStructInsideFunc() {
+	struct potato {
+		int x;
+		int y;
+		byte t;
+	};
+	struct potato t;
+	t.x = 15;
+	t.y = 3 - 115;
+	t.t = 33b;
+	struct potato s;
+	s = t;
+	printi(s.x);
+	print("\n");
+	printi(s.y);
+	print("\n");
+	printi(s.t);
+}
+
+void main() {
+     maxTestsStructInsideFunc();
+     print("\nI hate this course\n");
+}

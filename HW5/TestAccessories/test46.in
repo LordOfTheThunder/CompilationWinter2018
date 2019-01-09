@@ -1,0 +1,26 @@
+struct potato {
+	int x;
+	int y;
+	byte t;
+	bool s;
+};
+void maxTestsTestComplicatedWhileAndIf() {
+	int x = 13;
+	int y = 15;
+	struct potato t;
+	t.x = 7;
+	t.y = 11;
+	t.t = 12b;
+	t.s = false;
+	if (x > t.y and t.t <= y) {
+		print("It does not matter how slowly you go as long as you do not stop. – Confucius\n");
+	}
+	if (not t.s and t.x > t.t or true) {
+		print("Everything you’ve ever wanted is on the other side of fear. — George Addair\n");
+	}
+}
+
+void main() {
+     maxTestsTestComplicatedWhileAndIf();
+     print("\nI hate this course\n");
+}
