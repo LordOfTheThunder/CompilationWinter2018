@@ -221,9 +221,41 @@ Statement: StartScope LBRACE Statements RBRACE {
 			CheckCorrectTypes(typeToString($1.type), $4.str, typeToString($4.type));
 		}
 		tables->addVariable(typeToString($1.type), $2.str, $4.lineno);
-		allocateVar($4);
-		$$.str = GEN_LABEL();
-		BPATCH($4.getNextList(), $$.str);
+		if ($1.type != types_Bool) {
+			allocateVar($4);
+			$$.str = GEN_LABEL();
+			BPATCH($4.getNextList(), $$.str);
+			BPATCH($4.getTrueList(), $$.str);
+			BPATCH($4.getFalseList(), $$.str);
+		} else {
+			string true_label = GEN_LABEL();
+			$$.reg = reg_alloc->allocateRegister();
+			stringstream s;
+			s << "li " << register_type_to_str($$.reg) << ", 1";
+			emit(s.str());
+			emit("subu $sp, $sp, 4");
+			s.clear();
+			s.str(string());
+			s << "sw " << register_type_to_str($$.reg) << ", ($sp)";
+			emit(s.str());
+			$$.getNextList() = MAKE_LIST(emit("j "));
+			string false_label = GEN_LABEL();
+			s.clear();
+			s.str(string());
+			s << "li " << register_type_to_str($$.reg) << ", 0";
+			emit(s.str());
+			emit("subu $sp, $sp, 4");
+			s.clear();
+			s.str(string());
+			s << "sw " << register_type_to_str($$.reg) << ", ($sp)";
+			emit(s.str());
+			$$.getNextList() = MERGE($$.getNextList(), MAKE_LIST(emit("j ")));
+
+			//BPATCH($$.getNextList(), false_label);
+			BPATCH($4.getTrueList(), true_label);
+			BPATCH($4.getFalseList(), false_label);
+			reg_alloc->freeRegister($$.reg);
+		}
 	}
 
 	| StructType ID ASSIGN Exp SC {
@@ -256,11 +288,48 @@ Statement: StartScope LBRACE Statements RBRACE {
 		if (st_entry != NULL) {
 			// We copy structs
 			assignToStruct($1.str);
+			$$.str = GEN_LABEL();
+			BPATCH($3.getNextList(), $$.str);
+			BPATCH($3.getTrueList(), $$.str);
+			BPATCH($3.getFalseList(), $$.str);
 		} else {
-			assignToVar((tables->getVariable($1.str))->getWordOffset(), $3);
+			VariableEntry* var_entry = tables->getVariable($1.str);
+			assert(var_entry != NULL);
+			if (var_entry->getType() != typeToString(types_Bool)) {
+				assignToVar((tables->getVariable($1.str))->getWordOffset(), $3);
+				$$.str = GEN_LABEL();
+				BPATCH($3.getTrueList(), $$.str);
+				BPATCH($3.getFalseList(), $$.str);
+			} else {
+				string true_label = GEN_LABEL();
+				$$.reg = reg_alloc->allocateRegister();
+				stringstream s;
+				s << "li " << register_type_to_str($$.reg) << ", 1";
+				emit(s.str());
+				s.clear();
+				s.str(string());
+				s << "sw " << register_type_to_str($$.reg) << ", ($sp)";
+				emit(s.str());
+				$$.getNextList() = MAKE_LIST(emit("j "));
+				string false_label = GEN_LABEL();
+				s.clear();
+				s.str(string());
+				s << "li " << register_type_to_str($$.reg) << ", 0";
+				emit(s.str());
+				s.clear();
+				s.str(string());
+				s << "sw " << register_type_to_str($$.reg) << ", ($sp)";
+				emit(s.str());
+				$$.getNextList() = MERGE($$.getNextList(), MAKE_LIST(emit("j ")));
+
+				BPATCH($3.getTrueList(), true_label);
+				BPATCH($3.getFalseList(), false_label);
+				reg_alloc->freeRegister($$.reg);
+			}
 		}
-		$$.str = GEN_LABEL();
-		BPATCH($3.getNextList(), $$.str);
+
+
+
 	}
 
 	| ID PERIOD ID ASSIGN Exp SC {
@@ -293,9 +362,40 @@ Statement: StartScope LBRACE Statements RBRACE {
 			errorMismatch(tables->getLine());
 			exit(0);
 		}
-		assignToVar(tables->getStructMemberWordOffset($1.str, $3.str), $5);
-		$$.str = GEN_LABEL();
-		BPATCH($5.getNextList(), $$.str);
+
+		StructEntry* str_entry = tables->getStruct(var_entry->getType());
+		assert(var_entry != NULL);
+		if (str_entry->getTypeOfVar($3.str) != typeToString(types_Bool)) {
+			assignToVar(tables->getStructMemberWordOffset($1.str, $3.str), $5);
+			$$.str = GEN_LABEL();
+			BPATCH($5.getTrueList(), $$.str);
+			BPATCH($5.getFalseList(), $$.str);
+		} else {
+			string true_label = GEN_LABEL();
+			$$.reg = reg_alloc->allocateRegister();
+			stringstream s;
+			s << "li " << register_type_to_str($$.reg) << ", 1";
+			emit(s.str());
+			s.clear();
+			s.str(string());
+			s << "sw " << register_type_to_str($$.reg) << ", ($sp)";
+			emit(s.str());
+			$$.getNextList() = MAKE_LIST(emit("j "));
+			string false_label = GEN_LABEL();
+			s.clear();
+			s.str(string());
+			s << "li " << register_type_to_str($$.reg) << ", 0";
+			emit(s.str());
+			s.clear();
+			s.str(string());
+			s << "sw " << register_type_to_str($$.reg) << ", ($sp)";
+			emit(s.str());
+			$$.getNextList() = MERGE($$.getNextList(), MAKE_LIST(emit("j ")));
+
+			BPATCH($5.getTrueList(), true_label);
+			BPATCH($5.getFalseList(), false_label);
+			reg_alloc->freeRegister($$.reg);
+		}
 	}
 
 	| Call SC {
@@ -315,10 +415,24 @@ Statement: StartScope LBRACE Statements RBRACE {
 		$$.lineno = $1.lineno;
 		tables->setLine($$.lineno);
 		tables->checkReturn(typeToString($2.type), $$.lineno);
-		returnValueFromFunction($2);
-		callReturnFunc();
-		$$.str = GEN_LABEL();
-		BPATCH($2.getNextList(), $$.str);
+		if (typeToString($2.type) == typeToString(types_Bool)){
+			string true_label = GEN_LABEL();
+			emit("li $v0, 1");
+			emit("move $sp, $fp");
+    		emit("jr $ra");
+			string false_label = GEN_LABEL();
+			emit("li $v0, 0");
+			emit("move $sp, $fp");
+    		emit("jr $ra");
+			BPATCH($2.getTrueList(), true_label);
+			BPATCH($2.getFalseList(), false_label);
+		} else {
+			returnValueFromFunction($2);
+			callReturnFunc();
+			$$.str = GEN_LABEL();
+			BPATCH($2.getTrueList(), $$.str);
+			BPATCH($2.getFalseList(), $$.str);
+		}
 	}
 
 	| If_Scope %prec IF {
@@ -482,6 +596,16 @@ Exp: Exp BINOPAS Exp {
 			// no allocation if we copy structs
 			if (tables->getStruct((tables->getVariable($1.str))->getType()) == NULL) {
 				$$.reg = loadToRegister(tables->getVariable($1.str));
+				VariableEntry* var_entry = tables->getVariable($1.str);
+				if (stringToType(var_entry->getType()) == types_Bool){
+					// load data to reg   1 is true, 0 is false
+					register_type tmp_reg = loadImmediateToRegister("1");
+					$$.getTrueList() = MAKE_LIST(emit("beq " + register_type_to_str($$.reg) + ", " + register_type_to_str(tmp_reg) + ", "));
+					$$.getFalseList() = MAKE_LIST(emit("j "));
+					reg_alloc->freeRegister($$.reg);
+					reg_alloc->freeRegister(tmp_reg);
+				}
+
 			}
 		}
 		else {
@@ -524,6 +648,17 @@ Exp: Exp BINOPAS Exp {
 			errorUndefStructMember(tables->getLine(), $1.str);
 			exit(0);
 		}
+
+		if (struct_entry->getTypeOfVar($3.str) == typeToString(types_Bool)){
+			// load data to reg   1 is true, 0 is false
+			$$.reg = loadStructMemberToRegister($1.str, $3.str);
+			register_type tmp_reg = loadImmediateToRegister("1");
+			$$.getTrueList() = MAKE_LIST(emit("beq " + register_type_to_str($$.reg) + ", " + register_type_to_str(tmp_reg) + ", "));
+			$$.getFalseList() = MAKE_LIST(emit("j "));
+			reg_alloc->freeRegister($$.reg);
+			reg_alloc->freeRegister(tmp_reg);
+		}
+
 		$$.type = stringToType(struct_entry->getTypeOfVar($3.str));
 		$$.str = string($1.str + "." + $3.str);
 		// TODO: Allocate register
@@ -540,6 +675,13 @@ Exp: Exp BINOPAS Exp {
 		}
 		$$.type = stringToType(func_entry->getType());
 		$$.reg = v0;
+
+		if (func_entry->getType() == typeToString(types_Bool)){
+			register_type tmp_reg = loadImmediateToRegister("1");
+			$$.getTrueList() = MAKE_LIST(emit("beq $v0, " + register_type_to_str(tmp_reg) + ", "));
+			$$.getFalseList() = MAKE_LIST(emit("j "));
+			reg_alloc->freeRegister(tmp_reg);
+		}
 	}
 
 	| NUM {
