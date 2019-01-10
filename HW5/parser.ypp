@@ -587,7 +587,10 @@ StructType: STRUCT ID {
 	$$.str = $2.str;
 }
 
-Exp: Exp BINOPAS Exp {
+Exp: LPAREN Exp RPAREN {
+    $$ = $2;
+
+}   | Exp BINOPAS Exp {
 	if (($1.type != types_Int && $1.type != types_Byte) || ($3.type != types_Int && $3.type != types_Byte)) {
 		// Both must be numbers
 		errorMismatch($2.lineno);
