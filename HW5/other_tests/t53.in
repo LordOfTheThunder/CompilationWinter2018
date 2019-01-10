@@ -1,0 +1,22 @@
+bool falseFunc() {
+	return false and true;
+}
+
+bool trueFunc() {
+	return true or false; 
+}
+
+void main () { 
+	bool x = true and falseFunc();
+	if (not x) {
+		print("ok\n"); 
+	} else { 
+		print("not ok");
+	} 
+	bool y = true or trueFunc();
+	if (y) {
+		print("ok\n"); 
+	} else { 
+		print("not ok");
+	}
+}

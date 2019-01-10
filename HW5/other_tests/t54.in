@@ -1,0 +1,24 @@
+bool falseFunc(bool f) {
+	return f and true;
+}
+
+bool trueFunc(bool f) {
+	return f  or false; 
+}
+
+void main () { 
+	bool f = 3 < 2;
+	bool x = true and falseFunc(f);
+	f = 3 > 2;
+	if (trueFunc(f) or x ) {
+		print("ok\n"); 
+	} else { 
+		print("not ok");
+	} 
+	bool y = true and trueFunc( 2019 != 5779 );
+	if (falseFunc(y) and 1 == 1b) {
+		print("ok\n"); 
+	} else { 
+		print("not ok");
+	}
+}

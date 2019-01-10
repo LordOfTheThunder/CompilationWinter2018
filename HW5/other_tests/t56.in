@@ -1,0 +1,15 @@
+struct logic {
+	bool t;
+	bool f;
+};
+
+void main() {
+	struct logic log;
+	log.t = true;
+	log.f = false;
+	if (3 > 2 and log.t and not log.f) {
+		print("OK");
+	} else {
+		print("not ok!");
+	}
+}

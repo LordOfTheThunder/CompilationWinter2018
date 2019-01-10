@@ -1,0 +1,34 @@
+struct Distance {
+    int feet;
+    byte inch;
+};
+
+void main() {
+   	print("1st distance\n");
+	struct Distance d1;
+	d1.feet = 5;
+	d1.inch = 25b;
+ 	printi(d1.feet);
+ 	print("\t");
+ 	printi(d1.inch);
+ 	print("\n");
+	
+	print("2nd distance\n");
+	struct Distance d2;
+	d2.feet = 10;
+	d2.inch = 40b;
+ 	printi(d2.feet);
+ 	print("\t");
+ 	printi(d2.inch);
+ 	print("\n");
+	
+	print("Sum\n");
+	struct Distance sum;
+	sum.feet = d1.feet + d2.feet;
+	sum.inch = d1.inch + d2.inch;
+ 	printi(sum.feet);
+ 	print("\t");
+ 	printi(sum.inch);
+ 	print("\n");
+
+}

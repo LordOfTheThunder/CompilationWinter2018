@@ -1,0 +1,9 @@
+Loaded: ./exceptions.s
+First struct time: seconds, minutes, hours
+12	25	8
+Second struct time: seconds, minutes, hours
+30	45	12
+4
+20
+18
+Good!!!

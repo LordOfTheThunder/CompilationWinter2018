@@ -1,0 +1,23 @@
+bool testSomething() {
+	if (2 != 2b) {
+		return false;
+	}
+	if (true and not (4 + 7 * 8 - 15 >= 43 / 5 + (8 - 1) * 2)) {
+		return false;
+	}
+	if (7b - 10b != 253) {
+		return false;
+	}
+	if (3b * 8 != 8b * 3 or not (2 * 4b - 3b == 10 / 2b)) {
+		return false;
+	}
+	return true;
+}
+
+void main() {
+	if (not testSomething()) {
+		print("There is a problem\n");
+	} else {
+		print("OK!!!\n");
+	}
+}

@@ -1,0 +1,75 @@
+struct TIME {
+  int seconds;
+  int minutes;
+  int hours;
+};
+
+
+int differenceBetweenTimePeriod(struct TIME start, struct TIME stop) {
+	struct TIME diff;
+	diff.hours = stop.hours - start.hours;
+	if (diff.hours > 1) {
+		return diff.hours;
+	}
+	diff.minutes = stop.minutes - start.minutes;
+	if (diff.minutes > 15) {
+		return diff.minutes;
+	}
+	diff.seconds = stop.seconds - start.seconds;
+	return diff.seconds;
+}
+
+int printTimeSection(struct TIME time,int section) {
+	if (section == 0) {
+		 return (time.seconds);
+	} else if (section == 1) {
+		return (time.minutes);
+	} else {
+		return (time.hours);
+	}
+}
+
+void main() {
+	struct TIME startTime;
+	struct TIME stopTime;
+
+	startTime.seconds = 12;
+	startTime.minutes = 25;
+	startTime.hours = 8;
+
+	stopTime.seconds = 30;
+	stopTime.minutes = 45;
+	stopTime.hours = 12;
+
+	// Calculate the difference between the start and stop time period.
+	print("First struct time: seconds, minutes, hours\n");
+	printi(printTimeSection(startTime, 0));
+	print("\t");
+	printi(printTimeSection(startTime, 1));
+	print("\t");
+	printi(printTimeSection(startTime, 2));
+	print("\n");
+	print("Second struct time: seconds, minutes, hours\n");
+	printi(printTimeSection(stopTime, 0));
+	print("\t");
+	printi(printTimeSection(stopTime, 1));
+	print("\t");
+	printi(printTimeSection(stopTime, 2));
+	print("\n");
+	printi(differenceBetweenTimePeriod(startTime, stopTime));
+	print("\n");
+	startTime.hours = stopTime.hours - 1;
+	printi(differenceBetweenTimePeriod(startTime, stopTime));
+	print("\n");
+	startTime.minutes = 40;
+	printi(differenceBetweenTimePeriod(startTime, stopTime));
+        print("\n");
+	struct TIME third = stopTime;
+	if (third.hours != stopTime.hours or not (third.minutes == stopTime.minutes) or third.seconds != stopTime.seconds) {
+		print("Oooops!!!\n");
+	} else {
+		print("Good!!!\n");
+	}
+	return;
+}
+
