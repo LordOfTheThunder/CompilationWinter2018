@@ -128,7 +128,7 @@ struct StackType {
     vector<int>& getNextList(){return this->next_list;}
     vector<int>& getFalseList(){return this->false_list;}
     vector<int>& getTrueList(){return this->true_list;}
-    vector<int>& getContinueList(){return this->true_list;}
+    vector<int>& getContinueList(){return this->continue_list;}
 };
 
 #define YYSTYPE StackType

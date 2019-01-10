@@ -513,7 +513,6 @@ Call: ID LPAREN ExpList RPAREN {
 	}
 
 ExpList: Exp {
-
 	if (typeToString($1.type) == typeToString(types_Bool)) {
 		string true_label = GEN_LABEL();
 		$$.reg = reg_alloc->allocateRegister();
@@ -540,9 +539,6 @@ ExpList: Exp {
 	}
 	$$.type = $1.type;
 	$$.str = $1.str;
-
-	string str = GEN_LABEL();
-	BPATCH($1.getNextList(), str);
 }
 	| Exp COMMA ExpList {
 		$$.func_info = $3.func_info;
@@ -573,8 +569,6 @@ ExpList: Exp {
 		} else {
 			$$.func_info.insert($$.func_info.begin(), varPair(typeToString($1.type), $1.str, $1.lineno, $1.reg));
 		}
-		string str = GEN_LABEL();
-		BPATCH($1.getNextList(), str);
 	}
 
 Type: INT {
@@ -753,21 +747,21 @@ Exp: Exp BINOPAS Exp {
 		tables->setLine($$.lineno);
 	}
 
-	| NMarker TRUE {
-		$$.str = $2.str;
+	| TRUE {
+		$$.str = $1.str;
 		$$.type = types_Bool;
-		$$.lineno = $2.lineno;
+		$$.lineno = $1.lineno;
 
-        $$.getTrueList() = $1.getNextList();
+        $$.getTrueList() = MAKE_LIST(emit("j "));
         $$.reg = no_reg;
 	}
 
-	| NMarker FALSE {
-		$$.str = $2.str;
+	| FALSE {
+		$$.str = $1.str;
 		$$.type = types_Bool;
-		$$.lineno = $2.lineno;
+		$$.lineno = $1.lineno;
 
-		$$.getFalseList() = $1.getNextList();
+		$$.getFalseList() = MAKE_LIST(emit("j "));
         $$.reg = no_reg;
 	}
 
