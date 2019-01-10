@@ -502,6 +502,7 @@ ElseScope: ELSE NMarker MMarker StartScope Statement {
 Call: ID LPAREN ExpList RPAREN {
 	$$.str = $1.str;
 	tables->callFunction($1.str, $3.func_info, $1.lineno);
+	BPATCH($3.getNextList(), GEN_LABEL());
 	callFunction($1.str, $3);
 }
 	| ID LPAREN RPAREN {
@@ -512,6 +513,26 @@ Call: ID LPAREN ExpList RPAREN {
 	}
 
 ExpList: Exp {
+
+	if (typeToString($1.type) == typeToString(types_Bool)) {
+		string true_label = GEN_LABEL();
+		$$.reg = reg_alloc->allocateRegister();
+		stringstream s;
+		s << "li " << register_type_to_str($$.reg) << ", 1";
+		emit(s.str());
+		$$.getNextList() = MAKE_LIST(emit("j "));
+		string false_label = GEN_LABEL();
+		s.clear();
+		s.str(string());
+		s << "li " << register_type_to_str($$.reg) << ", 0";
+		emit(s.str());
+		$$.getNextList() = MERGE($$.getNextList(), MAKE_LIST(emit("j ")));
+
+		BPATCH($1.getTrueList(), true_label);
+		BPATCH($1.getFalseList(), false_label);
+		$1.reg = $$.reg;
+	}
+
 	if ($1.type == types_Undefined) {
 		$$.func_info.insert($$.func_info.begin(), varPair($1.struct_type, $1.str, $1.lineno, $1.reg));
 	} else {
@@ -519,12 +540,34 @@ ExpList: Exp {
 	}
 	$$.type = $1.type;
 	$$.str = $1.str;
+
 	string str = GEN_LABEL();
 	BPATCH($1.getNextList(), str);
 }
 	| Exp COMMA ExpList {
 		$$.func_info = $3.func_info;
 		$$.type = $1.type;
+
+		if (typeToString($1.type) == typeToString(types_Bool)) {
+			string true_label = GEN_LABEL();
+			$$.reg = reg_alloc->allocateRegister();
+			stringstream s;
+			s << "li " << register_type_to_str($$.reg) << ", 1";
+			emit(s.str());
+			$$.getNextList() = MERGE($3.getNextList(), MAKE_LIST(emit("j ")));
+			string false_label = GEN_LABEL();
+			s.clear();
+			s.str(string());
+			s << "li " << register_type_to_str($$.reg) << ", 0";
+			emit(s.str());
+			$$.getNextList() = MERGE($$.getNextList(), MAKE_LIST(emit("j ")));
+
+			BPATCH($1.getTrueList(), true_label);
+			BPATCH($1.getFalseList(), false_label);
+
+			$1.reg = $$.reg;
+		}
+
 		if ($1.type == types_Undefined) {
 			$$.func_info.insert($$.func_info.begin(), varPair($1.struct_type, $1.str, $1.lineno, $1.reg));
 		} else {
