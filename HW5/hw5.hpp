@@ -514,7 +514,6 @@ register_type callFunction(string func_name, StackType st = StackType()) {
         }
     }
     emit("jal __" + func_name);
-    stringstream s;
 
     register_type reg = no_reg;
     FunctionEntry* func_entry = tables->getFunction(func_name);
@@ -525,9 +524,9 @@ register_type callFunction(string func_name, StackType st = StackType()) {
         s << "lw " << register_type_to_str(reg) << ", ($sp)";
         emit(s.str());
         emit("move $sp, $fp");
-        reg_alloc->freeRegister(reg);
     }
 
+    stringstream s;
     s << "addu $sp, $sp, " << size;
     emit(s.str());
     returnFromFunc(st);

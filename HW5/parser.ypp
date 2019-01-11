@@ -467,6 +467,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 		BPATCH($5.getTrueList(), $7.str);
 		$$.getNextList() = MERGE($5.getFalseList(), $8.getBreakList());
 
+		reg_alloc->freeRegister($5.reg);
 	}
 
 	| BREAK SC {
@@ -493,6 +494,8 @@ If_Scope: StartScope IF LPAREN Exp RPAREN MMarker Statement {
     $$.getFalseList() = $4.getFalseList();
     $$.getBreakList() = $7.getBreakList();
     $$.getContinueList() = $7.getContinueList();
+
+	reg_alloc->freeRegister($4.reg);
 }
 
 ElseScope: ELSE NMarker MMarker StartScope Statement {
@@ -824,6 +827,9 @@ Exp: LPAREN Exp RPAREN {
 		$$.getFalseList() = MERGE($1.getFalseList(), $4.getFalseList());
 		$$.getTrueList() = $4.getTrueList();
 		$$.reg = no_reg;
+
+		reg_alloc->freeRegister($1.reg);
+		reg_alloc->freeRegister($4.reg);
 	}
 
 	| Exp OR MMarker Exp {
@@ -844,6 +850,9 @@ Exp: LPAREN Exp RPAREN {
         $$.getTrueList() = MERGE($1.getTrueList(), $4.getTrueList());
         $$.getFalseList() = $4.getFalseList();
         $$.reg = no_reg;
+
+		reg_alloc->freeRegister($1.reg);
+		reg_alloc->freeRegister($4.reg);
 	}
 
 	| Exp RELOP Exp {
@@ -872,12 +881,8 @@ Exp: LPAREN Exp RPAREN {
         }
 
         logicalRelops($2.str, $1.reg, $3.reg, $$.getTrueList(), $$.getFalseList());
-        if (r1){
-            reg_alloc->freeRegister($1.reg);
-        }
-        if (r2){
-            reg_alloc->freeRegister($3.reg);
-        }
+		reg_alloc->freeRegister($1.reg);
+		reg_alloc->freeRegister($3.reg);
         $$.reg = no_reg;
 	}
 
