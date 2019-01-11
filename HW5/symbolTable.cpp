@@ -3,6 +3,7 @@
 #include <assert.h>
 #include "output.hpp"
 #include <stdlib.h>
+#include <sstream>
 
 template <class T>
 void clearVectorOfPointers(vector<T>& v){
@@ -228,22 +229,19 @@ int symbolTable::getOffset(){
     return this->scopes.back()->getOffset();
 }
 
+void symbolTable::fixStack(bool isWhile){
+    int scopeWeight = this->getVariableWeights(isWhile);
+    stringstream ss;
+    ss << "addu $sp, $sp, " << scopeWeight;
+    emit(ss.str());
+}
+
 void symbolTable::popScope(){
     if (this->scopes.empty()){
         return;
     }
-    // TODO: clean code - remove unnecessary code
-//    Scope * current = scopes.back();
-//
-//    if (!current->isGlobal()){
-//        this->scopes.pop_back();
-//        scopes.back()->updateOffset(current->getOffset());
-//        delete current;
-//        return;
-//    }
-//
-//    delete current;
-//    this->scopes.pop_back();
+
+    this->fixStack(false);
 
     Scope * current = scopes.back();
     delete current;
@@ -256,6 +254,7 @@ void symbolTable::isBreakAllowed(int lineno){
 
     for (vector<Scope*>::reverse_iterator it = scopes.rbegin(); it != scopes.rend(); ++it){
         if ((*it)->isWhile()){
+            this->fixStack(true);
             return;
         }
     }
@@ -360,6 +359,24 @@ void symbolTable::checkReturn(string type, int lineno){
         exit(0);
     }
 
+}
+
+int symbolTable::getVariableWeights(bool isWhile){
+    assert(!scopes.empty());
+    if (!isWhile) {
+        if (scopes.size() == 1) {
+            return scopes.back()->getOffset() * WORD_SIZE;
+        } else {
+            return (scopes.back()->getOffset() - scopes[scopes.size() - 2]->getOffset()) * WORD_SIZE;
+        }
+    } else {
+        for(vector<Scope*>::reverse_iterator it = scopes.rbegin(); it != scopes.rend() ; it++){
+            if((*it)->isWhile()){
+                it++;
+                return (scopes.back()->getOffset() - (*it)->getOffset()) * WORD_SIZE;
+            }
+        }
+    }
 }
 
 void Scope::addEntry(TableEntry * ent){

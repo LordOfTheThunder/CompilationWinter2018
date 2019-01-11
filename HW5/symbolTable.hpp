@@ -76,6 +76,8 @@ public:
 
     int size(){return members.size();}
 
+    int wordSize(){return this->size() * WORD_SIZE;}
+
     void print() {
         output::printStructType(id, types, names);
     }
@@ -216,6 +218,7 @@ public:
         }
         return entries.back();
     }
+
 };
 
 class symbolTable{
@@ -282,10 +285,11 @@ public:
         int offset = getStruct(structName)->getMemberWordOffset(memId);
         return base + offset;
     }
+    int getVariableWeights(bool isWhile);
 
 //    Strange API utils
     void callFunction(string& id, vector<varPair>& args, int lineno);
-
+    void fixStack(bool isWhile);
 //    Setters
     void setLine(int lineno){this->lineno = lineno;}
 
