@@ -1,0 +1,20 @@
+bool Func1(bool x) {
+	return x;
+}
+int Func2(int x) {
+	return x;
+}
+
+void Func3(int ss, int tt, bool x, int y, bool z) {
+	if (x) {
+		print("potato\n");
+	}
+	printi(y);
+	print("\n");
+	printi(tt);
+	print("\n");
+}
+
+void main() {
+	Func3(Func2(244),Func2(211),Func1(false),Func2(3337), Func1(false));
+}
