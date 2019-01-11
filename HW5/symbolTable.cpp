@@ -268,6 +268,7 @@ void symbolTable::isContinueAllowed(int lineno){
 
     for (vector<Scope*>::reverse_iterator it = scopes.rbegin(); it != scopes.rend(); ++it){
         if ((*it)->isWhile()){
+            this->fixStack(true);
             return;
         }
     }

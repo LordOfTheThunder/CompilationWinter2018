@@ -469,14 +469,14 @@ Statement: StartScope LBRACE Statements RBRACE {
 
 	}
 
-	| BREAK SC NMarker {
+	| BREAK SC {
 		tables->isBreakAllowed($1.lineno);
-		$$.getBreakList() = $3.getNextList();
+		$$.getBreakList() = MAKE_LIST(emit("j "));
 	}
 
-	| CONTINUE SC NMarker {
+	| CONTINUE SC {
 		tables->isContinueAllowed($1.lineno);
-		$$.getContinueList() = $3.getNextList();
+		$$.getContinueList() = MAKE_LIST(emit("j "));
 	}
 
 If_Scope: StartScope IF LPAREN Exp RPAREN MMarker Statement {
