@@ -308,7 +308,8 @@ Statement: StartScope LBRACE Statements RBRACE {
 				emit(s.str());
 				s.clear();
 				s.str(string());
-				s << "sw " << register_type_to_str($$.reg) << ", ($sp)";
+				int offset = var_entry->getWordOffset();
+				s << "sw " << register_type_to_str($$.reg) << ", " << -offset << "($fp)";
 				emit(s.str());
 				$$.getNextList() = MAKE_LIST(emit("j "));
 				string false_label = GEN_LABEL();
@@ -318,7 +319,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 				emit(s.str());
 				s.clear();
 				s.str(string());
-				s << "sw " << register_type_to_str($$.reg) << ", ($sp)";
+				s << "sw " << register_type_to_str($$.reg) << ", " << -offset << "($fp)";
 				emit(s.str());
 				$$.getNextList() = MERGE($$.getNextList(), MAKE_LIST(emit("j ")));
 
@@ -378,7 +379,8 @@ Statement: StartScope LBRACE Statements RBRACE {
 			emit(s.str());
 			s.clear();
 			s.str(string());
-			s << "sw " << register_type_to_str($$.reg) << ", ($sp)";
+			int offset = tables->getStructMemberWordOffset($1.str, $3.str);
+			s << "sw " << register_type_to_str($$.reg) << ", " << -offset << "($fp)";
 			emit(s.str());
 			$$.getNextList() = MAKE_LIST(emit("j "));
 			string false_label = GEN_LABEL();
@@ -388,7 +390,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 			emit(s.str());
 			s.clear();
 			s.str(string());
-			s << "sw " << register_type_to_str($$.reg) << ", ($sp)";
+			s << "sw " << register_type_to_str($$.reg) << ", " << -offset << "($fp)";
 			emit(s.str());
 			$$.getNextList() = MERGE($$.getNextList(), MAKE_LIST(emit("j ")));
 
