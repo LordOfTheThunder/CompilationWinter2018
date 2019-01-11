@@ -525,6 +525,7 @@ register_type callFunction(string func_name, StackType st = StackType()) {
         s << "lw " << register_type_to_str(reg) << ", ($sp)";
         emit(s.str());
         emit("move $sp, $fp");
+        reg_alloc->freeRegister(reg);
     }
 
     s << "addu $sp, $sp, " << size;
