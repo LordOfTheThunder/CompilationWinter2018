@@ -403,7 +403,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 	| Call SC {
 		$$.lineno = $2.lineno;
 		tables->setLine($$.lineno);
-		$$.reg = v0;
+		reg_alloc->freeRegister($1.reg);
 	}
 
 	| RETURN SC {
@@ -419,18 +419,22 @@ Statement: StartScope LBRACE Statements RBRACE {
 		tables->checkReturn(typeToString($2.type), $$.lineno);
 		if (typeToString($2.type) == typeToString(types_Bool)){
 			string true_label = GEN_LABEL();
-			emit("li $v0, 1");
-			emit("move $sp, $fp");
+			register_type reg = reg_alloc->allocateRegister();
+			emit("subu $sp, $sp, 4");
+			emit("li " + register_type_to_str(reg) + ", 1");
+			emit("sw " + register_type_to_str(reg) + ", ($sp)");
     		emit("jr $ra");
 			string false_label = GEN_LABEL();
-			emit("li $v0, 0");
-			emit("move $sp, $fp");
+			emit("subu $sp, $sp, 4");
+			emit("li " + register_type_to_str(reg) + ", 0");
+			emit("sw " + register_type_to_str(reg) + ", ($sp)");
     		emit("jr $ra");
+			reg_alloc->freeRegister(reg);
 			BPATCH($2.getTrueList(), true_label);
 			BPATCH($2.getFalseList(), false_label);
 		} else {
 			returnValueFromFunction($2);
-			callReturnFunc();
+			emit("jr $ra");
 			$$.str = GEN_LABEL();
 			BPATCH($2.getTrueList(), $$.str);
 			BPATCH($2.getFalseList(), $$.str);
@@ -505,13 +509,13 @@ Call: ID LPAREN ExpList RPAREN {
 	$$.str = $1.str;
 	tables->callFunction($1.str, $3.func_info, $1.lineno);
 	BPATCH($3.getNextList(), GEN_LABEL());
-	callFunction($1.str, $3);
+	$$.reg = callFunction($1.str, $3);
 }
 	| ID LPAREN RPAREN {
 		$$.str = $1.str;
 		vector<varPair> t;
 		tables->callFunction($1.str, t, $1.lineno);
-		callFunction($1.str);
+		$$.reg = callFunction($1.str);
 	}
 
 ExpList: Arg {
@@ -734,11 +738,11 @@ Exp: LPAREN Exp RPAREN {
 			exit(0);
 		}
 		$$.type = stringToType(func_entry->getType());
-		$$.reg = v0;
+		$$.reg = $1.reg;
 
 		if (func_entry->getType() == typeToString(types_Bool)){
 			register_type tmp_reg = loadImmediateToRegister("1");
-			$$.getTrueList() = MAKE_LIST(emit("beq $v0, " + register_type_to_str(tmp_reg) + ", "));
+			$$.getTrueList() = MAKE_LIST(emit("beq " + register_type_to_str($1.reg) + ", " + register_type_to_str(tmp_reg) + ", "));
 			$$.getFalseList() = MAKE_LIST(emit("j "));
 			reg_alloc->freeRegister(tmp_reg);
 		}

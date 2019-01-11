@@ -120,6 +120,7 @@ void allocateVar(StackType st = StackType()) {
         cout << "-API- Running allocateVar" << endl;
     #endif
 
+    register_type reg = st.reg;
     emit("subu $sp, $sp, 4");
     if (st.type == types_Undefined) {
         // allocate var without copying data
@@ -127,7 +128,6 @@ void allocateVar(StackType st = StackType()) {
         return;
     }
 
-    register_type reg = st.reg;
     stringstream s;
 
     if (reg == no_reg) {
@@ -365,7 +365,11 @@ string boolImmediateToString(string imm_value) {
 void returnValueFromFunction(StackType st) {
     if (st.reg != no_reg) {
         // we have result stored in register
-        emit("move $v0, " + register_type_to_str(st.reg));
+        //emit("move $v0, " + register_type_to_str(st.reg));
+        stringstream s;
+        emit("subu $sp, $sp, 4");
+        s << "sw " << register_type_to_str(st.reg) << ", ($sp)";
+        emit(s.str());
         reg_alloc->freeRegister(st.reg);
         return;
     }
@@ -374,7 +378,17 @@ void returnValueFromFunction(StackType st) {
         // we return immediate
         // If number : returns the number as string
         // If bool, returns 0 or 1
-        emit("li $v0, " + boolImmediateToString(name));
+        //emit("li $v0, " + boolImmediateToString(name));
+        register_type reg = reg_alloc->allocateRegister();
+        stringstream s;
+        s << "li " << register_type_to_str(reg) << ", " << boolImmediateToString(name);
+        emit(s.str());
+        s.clear();
+        s.str(string());
+        emit("subu $sp, $sp, 4");
+        s << "sw " << register_type_to_str(reg) << ", ($sp)";
+        emit(s.str());
+        reg_alloc->freeRegister(reg);
         return;
     }
     // We return a value.
@@ -382,8 +396,16 @@ void returnValueFromFunction(StackType st) {
     VariableEntry* var_entry = tables->getVariable(name);
     assert(var_entry != NULL);
     int offset = var_entry->getWordOffset();
-    s << "lw $v0, " << -offset << "($fp)";
+    register_type reg = reg_alloc->allocateRegister();
+    s << "lw " << register_type_to_str(reg) << -offset << "($fp)";
     emit(s.str());
+    s.clear();
+    s.str(string());
+    emit("subu $sp, $sp, 4");
+    s << "sw " << register_type_to_str(st.reg) << ", ($sp)";
+    emit(s.str());
+    //s << "lw $v0, " << -offset << "($fp)";
+    reg_alloc->freeRegister(reg);
 }
 
 void addImmediateToFunc(string imm_value) {
@@ -445,7 +467,7 @@ register_type createString(string str) {
     return reg;
 }
 
-void callFunction(string func_name, StackType st = StackType()) {
+register_type callFunction(string func_name, StackType st = StackType()) {
     #ifdef DEBUG_API
         cout << "-API- Running callFunction" << endl;
     #endif
@@ -464,11 +486,12 @@ void callFunction(string func_name, StackType st = StackType()) {
         emit("jal __" + func_name);
         emit("addu $sp, $sp, 4");
         returnFromFunc(st);
-        return;
+        return no_reg;
     }
 
     int size = 0;
     for (int i = params.size() - 1; i >= 0; --i) {
+        VariableEntry* var_entry = tables->getVariable(params[i].id);
         if (params[i].reg != no_reg) {
             // We have some kind of binop/relop result saved in register
             addRegisterToFunc(params[i].reg);
@@ -482,17 +505,32 @@ void callFunction(string func_name, StackType st = StackType()) {
             // we have an integer, a byte or a boolean as immediate
             addImmediateToFunc(params[i].id);
             size += 4;
-        } else {
+        } else if (var_entry != NULL) {
             // we have variable type
             addVarToFunc(params[i].id);
             size += 4;
+        } else {
+            // we have return value from function
         }
     }
     emit("jal __" + func_name);
     stringstream s;
+
+    register_type reg = no_reg;
+    FunctionEntry* func_entry = tables->getFunction(func_name);
+    assert(func_entry != NULL);
+    if (func_entry->getType() != typeToString(types_Void)) {
+        reg = reg_alloc->allocateRegister();
+        stringstream s;
+        s << "lw " << register_type_to_str(reg) << ", ($sp)";
+        emit(s.str());
+        emit("move $sp, $fp");
+    }
+
     s << "addu $sp, $sp, " << size;
     emit(s.str());
     returnFromFunc(st);
+    return reg;
 }
 
 void init_text() {
