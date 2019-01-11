@@ -514,7 +514,8 @@ Call: ID LPAREN ExpList RPAREN {
 		callFunction($1.str);
 	}
 
-ExpList: Exp {
+ExpList: Arg {
+    /*
 	if (typeToString($1.type) == typeToString(types_Bool)) {
 		string true_label = GEN_LABEL();
 		$$.reg = reg_alloc->allocateRegister();
@@ -533,6 +534,7 @@ ExpList: Exp {
 		BPATCH($1.getFalseList(), false_label);
 		$1.reg = $$.reg;
 	}
+	*/
 
 	if ($1.type == types_Undefined) {
 		$$.func_info.insert($$.func_info.begin(), varPair($1.struct_type, $1.str, $1.lineno, $1.reg));
@@ -542,10 +544,10 @@ ExpList: Exp {
 	$$.type = $1.type;
 	$$.str = $1.str;
 }
-	| Exp COMMA ExpList {
+	| Arg COMMA ExpList {
 		$$.func_info = $3.func_info;
 		$$.type = $1.type;
-
+        /*
 		if (typeToString($1.type) == typeToString(types_Bool)) {
 			string true_label = GEN_LABEL();
 			$$.reg = reg_alloc->allocateRegister();
@@ -565,13 +567,29 @@ ExpList: Exp {
 
 			$1.reg = $$.reg;
 		}
-
+        */
 		if ($1.type == types_Undefined) {
 			$$.func_info.insert($$.func_info.begin(), varPair($1.struct_type, $1.str, $1.lineno, $1.reg));
 		} else {
 			$$.func_info.insert($$.func_info.begin(), varPair(typeToString($1.type), $1.str, $1.lineno, $1.reg));
 		}
 	}
+
+Arg: Exp {
+    if(typeToString($1.type) == typeToString(types_Bool)){
+        $$.reg = reg_alloc->allocateRegister();
+
+        // store 1 in temp register
+        BPATCH($1.getTrueList(), GEN_LABEL());
+        emit("li " + register_type_to_str($$.reg) + ", 1");
+        vector<int> bypass_false = MAKE_LIST(emit("j "));
+        BPATCH($1.getFalseList(), GEN_LABEL());
+        emit("li " + register_type_to_str($$.reg) + ", 0");
+        BPATCH(bypass_false, GEN_LABEL());
+    } else {
+        $$ = $1;
+    }
+}
 
 Type: INT {
 	$$.type = types_Int;
