@@ -1,0 +1,20 @@
+struct potato {
+	int x;
+	int y;
+	byte t;
+};
+
+void Func(bool a, bool s, bool c) {
+	if (a and not s and not c) print("Whatever you hold in your mind on a consistent basis is exactly what you will experience in your life. ― Tony Robbins");
+}
+
+void maxTestsTestPassArgumentsToFunctions() {
+	struct potato t;
+	t.y = 13;
+	Func(1 < 2, 3 < 2, t.y - 3 >= 18);
+}
+
+void main() {
+     maxTestsTestPassArgumentsToFunctions();
+     print("\nI hate this course\n");
+}

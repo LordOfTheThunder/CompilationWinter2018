@@ -1,0 +1,25 @@
+struct potato {
+	int x;
+	int y;
+	byte t;
+};
+
+void maxTestsTestMultipleRules() {
+	struct potato t;
+	t.x = 13;
+	t.y = 15;
+	t.t = 11b;
+	int y;
+	y = 1;
+	bool x = 3 + y < t.t - 1 and 5 / t.x >= 0;
+	bool s = 3 + y > t.t - 1 or 5 / t.x < 0;
+	if (x) {
+		print("Hard times don’t create heroes. It is during the hard times when the ‘hero’ within us is revealed. – Bob Riley\n");
+	}
+	if (not s) print("Believe you can and you’re halfway there. — Theodore Roosevelt");
+}
+
+void main() {
+     maxTestsTestMultipleRules();
+     print("\nI hate this course\n");
+}
