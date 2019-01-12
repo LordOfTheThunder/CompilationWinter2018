@@ -419,22 +419,26 @@ Statement: StartScope LBRACE Statements RBRACE {
 		tables->checkReturn(typeToString($2.type), $$.lineno);
 		if (typeToString($2.type) == typeToString(types_Bool)){
 			string true_label = GEN_LABEL();
-			register_type reg = reg_alloc->allocateRegister();
-			emit("subu $sp, $sp, 4");
-			emit("li " + register_type_to_str(reg) + ", 1");
-			emit("sw " + register_type_to_str(reg) + ", ($sp)");
+			emit("li $v0, 1");
+			emit("move $sp, $fp");
+			// register_type reg = reg_alloc->allocateRegister();
+			// emit("subu $sp, $sp, 4");
+			// emit("li " + register_type_to_str(reg) + ", 1");
+			// emit("sw " + register_type_to_str(reg) + ", ($sp)");
     		emit("jr $ra");
 			string false_label = GEN_LABEL();
-			emit("subu $sp, $sp, 4");
-			emit("li " + register_type_to_str(reg) + ", 0");
-			emit("sw " + register_type_to_str(reg) + ", ($sp)");
+			// emit("subu $sp, $sp, 4");
+			// emit("li " + register_type_to_str(reg) + ", 0");
+			// emit("sw " + register_type_to_str(reg) + ", ($sp)");
+			emit("li $v0, 0");
+			emit("move $sp, $fp");
     		emit("jr $ra");
-			reg_alloc->freeRegister(reg);
+			//reg_alloc->freeRegister(reg);
 			BPATCH($2.getTrueList(), true_label);
 			BPATCH($2.getFalseList(), false_label);
 		} else {
 			returnValueFromFunction($2);
-			emit("jr $ra");
+			callReturnFunc();
 			$$.str = GEN_LABEL();
 			BPATCH($2.getTrueList(), $$.str);
 			BPATCH($2.getFalseList(), $$.str);

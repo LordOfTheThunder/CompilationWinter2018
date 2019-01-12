@@ -19,6 +19,8 @@
 symbolTable* tables = NULL;
 register_type loadImmediateToRegister(string num);
 string boolImmediateToString(string imm_value);
+void addUsedRegistersToStack();
+void removeUsedRegistersFromStack();
 
 string register_type_to_str(register_type type) {
     switch (type) {
@@ -82,11 +84,13 @@ string op_to_string(arithmetic_op op) {
 class RegisterAllocation {
     vector<register_type> available;
     set<register_type> used;
+    vector<register_type> all_registers;
 public:
     RegisterAllocation() {
         for (int i = t0; i < t9; ++i) {
             available.push_back((register_type)i);
         }
+        all_registers = available;
     }
 
     register_type allocateRegister() {
@@ -95,7 +99,9 @@ public:
         used.insert(res);
         available.erase(available.begin());
         #ifdef DEBUG
-            cout << "-I- Allocated register " << register_type_to_str(res) << endl;
+            stringstream s;
+            s << "-I- Allocated register " << register_type_to_str(res);
+            emit(s.str());
         #endif
         return res;
     }
@@ -108,9 +114,14 @@ public:
         used.erase(std::find(used.begin(), used.end(), reg));
         available.push_back(reg);
         #ifdef DEBUG
-            cout << "-I- Freed register " << register_type_to_str(reg) << endl;
+            stringstream s;
+            s << "-I- Freed register " << register_type_to_str(reg);
+            emit(s.str());
         #endif
     }
+
+    set<register_type> getUsedRegisters() { return this->used; }
+    vector<register_type> getAllRegisters() { return this->all_registers; }
 };
 
 RegisterAllocation *reg_alloc;
@@ -365,11 +376,11 @@ string boolImmediateToString(string imm_value) {
 void returnValueFromFunction(StackType st) {
     if (st.reg != no_reg) {
         // we have result stored in register
-        //emit("move $v0, " + register_type_to_str(st.reg));
-        stringstream s;
-        emit("subu $sp, $sp, 4");
-        s << "sw " << register_type_to_str(st.reg) << ", ($sp)";
-        emit(s.str());
+        emit("move $v0, " + register_type_to_str(st.reg));
+        // stringstream s;
+        // emit("subu $sp, $sp, 4");
+        // s << "sw " << register_type_to_str(st.reg) << ", ($sp)";
+        // emit(s.str());
         reg_alloc->freeRegister(st.reg);
         return;
     }
@@ -378,17 +389,17 @@ void returnValueFromFunction(StackType st) {
         // we return immediate
         // If number : returns the number as string
         // If bool, returns 0 or 1
-        //emit("li $v0, " + boolImmediateToString(name));
-        register_type reg = reg_alloc->allocateRegister();
-        stringstream s;
-        s << "li " << register_type_to_str(reg) << ", " << boolImmediateToString(name);
-        emit(s.str());
-        s.clear();
-        s.str(string());
-        emit("subu $sp, $sp, 4");
-        s << "sw " << register_type_to_str(reg) << ", ($sp)";
-        emit(s.str());
-        reg_alloc->freeRegister(reg);
+        emit("li $v0, " + boolImmediateToString(name));
+        // register_type reg = reg_alloc->allocateRegister();
+        // stringstream s;
+        // s << "li " << register_type_to_str(reg) << ", " << boolImmediateToString(name);
+        // emit(s.str());
+        // s.clear();
+        // s.str(string());
+        // emit("subu $sp, $sp, 4");
+        // s << "sw " << register_type_to_str(reg) << ", ($sp)";
+        // emit(s.str());
+        //reg_alloc->freeRegister(reg);
         return;
     }
     // We return a value.
@@ -396,16 +407,16 @@ void returnValueFromFunction(StackType st) {
     VariableEntry* var_entry = tables->getVariable(name);
     assert(var_entry != NULL);
     int offset = var_entry->getWordOffset();
-    register_type reg = reg_alloc->allocateRegister();
-    s << "lw " << register_type_to_str(reg) << -offset << "($fp)";
-    emit(s.str());
-    s.clear();
-    s.str(string());
-    emit("subu $sp, $sp, 4");
-    s << "sw " << register_type_to_str(st.reg) << ", ($sp)";
-    emit(s.str());
-    //s << "lw $v0, " << -offset << "($fp)";
-    reg_alloc->freeRegister(reg);
+    // register_type reg = reg_alloc->allocateRegister();
+    // s << "lw " << register_type_to_str(reg) << -offset << "($fp)";
+    // emit(s.str());
+    // s.clear();
+    // s.str(string());
+    // emit("subu $sp, $sp, 4");
+    // s << "sw " << register_type_to_str(st.reg) << ", ($sp)";
+    // emit(s.str());
+    s << "lw $v0, " << -offset << "($fp)";
+    //reg_alloc->freeRegister(reg);
 }
 
 void addImmediateToFunc(string imm_value) {
@@ -453,6 +464,7 @@ void returnFromFunc(StackType st) {
     emit("lw $ra, ($sp)");
     emit("lw $fp, 4($sp)");
     emit("addu $sp, $sp, 8");
+    removeUsedRegistersFromStack();
 }
 
 register_type createString(string str) {
@@ -473,6 +485,7 @@ register_type callFunction(string func_name, StackType st = StackType()) {
     #endif
 
     vector<varPair> params = st.func_info;
+    addUsedRegistersToStack();
     emit("subu $sp, $sp, 8");
     emit("sw $ra, ($sp)");
     emit("sw $fp, 4($sp)");
@@ -518,19 +531,39 @@ register_type callFunction(string func_name, StackType st = StackType()) {
     register_type reg = no_reg;
     FunctionEntry* func_entry = tables->getFunction(func_name);
     assert(func_entry != NULL);
-    if (func_entry->getType() != typeToString(types_Void)) {
-        reg = reg_alloc->allocateRegister();
-        stringstream s;
-        s << "lw " << register_type_to_str(reg) << ", ($sp)";
-        emit(s.str());
-        emit("move $sp, $fp");
-    }
 
     stringstream s;
     s << "addu $sp, $sp, " << size;
     emit(s.str());
     returnFromFunc(st);
+
+    if (func_entry->getType() != typeToString(types_Void)) {
+        reg = reg_alloc->allocateRegister();
+        // stringstream s;
+        // s << "lw " << register_type_to_str(reg) << ", ($sp)";
+        // emit(s.str());
+        emit("move " + register_type_to_str(reg) + ", $v0");
+    }
+
     return reg;
+}
+
+void addUsedRegistersToStack() {
+    //set<register_type> used = reg_alloc->getUsedRegisters();
+    vector<register_type> all_registers = reg_alloc->getAllRegisters();
+    for (vector<register_type>::iterator it = all_registers.begin(); it != all_registers.end(); ++it) {
+        emit("subu $sp, $sp, 4");
+        emit("sw " + register_type_to_str(*it) + ", ($sp)");
+    }
+}
+
+void removeUsedRegistersFromStack() {
+    //set<register_type> used = reg_alloc->getUsedRegisters();
+    vector<register_type> all_registers = reg_alloc->getAllRegisters();
+    for (vector<register_type>::reverse_iterator it = all_registers.rbegin(); it != all_registers.rend(); ++it) {
+        emit("lw " + register_type_to_str(*it) + ", ($sp)");
+        emit("addu $sp, $sp, 4");
+    }
 }
 
 void init_text() {
