@@ -267,7 +267,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 		}
 		tables->addVariable($1.str, $2.str, $1.lineno);
 		//allocateStruct(tables->getStruct($1.str), true);
-		allocateStruct(tables->getStruct($1.str), $2.str, true);
+		allocateStruct(tables->getStruct($1.str), $2.str, $4.str);
 	}
 
 	| ID ASSIGN Exp SC {
@@ -287,7 +287,7 @@ Statement: StartScope LBRACE Statements RBRACE {
 		StructEntry* st_entry = tables->getStruct((tables->getVariable($1.str))->getType());
 		if (st_entry != NULL) {
 			// We copy structs
-			assignToStruct($1.str);
+			assignToStruct($1.str, $3.str);
 			$$.str = GEN_LABEL();
 			BPATCH($3.getNextList(), $$.str);
 			BPATCH($3.getTrueList(), $$.str);

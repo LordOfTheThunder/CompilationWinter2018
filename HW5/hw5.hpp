@@ -151,29 +151,41 @@ void allocateVar(StackType st = StackType()) {
     reg_alloc->freeRegister(reg);
 }
 
-void assignToStruct(string var_name) {
+void assignToStruct(string var_name, string var_name2) {
     #ifdef DEBUG_API
         cout << "-API- Running assignToStruct" << endl;
     #endif
     stringstream s;
+
+    // first variable
+
     VariableEntry* var_entry = tables->getVariable(var_name);
     assert(var_entry != NULL);
 
     StructEntry* st_type = tables->getStruct(var_entry->getType());
     assert(st_type != NULL);
 
+    // second variable
+
+    VariableEntry* var_entry2 = tables->getVariable(var_name2);
+    assert(var_entry2 != NULL);
+
+    StructEntry* st_type2 = tables->getStruct(var_entry2->getType());
+    assert(st_type2 != NULL);
+
     int size = st_type->size();
     // otherwise we copy data from one struct to another struct
-    int offset = size * 4 - 4;
-    int orig_offset = var_entry->getWordOffset() - size * 4;
+    //int offset = size * 4 - 4;
+    int offset = var_entry2->getWordOffset();
+    int orig_offset = var_entry->getWordOffset();
     register_type reg = reg_alloc->allocateRegister();
     for (int i = 0; i < size; ++i) {
-        s << "lw " << register_type_to_str(reg) << ", " << -orig_offset << "($fp)" << endl;
-        s << "sw " << register_type_to_str(reg) << ", " << offset << "($sp)";
+        s << "lw " << register_type_to_str(reg) << ", " << -offset << "($fp)" << endl;
+        s << "sw " << register_type_to_str(reg) << ", " << -orig_offset << "($fp)";
         if (i < size - 1) {
             s << endl;
         }
-        offset -= 4;
+        offset += 4;
         orig_offset += 4;
     }
     reg_alloc->freeRegister(reg);
@@ -199,7 +211,7 @@ void logicalRelops(const string& rop_str, register_type t1, register_type t2, ve
     false_list = MAKE_LIST(emit("j "));
 }
 
-void allocateStruct(StructEntry* st_type, string var_name, bool assign = false) {
+void allocateStruct(StructEntry* st_type, string var_name, string var_name2 = "") {
     #ifdef DEBUG_API
         cout << "-API- Running allocateStruct" << endl;
     #endif
@@ -210,7 +222,7 @@ void allocateStruct(StructEntry* st_type, string var_name, bool assign = false) 
     emit(s.str());
     s.clear();
     s.str(std::string());
-    if (!assign) {
+    if (var_name2 == "") {
         // allocate struct without copying data
         for (int i = 0; i < size; ++i) {
             int curr_offset = -i * 4;
@@ -223,7 +235,7 @@ void allocateStruct(StructEntry* st_type, string var_name, bool assign = false) 
         return;
     }
 
-    assignToStruct(var_name);
+    assignToStruct(var_name, var_name2);
 }
 
 void assignToVar(int offset, StackType st) {
